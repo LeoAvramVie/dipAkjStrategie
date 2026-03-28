@@ -154,10 +154,10 @@ color action_color = (is_sniper_long or is_golden_long) ? color.blue : color.red
 string c_txt = ""
 color  c_bg  = color.rgb(30, 30, 30)
 if w_trend == 1
-    c_txt := close < open ? "OK ✅" : "WARTEN ⏳"
+    c_txt := close < open ? "OK ✅" : "WAIT ⏳"
     c_bg  := close < open ? color.blue : color.rgb(30, 30, 30)
 else if w_trend == -1
-    c_txt := close > open ? "OK ✅" : "WARTEN ⏳"
+    c_txt := close > open ? "OK ✅" : "WAIT ⏳"
     c_bg  := close > open ? color.red : color.rgb(30, 30, 30)
 
 if is_any_action
@@ -185,7 +185,7 @@ if barstate.islast
     table.cell(cp, 0, 5, "⚡Williams %R", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
     table.cell(cp, 1, 5, str.tostring(d_wpr, "#.#"), bgcolor=wpr_bg, text_color=color.white, text_size=size.normal)
 
-    table.cell(cp, 0, 6, "🕯️Kerzenbestätigung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 0, 6, "🕯️Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
     table.cell(cp, 1, 6, c_txt, bgcolor=c_bg, text_color=color.white, text_size=size.normal)
 
     table.cell(cp, 0, 7, "🎯Stoppreis", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, text_size=size.normal, text_halign=text.align_left)
