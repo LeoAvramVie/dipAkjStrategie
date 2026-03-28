@@ -179,7 +179,7 @@ f_get_auto_sector() =>
 f_etf_data() =>
     [close, ta.sma(close, 10), close[20]]
 
-[etf_c, etf_sma, etf_c20] = request.security(sector_ticker, "1D", f_etf_data(), lookahead=barmerge.lookahead_ignore)
+[etf_c, etf_sma, etf_c20] = request.security(sector_ticker, "1D", f_etf_data(), lookahead=barmerge.lookahead_off)
 
 bool sector_long = etf_c > etf_sma
 string sec_txt = sector_name + " (" + sector_ticker + ")"
