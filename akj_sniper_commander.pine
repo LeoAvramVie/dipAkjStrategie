@@ -1,5 +1,5 @@
 //@version=6
-indicator("AKJ 2.0 Sniper-Commander v20.2", overlay=true, max_labels_count=500)
+indicator("AKJ 2.0 Sniper-Commander v20.3", overlay=true, max_labels_count=500)
 
 // ==========================================
 // --- 1. INPUTS ---
@@ -154,10 +154,17 @@ bool is_lauern_short  = w_trend == -1 and is_in_radar_short and d_wpr <= 30 and 
 f_get_auto_sector() =>
     string etf   = "SPY"
     string sec   = syminfo.sector
-    string sname = sec != "" ? sec : "S&P 500"
+    string ind   = syminfo.industry
+    string sname = sec != "" ? sec : "S&P 500 Index"
     
     if use_auto_etf
-        if sec == "Electronic Technology" or sec == "Technology Services"
+        if ind == "Aerospace & Defense"
+            etf := "ITA"
+            sname := "Rüstung & Aero"
+        else if ind == "Semiconductors"
+            etf := "SMH"
+            sname := "Halbleiter"
+        else if sec == "Electronic Technology" or sec == "Technology Services"
             etf := "XLK"
         else if sec == "Energy Minerals"
             etf := "XLE"
@@ -182,7 +189,7 @@ f_get_auto_sector() =>
     
     if not use_auto_etf or etf == "SPY"
         etf := user_etf
-        sname := user_etf == "SPY" ? "S&P 500" : (sec != "" ? sec : "ETF")
+        sname := user_etf == "SPY" ? "S&P 500 Index" : (sec != "" ? sec : "Index/ETF")
         
     [etf, sname]
 
@@ -228,7 +235,7 @@ else if w_trend == -1
     c_bg  := close > open ? color.red : color.rgb(30, 30, 30)
 
 if is_any_action
-    w_bg := action_color, d_bg := action_color, wpr_bg := action_color, c_bg := action_color
+    ws_bg := action_color, w_bg := action_color, d_bg := action_color, wpr_bg := action_color, c_bg := action_color
 
 // ==========================================
 // --- 9. COCKPIT UI ---
