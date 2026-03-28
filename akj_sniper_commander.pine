@@ -1,5 +1,5 @@
 //@version=6
-indicator("AKJ 2.0 Sniper-Commander v19.2", overlay=true, max_labels_count=500)
+indicator("AKJ 2.0 Sniper-Commander v20.0", overlay=true, max_labels_count=500)
 
 // ==========================================
 // --- 1. INPUTS ---
@@ -21,7 +21,7 @@ min_stop_density = input.float(10.0, "Min. Stop-Versicherung (%)", group=group_v
 max_tp_density   = input.float(8.0, "Max. TP-Widerstand (%)", group=group_vol_filter)
 min_vol_ratio    = input.float(1.5, "Min. Ratio (Stop vs TP) für Flex-Golden", group=group_vol_filter)
 
-group_rs         = "Sektor & Relative Stärke (v19.0)"
+group_rs         = "Sektor & Relative Stärke (v20.0)"
 use_auto_etf     = input.bool(true, "Auto-Detect Sektor (Mega-Caps)", group=group_rs)
 user_etf         = input.symbol("SPY", "Manueller Sektor-ETF (Fallback)", group=group_rs)
 
@@ -143,39 +143,37 @@ bool is_lauern_short  = w_trend == -1 and is_in_radar_short and d_wpr <= 30 and 
 // ==========================================
 f_get_auto_sector() =>
     string etf   = "SPY"
-    string sname = "S&P 500"
+    string sec   = syminfo.sector
+    string sname = sec != "" ? sec : "S&P 500"
+    
     if use_auto_etf
-        string t = syminfo.ticker
-        if t == "AAPL" or t == "MSFT" or t == "CSCO" or t == "ORCL" or t == "IBM"
-            etf := "XLK", sname := "Technologie"
-        else if t == "NVDA" or t == "AVGO" or t == "TSM" or t == "AMD" or t == "ASML"
-            etf := "SMH", sname := "Halbleiter"
-        else if t == "RTX" or t == "LMT" or t == "BA" or t == "NOC" or t == "GD"
-            etf := "ITA", sname := "Rüstung & Aero"
-        else if t == "XOM" or t == "CVX" or t == "COP" or t == "SLB"
-            etf := "XLE", sname := "Energie"
-        else if t == "JPM" or t == "BAC" or t == "WFC" or t == "GS"
-            etf := "XLF", sname := "Finanzen"
-        else if t == "JNJ" or t == "UNH" or t == "LLY" or t == "PFE"
-            etf := "XLV", sname := "Gesundheit"
-        else if t == "AMZN" or t == "TSLA" or t == "HD" or t == "MCD"
-            etf := "XLY", sname := "Zykl. Konsum"
-        else if t == "PG" or t == "PEP" or t == "KO" or t == "WMT"
-            etf := "XLP", sname := "Basis-Konsum"
-        else if t == "CAT" or t == "UNP" or t == "GE" or t == "MMM"
-            etf := "XLI", sname := "Industrie"
-        else if t == "LIN" or t == "SHW" or t == "NEM" or t == "FCX"
-            etf := "XLB", sname := "Rohstoffe"
-        else if t == "NEE" or t == "DUK" or t == "SO" or t == "D"
-            etf := "XLU", sname := "Versorger"
-        else if t == "PLD" or t == "AMT" or t == "EQIX" or t == "CCI"
-            etf := "XLRE", sname := "Immobilien"
-        else if t == "GOOGL" or t == "META" or t == "NFLX" or t == "DIS"
-            etf := "XLC", sname := "Kommunikation"
+        if sec == "Electronic Technology" or sec == "Technology Services"
+            etf := "XLK"
+        else if sec == "Energy Minerals"
+            etf := "XLE"
+        else if sec == "Finance" or sec == "Commercial Services"
+            etf := "XLF"
+        else if sec == "Health Technology" or sec == "Health Services"
+            etf := "XLV"
+        else if sec == "Producer Manufacturing" or sec == "Industrial Services"
+            etf := "XLI"
+        else if sec == "Consumer Durables" or sec == "Retail Trade" or sec == "Consumer Services"
+            etf := "XLY"
+        else if sec == "Consumer Non-Durables" or sec == "Process Industries"
+            etf := "XLP"
+        else if sec == "Non-Energy Minerals"
+            etf := "XLB"
+        else if sec == "Communications"
+            etf := "XLC"
+        else if sec == "Utilities"
+            etf := "XLU"
+        else if sec == "Real Estate"
+            etf := "XLRE"
     
     if not use_auto_etf or etf == "SPY"
         etf := user_etf
-        sname := user_etf == "SPY" ? "S&P 500" : "Option"
+        sname := user_etf == "SPY" ? "S&P 500" : (sec != "" ? sec : "ETF")
+        
     [etf, sname]
 
 [sector_ticker, sector_name] = f_get_auto_sector()
