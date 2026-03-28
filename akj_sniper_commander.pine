@@ -150,8 +150,18 @@ color wpr_bg = d_wpr >= 80 ? color.blue : d_wpr >= 70 ? color_himmelblau : d_wpr
 
 bool is_any_action = is_sniper_long or is_sniper_short or is_golden_long or is_golden_short
 color action_color = (is_sniper_long or is_golden_long) ? color.blue : color.red
+
+string c_txt = ""
+color  c_bg  = color.rgb(30, 30, 30)
+if w_trend == 1
+    c_txt := close < open ? "OK ✅" : "WARTEN ⏳"
+    c_bg  := close < open ? color.blue : color.rgb(30, 30, 30)
+else if w_trend == -1
+    c_txt := close > open ? "OK ✅" : "WARTEN ⏳"
+    c_bg  := close > open ? color.red : color.rgb(30, 30, 30)
+
 if is_any_action
-    w_bg := action_color, d_bg := action_color, wpr_bg := action_color
+    w_bg := action_color, d_bg := action_color, wpr_bg := action_color, c_bg := action_color
 
 // ==========================================
 // --- 8. COCKPIT UI ---
@@ -175,24 +185,27 @@ if barstate.islast
     table.cell(cp, 0, 5, "⚡Williams %R", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
     table.cell(cp, 1, 5, str.tostring(d_wpr, "#.#"), bgcolor=wpr_bg, text_color=color.white, text_size=size.normal)
 
-    table.cell(cp, 0, 6, "🎯Stoppreis", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, text_size=size.normal, text_halign=text.align_left)
-    table.cell(cp, 1, 6, f_p(sp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow, text_size=size.normal)
-    table.cell(cp, 0, 7, "🤝LimitPreis", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, text_size=size.normal, text_halign=text.align_left)
-    table.cell(cp, 1, 7, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow, text_size=size.normal)
-    table.cell(cp, 0, 8, "🔢Anzahl", bgcolor=color.rgb(50, 50, 50), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
-    table.cell(cp, 1, 8, str.tostring(shares), bgcolor=color.rgb(30, 30, 30), text_color=color.white, text_size=size.normal)
-    table.cell(cp, 0, 9, "💸TP - Teilverkauf", bgcolor=color.rgb(50, 50, 50), text_color=color.lime, text_size=size.normal, text_halign=text.align_left)
-    table.cell(cp, 1, 9, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime, text_size=size.normal)
-    table.cell(cp, 0, 10, "🏁 Stopp-Loss", bgcolor=color.rgb(50, 50, 50), text_color=color.orange, text_size=size.normal, text_halign=text.align_left)
-    table.cell(cp, 1, 10, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange, text_size=size.normal)
+    table.cell(cp, 0, 6, "🕯️Kerzenbestätigung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 1, 6, c_txt, bgcolor=c_bg, text_color=color.white, text_size=size.normal)
+
+    table.cell(cp, 0, 7, "🎯Stoppreis", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 1, 7, f_p(sp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow, text_size=size.normal)
+    table.cell(cp, 0, 8, "🤝LimitPreis", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 1, 8, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow, text_size=size.normal)
+    table.cell(cp, 0, 9, "🔢Anzahl", bgcolor=color.rgb(50, 50, 50), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 1, 9, str.tostring(shares), bgcolor=color.rgb(30, 30, 30), text_color=color.white, text_size=size.normal)
+    table.cell(cp, 0, 10, "💸TP - Teilverkauf", bgcolor=color.rgb(50, 50, 50), text_color=color.lime, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 1, 10, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime, text_size=size.normal)
+    table.cell(cp, 0, 11, "🏁 Stopp-Loss", bgcolor=color.rgb(50, 50, 50), text_color=color.orange, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 1, 11, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange, text_size=size.normal)
 
     color s_v_bg = stop_density >= min_stop_density ? color.rgb(10, 60, 10) : stop_density > (min_stop_density / 2) ? color.rgb(60, 40, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 11, "🛡️Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
-    table.cell(cp, 1, 11, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white, text_size=size.normal)
+    table.cell(cp, 0, 12, "🛡️Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 1, 12, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white, text_size=size.normal)
     
     color t_v_bg = tp_density <= max_tp_density ? color.rgb(10, 60, 10) : tp_density < (max_tp_density * 1.5) ? color.rgb(60, 40, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 12, "🚧TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
-    table.cell(cp, 1, 12, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white, text_size=size.normal)
+    table.cell(cp, 0, 13, "🚧TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 1, 13, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white, text_size=size.normal)
 
 // ==========================================
 // --- 9. VISUALS & ALARME ---
