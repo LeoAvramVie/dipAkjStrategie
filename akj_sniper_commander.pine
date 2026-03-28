@@ -18,6 +18,7 @@ group_vol_filter = "Volumen Filter (v18.8)"
 vol_lookback     = input.int(100, "Volume Lookback Periode", group=group_vol_filter)
 min_stop_density = input.float(10.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
 max_tp_density   = input.float(8.0, "Max. TP-Widerstand (%)", group=group_vol_filter)
+min_vol_ratio    = input.float(1.5, "Min. Ratio (Stop vs TP) für Flex-Golden", group=group_vol_filter)
 
 // Williams %R (Absolute Skala 0-100)
 d_wpr = math.abs(ta.wpr(wpr_len))
@@ -25,17 +26,19 @@ d_wpr = math.abs(ta.wpr(wpr_len))
 // ==========================================
 // --- 2. WOCHEN-DATA (Sticky & Strict) ---
 // ==========================================
-f_bb_w() => 
+f_bb_w_hist() => 
     basis = ta.sma(close, bb_len)
     dev = ta.stdev(close, bb_len) * bb_mult
-    [close, basis + dev, basis - dev]
+    // [1] = Letzte geschlossene Woche, [2] = Vorletzte geschlossene Woche
+    [close[1], basis[1] + dev[1], basis[1] - dev[1], close[2], basis[2] + dev[2], basis[2] - dev[2]]
 
-[w_cl, w_up, w_lo] = request.security(syminfo.tickerid, "W", f_bb_w(), lookahead=barmerge.lookahead_on)
+[w_cl_1, w_up_1, w_lo_1, w_cl_2, w_up_2, w_lo_2] = request.security(syminfo.tickerid, "W", f_bb_w_hist(), lookahead=barmerge.lookahead_ignore)
 
 var int w_trend = 0 
-if w_cl[1] > w_up[1] and w_cl[2] > w_up[2]
+// Trend-Bestätigung strikt ohne Lookahead-Bias
+if w_cl_1 > w_up_1 and w_cl_2 > w_up_2
     w_trend := 1
-else if w_cl[1] < w_lo[1] and w_cl[2] < w_lo[2]
+else if w_cl_1 < w_lo_1 and w_cl_2 < w_lo_2
     w_trend := -1
 
 // ==========================================
@@ -112,9 +115,12 @@ if short_trigger and close > d_up and close[1] > d_up[1]
     short_trigger := false
 bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger
 
-// Golden (Technik + Volumen)
-bool is_golden_long  = is_sniper_long  and stop_density >= min_stop_density and tp_density <= max_tp_density
-bool is_golden_short = is_sniper_short and stop_density >= min_stop_density and tp_density <= max_tp_density
+// Golden (Technik + Volumen - Flex-Ratio gegen "Statistik-Starre")
+float density_ratio = tp_density > 0 ? (stop_density / tp_density) : (stop_density > 0 ? 10.0 : 0.0)
+bool vol_condition  = (stop_density >= min_stop_density and tp_density <= max_tp_density) or (density_ratio >= min_vol_ratio and stop_density >= min_stop_density * 0.7)
+
+bool is_golden_long  = is_sniper_long  and vol_condition
+bool is_golden_short = is_sniper_short and vol_condition
 
 // Radar (Lauer-Zone)
 bool is_lauern_long   = w_trend == 1  and is_in_radar_long  and d_wpr >= 70 and not is_sniper_long
