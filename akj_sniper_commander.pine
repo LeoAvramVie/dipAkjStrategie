@@ -227,7 +227,7 @@ if barstate.islast
     table.cell(cp, 0, 0, "", bgcolor=color.new(color.black, 100)), table.cell(cp, 1, 0, "", bgcolor=color.new(color.black, 100))
     table.cell(cp, 0, 1, "", bgcolor=color.new(color.black, 100)), table.cell(cp, 1, 1, "", bgcolor=color.new(color.black, 100))
 
-    string tac_txt = is_golden_long ? "!!! GOLDEN (LONG) !!!" : is_golden_short ? "!!! GOLDEN (SHORT) !!!" : is_sniper_long ? "!!! FEUER FREI (LONG) !!!" : is_sniper_short ? "!!! FEUER FREI (SHORT) !!!" : is_lauern_long ? "LAUERN (LONG)" : is_lauern_short ? "LAUERN (SHORT)" : "Keine"
+    string tac_txt = is_golden_long ? "!!! GOLDEN (LONG 🔵) !!!" : is_golden_short ? "!!! GOLDEN (SHORT 🔴) !!!" : is_sniper_long ? "!!! FEUER FREI (LONG 🔵) !!!" : is_sniper_short ? "!!! FEUER FREI (SHORT 🔴) !!!" : is_lauern_long ? "LAUERN (LONG 🔵)" : is_lauern_short ? "LAUERN (SHORT 🔴)" : "Keine"
     color tac_bg = is_golden_long or is_golden_short ? color_gold : is_any_action ? action_color : (is_lauern_long or is_lauern_short) ? color.yellow : color.rgb(20, 20, 20)
     table.cell(cp, 0, 2, "Strategie", bgcolor=color.rgb(80, 80, 80), text_color=color.white, text_size=size.normal)
     table.cell(cp, 1, 2, tac_txt, bgcolor=tac_bg, text_color=(tac_bg == color.yellow or tac_bg == color_gold) ? color.black : color.white, text_size=size.normal)
