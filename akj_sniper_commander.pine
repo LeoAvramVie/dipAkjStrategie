@@ -32,7 +32,7 @@ f_bb_w_hist() =>
     // [1] = Letzte geschlossene Woche, [2] = Vorletzte geschlossene Woche
     [close[1], basis[1] + dev[1], basis[1] - dev[1], close[2], basis[2] + dev[2], basis[2] - dev[2]]
 
-[w_cl_1, w_up_1, w_lo_1, w_cl_2, w_up_2, w_lo_2] = request.security(syminfo.tickerid, "W", f_bb_w_hist(), lookahead=barmerge.lookahead_ignore)
+[w_cl_1, w_up_1, w_lo_1, w_cl_2, w_up_2, w_lo_2] = request.security(syminfo.tickerid, "W", f_bb_w_hist(), lookahead=barmerge.lookahead_off)
 
 var int w_trend = 0 
 // Trend-Bestätigung strikt ohne Lookahead-Bias
