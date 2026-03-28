@@ -249,7 +249,7 @@ if barstate.islast
     table.cell(cp, 0, 4, "💪Rel. Stärke", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
     table.cell(cp, 1, 4, rs_txt, bgcolor=color.rgb(30, 30, 30), text_color=color.white, text_size=size.normal)
 
-    table.cell(cp, 0, 5, "📈Weinstein-Phase", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
+    table.cell(cp, 0, 5, "📈Weinstein Stage", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
     table.cell(cp, 1, 5, ws_txt, bgcolor=ws_bg, text_color=color.white, text_size=size.normal)
 
     table.cell(cp, 0, 6, "📈Wochentrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, text_size=size.normal, text_halign=text.align_left)
