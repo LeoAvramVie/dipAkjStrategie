@@ -199,9 +199,7 @@ if barstate.islast and w_trend != 0
     lbl_sl := label.new(bar_index + 5, sl_price, "🏁Stop", color=color.red, textcolor=color.white, style=label.style_label_left, size=size.small)
     lbl_tp := label.new(bar_index + 5, tp_price, " 💸 Teilverkauf", color=color.lime, textcolor=color.black, style=label.style_label_left, size=size.small)
 
-plotshape(is_golden_long or is_golden_short, "Golden", shape.diamond, location.belowbar, color_gold, size=size.small)
-plotshape(is_sniper_long and not is_golden_long, "Sniper", shape.triangleup, location.belowbar, color.lime, size=size.small)
-plotshape(is_sniper_short and not is_golden_short, "Sniper", shape.triangledown, location.abovebar, color.red, size=size.small)
+
 
 if barstate.isrealtime
     if is_golden_long or is_golden_short
