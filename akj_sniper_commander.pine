@@ -15,6 +15,7 @@ bb_mult          = input.float(1.0, "Bollinger Multiplikator", group=group_strat
 wpr_len          = input.int(4, "Williams %R Länge", group=group_strat)
 
 group_vol_filter = "Volumen Filter (v18.8)"
+vol_timeframe    = input.timeframe("240", "Volumen Timeframe (Standard 4H)", group=group_vol_filter)
 vol_lookback     = input.int(100, "Volume Lookback Periode", group=group_vol_filter)
 min_stop_density = input.float(10.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
 max_tp_density   = input.float(8.0, "Max. TP-Widerstand (%)", group=group_vol_filter)
@@ -77,29 +78,37 @@ float lp_price = w_trend == -1 ? sp_price * (1 - limit_offset_pct / 100) : sp_pr
 float tp_price = w_trend == -1 ? sp_price - risk_val : sp_price + risk_val
 
 // ==========================================
-// --- 5. VOLUMEN-STRUKTUR (Proportional) ---
+// --- 5. VOLUMEN-STRUKTUR (Multi-Timeframe / 4H) ---
 // ==========================================
-f_get_vol_in_zone(p1, p2) =>
-    float zone_vol = 0.0
-    float upper = math.max(p1, p2)
-    float lower = math.min(p1, p2)
-    for i = 0 to vol_lookback - 1
-        float bar_h = high[i], float bar_l = low[i]
-        float intersect = math.max(0, math.min(bar_h, upper) - math.max(bar_l, lower))
-        float bar_range = bar_h - bar_l
-        if bar_range > 0
-            zone_vol += volume[i] * (intersect / bar_range)
-    zone_vol
+// Funktion läuft komplett im Ziel-Timeframe (z.B. 4H)
+f_calc_tf_vol(sp, sl, tp, do_calc) =>
+    float s_dens = 0.0
+    float t_dens = 0.0
+    if do_calc
+        float zone_vol_s = 0.0
+        float zone_vol_t = 0.0
+        float total_v    = 0.0
+        float upper_s = math.max(sp, sl), float lower_s = math.min(sp, sl)
+        float upper_t = math.max(sp, tp), float lower_t = math.min(sp, tp)
+        for i = 0 to vol_lookback - 1
+            float bar_h = high[i], float bar_l = low[i], float bar_vol = volume[i]
+            total_v += bar_vol
+            float bar_range = bar_h - bar_l
+            if bar_range > 0
+                float intersect_s = math.max(0, math.min(bar_h, upper_s) - math.max(bar_l, lower_s))
+                zone_vol_s += bar_vol * (intersect_s / bar_range)
+                float intersect_t = math.max(0, math.min(bar_h, upper_t) - math.max(bar_l, lower_t))
+                zone_vol_t += bar_vol * (intersect_t / bar_range)
+        if total_v > 0
+            s_dens := (zone_vol_s / total_v) * 100
+            t_dens := (zone_vol_t / total_v) * 100
+    [s_dens, t_dens]
 
-float total_vol = math.sum(volume, vol_lookback)
-float stop_density = 0.0
-float tp_density   = 0.0
-
-// CPU-Optimierung (Lazy Evaluation): Volumen-Schleife nur berechnen, wenn im Setup
+// CPU-Optimierung (Lazy Evaluation)
 bool needs_vol_calc = is_in_radar_long or is_in_radar_short or barstate.islast
-if needs_vol_calc and total_vol > 0
-    stop_density := (f_get_vol_in_zone(sp_price, sl_price) / total_vol) * 100
-    tp_density   := (f_get_vol_in_zone(sp_price, tp_price) / total_vol) * 100
+
+// Zieht sich die Volumen-Dichte IMMER aus dem gewählten Timeframe (Standard: 4H)
+[stop_density, tp_density] = request.security(syminfo.tickerid, vol_timeframe, f_calc_tf_vol(sp_price, sl_price, tp_price, needs_vol_calc))
 
 // ==========================================
 // --- 6. SIGNAL-IDENTIFIKATION ---
