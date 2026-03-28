@@ -1,5 +1,5 @@
 //@version=6
-indicator("AKJ 2.0 Sniper-Commander v18.8", overlay=true, max_labels_count=500)
+indicator("AKJ 2.0 Sniper-Commander v19.0", overlay=true, max_labels_count=500)
 
 // ==========================================
 // --- 1. INPUTS ---
@@ -99,6 +99,7 @@ f_calc_tf_vol(sp, sl, tp, do_calc) =>
                 zone_vol_s += bar_vol * (intersect_s / bar_range)
                 float intersect_t = math.max(0, math.min(bar_h, upper_t) - math.max(bar_l, lower_t))
                 zone_vol_t += bar_vol * (intersect_t / bar_range)
+        // Dev-Check: Absolute Sicherheit gegen Runtime-Errors (Division by zero)
         if total_v > 0
             s_dens := (zone_vol_s / total_v) * 100
             t_dens := (zone_vol_t / total_v) * 100
@@ -113,15 +114,13 @@ bool needs_vol_calc = is_in_radar_long or is_in_radar_short or barstate.islast
 // ==========================================
 // --- 6. SIGNAL-IDENTIFIKATION ---
 // ==========================================
-// Sniper (Technik) - Inkl. Doji & Band-Check
-bool long_trigger = d_wpr >= 80 and close < open and close != open
-if long_trigger and close < d_lo and close[1] < d_lo[1] 
-    long_trigger := false
+// Sniper (Technik) - Inkl. Doji & Band-Check (MK 4.7 / 5.6)
+// Long-Signal NUR wenn Kerze INNERHALB des unteren Bandes schließt (close > d_lo)
+bool long_trigger = d_wpr >= 80 and close < open and close != open and close > d_lo
 bool is_sniper_long  = w_trend == 1  and setup_strict_long  and long_trigger
 
-bool short_trigger = d_wpr <= 20 and close > open and close != open
-if short_trigger and close > d_up and close[1] > d_up[1] 
-    short_trigger := false
+// Short-Signal NUR wenn Kerze INNERHALB des oberen Bandes schließt (close < d_up)
+bool short_trigger = d_wpr <= 20 and close > open and close != open and close < d_up
 bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger
 
 // Golden (Technik + Volumen - Flex-Ratio gegen "Statistik-Starre")
