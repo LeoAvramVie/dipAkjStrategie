@@ -1,5 +1,5 @@
 //@version=6
-indicator("AKJ 2.0 Sniper-Commander v18.7 (Final-Vault)", overlay=true, max_labels_count=500)
+indicator("AKJ 2.0 Sniper-Commander v18.8", overlay=true, max_labels_count=500)
 
 // ==========================================
 // --- 1. INPUTS ---
@@ -13,6 +13,11 @@ group_strat      = "MK-Strategie Parameter"
 bb_len           = input.int(10, "Bollinger Länge", group=group_strat)
 bb_mult          = input.float(1.0, "Bollinger Multiplikator", group=group_strat)
 wpr_len          = input.int(4, "Williams %R Länge", group=group_strat)
+
+group_vol_filter = "Volumen Filter (v18.8)"
+vol_lookback     = input.int(100, "Volume Lookback Periode", group=group_vol_filter)
+min_stop_density = input.float(10.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
+max_tp_density   = input.float(8.0, "Max. TP-Widerstand (%)", group=group_vol_filter)
 
 // Williams %R (Absolute Skala 0-100)
 d_wpr = math.abs(ta.wpr(wpr_len))
@@ -75,7 +80,7 @@ f_get_vol_in_zone(p1, p2) =>
     float zone_vol = 0.0
     float upper = math.max(p1, p2)
     float lower = math.min(p1, p2)
-    for i = 0 to 99
+    for i = 0 to vol_lookback - 1
         float bar_h = high[i], float bar_l = low[i]
         float intersect = math.max(0, math.min(bar_h, upper) - math.max(bar_l, lower))
         float bar_range = bar_h - bar_l
@@ -83,9 +88,15 @@ f_get_vol_in_zone(p1, p2) =>
             zone_vol += volume[i] * (intersect / bar_range)
     zone_vol
 
-float total_100_vol = math.sum(volume, 100)
-float stop_density  = (f_get_vol_in_zone(sp_price, sl_price) / total_100_vol) * 100
-float tp_density    = (f_get_vol_in_zone(sp_price, tp_price) / total_100_vol) * 100
+float total_vol = math.sum(volume, vol_lookback)
+float stop_density = 0.0
+float tp_density   = 0.0
+
+// CPU-Optimierung (Lazy Evaluation): Volumen-Schleife nur berechnen, wenn im Setup
+bool needs_vol_calc = is_in_radar_long or is_in_radar_short or barstate.islast
+if needs_vol_calc and total_vol > 0
+    stop_density := (f_get_vol_in_zone(sp_price, sl_price) / total_vol) * 100
+    tp_density   := (f_get_vol_in_zone(sp_price, tp_price) / total_vol) * 100
 
 // ==========================================
 // --- 6. SIGNAL-IDENTIFIKATION ---
@@ -102,8 +113,8 @@ if short_trigger and close > d_up and close[1] > d_up[1]
 bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger
 
 // Golden (Technik + Volumen)
-bool is_golden_long  = is_sniper_long  and stop_density >= 10 and tp_density <= 8
-bool is_golden_short = is_sniper_short and stop_density >= 10 and tp_density <= 8
+bool is_golden_long  = is_sniper_long  and stop_density >= min_stop_density and tp_density <= max_tp_density
+bool is_golden_short = is_sniper_short and stop_density >= min_stop_density and tp_density <= max_tp_density
 
 // Radar (Lauer-Zone)
 bool is_lauern_long   = w_trend == 1  and is_in_radar_long  and d_wpr >= 70 and not is_sniper_long
@@ -160,11 +171,11 @@ if barstate.islast
     table.cell(cp, 0, 10, "🏁 Stopp-Loss", bgcolor=color.rgb(50, 50, 50), text_color=color.orange, text_size=size.normal, text_halign=text.align_left)
     table.cell(cp, 1, 10, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange, text_size=size.normal)
 
-    color s_v_bg = stop_density > 10 ? color.rgb(10, 60, 10) : stop_density > 5 ? color.rgb(60, 40, 10) : color.rgb(60, 10, 10)
+    color s_v_bg = stop_density >= min_stop_density ? color.rgb(10, 60, 10) : stop_density > (min_stop_density / 2) ? color.rgb(60, 40, 10) : color.rgb(60, 10, 10)
     table.cell(cp, 0, 11, "🛡️Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
     table.cell(cp, 1, 11, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white, text_size=size.normal)
     
-    color t_v_bg = tp_density < 8 ? color.rgb(10, 60, 10) : tp_density < 15 ? color.rgb(60, 40, 10) : color.rgb(60, 10, 10)
+    color t_v_bg = tp_density <= max_tp_density ? color.rgb(10, 60, 10) : tp_density < (max_tp_density * 1.5) ? color.rgb(60, 40, 10) : color.rgb(60, 10, 10)
     table.cell(cp, 0, 12, "🚧TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
     table.cell(cp, 1, 12, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white, text_size=size.normal)
 
