@@ -289,7 +289,7 @@ if barstate.islast
     
     color t_v_bg = tp_density <= max_tp_density ? color.rgb(10, 60, 10) : tp_density < (max_tp_density * 1.5) ? color.rgb(60, 40, 10) : color.rgb(60, 10, 10)
     table.cell(cp, 0, 16, "🚧TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.white, text_size=size.normal, text_halign=text.align_left)
-    table.cell(cp, 1, 16, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white, text_size=size.normal, text_halign=text.align_right)g(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white, text_size=size.normal)
+    table.cell(cp, 1, 16, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white, text_size=size.normal, text_halign=text.align_right)
 
 // ==========================================
 // --- 10. VISUALS & ALARME ---
