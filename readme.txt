@@ -68,14 +68,13 @@ Es liegt ein separates `akj_sniper_backtest_v20_5.pine` Script bei. Dieses simul
 *   Wenn du auf Ticker wie LHA, TEAM, CSCO oder PYPL im Chart gehst, zeigt dir die eingebaute "IBKR Reality Check Note" unten rechts tabellarisch an, warum deine echten Depot-Ausführungen im IBKR-Statement historisch von der harten Indikator-Logik abweichen (z.B. wegen fehlendem VIX Filter bei CSCO).
 
 ---
-### VI. Die statistische Kante (Edge)
-Die Backtest-Engine wurde von klassischer Exekution auf ein umfassendes **Funnel- & Status-Audit-System** umgestellt. Auf dem Chart erscheint nun direkt das "State-Audit Cockpit". 
-Dieses trackt die gesamte Historie des Tickers (alle Signale und Phasen), ohne von Pine-Script Constraints blockiert zu werden.
+### V. Die statistische Kante (Edge Audit & Ticker-Stars)
+Die Backtest-Engine trackt historisch den gesamten Ticker über das Kaskaden-Radar. Sobald die 1:1 TP1 Winrate für ein Setup über 50% liegt, zeichnet das System die Setup-Stufe mit dem Sternchen-Label "⭐ STAR-TICKER" aus!
+Zusätzlich zeigt dir das Cockpit jetzt direkt den potenziellen Geldwert (Erwartungswert in €) eines Tickers, multipliziert mit deinem Basis-Risiko. Jede Aktie mit einem **grünen Euro-Erwartungswert** im Audit ist ein statistischer Favorit.
 
-**Wie wird die Trefferquote gelesen?**
-* **LAUERN:** Wie oft das Asset in Position lief (Phase 2/4 + Trend + Hysterese).
-* **FEUER FREI:** Wie oft eine Scharf-Kerze den Trigger in der Lauer-Position zog.
-* **GOLDEN SETUP:** Wie oft zudem das gesamte Volumen-Setup (Schutz-Wall & Vakuum) stimmte.
+*   **LAUERN:** Wie oft das Asset in Position lief (Stage + Scharf 1).
+*   **FEUER FREI:** Wie oft der reine Trigger bei Mindestvolumen (>1.5%) zuschlug.
+*   **GOLDEN:** Wie oft zudem das exzellente Momentum-Volumen (Premium-Mauer) stimmte.
 
 Wenn bei einem Typen die Win-Rate (Kurs erreicht 1R Ziel, bevor der Initial-Stop-Loss platzt) im **grünen Bereich (>50%)** liegt, hast du in diesem Asset einen systematischen, bewiesenen Edge! Der Ø Profit inkludiert zudem das Risk-Recycling (sichere +0.5R bei Gewinn, -1.0R bei Verlust).
 

@@ -185,12 +185,15 @@ var float p_golden = 0.0
 var int total_missed_omega = 0
 
 // Definition der Audit-Level (v20.6 Sensitivity)
-bool base_lauern_l = weinstein_stage == 2 and close[1] > d_up[1] and barstate.isconfirmed // Sofort Radar bei ersten Band-Bruch!
+// LAUERN-Alarm feuert SOFORT bei erster Berührung der Hysterese
+bool is_radar_l = high >= d_up + (atr_val * 0.2)
+bool base_lauern_l = weinstein_stage == 2 and (is_radar_l or setup_strict_long)
 bool raw_feuer_l   = base_lauern_l and setup_strict_long and long_trigger // Scharf 2/2 + Kerze
 bool base_feuer_l  = raw_feuer_l and vol_feuer_l // Alarm feuert schon bei raw, Audit trackt Feuer wenn >1.5%
 bool base_golden_l = raw_feuer_l and vol_golden_l // Golden braucht >3.0%
 
-bool base_lauern_s = weinstein_stage == 4 and close[1] < d_lo[1] and barstate.isconfirmed
+bool is_radar_s = low <= d_lo - (atr_val * 0.2)
+bool base_lauern_s = weinstein_stage == 4 and (is_radar_s or setup_strict_short)
 bool raw_feuer_s   = base_lauern_s and setup_strict_short and short_trigger
 bool base_feuer_s  = raw_feuer_s and vol_feuer_s
 bool base_golden_s = raw_feuer_s and vol_golden_s
@@ -328,7 +331,15 @@ if barstate.islast
     float r_feuer_avg  = c_feuer > 0 ? p_feuer / c_feuer : 0.0
     float r_golden_avg = c_golden > 0 ? p_golden / c_golden : 0.0
 
-    table.cell(audit_cockpit, 0, 0, "AKJ v20.5 SNR-State-Audit", bgcolor=color.black, text_color=color.white, text_size=size.large)
+    float eur_lauern = r_lauern_avg * risk_per_trade
+    float eur_feuer = r_feuer_avg * risk_per_trade
+    float eur_golden = r_golden_avg * risk_per_trade
+
+    color bg_eur_l = eur_lauern > 0 ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
+    color bg_eur_f = eur_feuer > 0 ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
+    color bg_eur_g = eur_golden > 0 ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
+
+    table.cell(audit_cockpit, 0, 0, "AKJ v20.6 SNR-State-Audit", bgcolor=color.black, text_color=color.white, text_size=size.large)
     table.merge_cells(audit_cockpit, 0, 0, 3, 0)
     
     // Star-Ticker Label Logic
@@ -340,25 +351,25 @@ if barstate.islast
     table.cell(audit_cockpit, 0, 1, "Status-Typ", bgcolor=color.rgb(30,30,30), text_color=color.gray)
     table.cell(audit_cockpit, 1, 1, "Signal-Events", bgcolor=color.rgb(30,30,30), text_color=color.gray)
     table.cell(audit_cockpit, 2, 1, "Win % (1:1 TP)", bgcolor=color.rgb(30,30,30), text_color=color.gray)
-    table.cell(audit_cockpit, 3, 1, "Ø Profit (R) pro Signal", bgcolor=color.rgb(30,30,30), text_color=color.gray)
+    table.cell(audit_cockpit, 3, 1, "Erwartungswert (€)", bgcolor=color.rgb(30,30,30), text_color=color.gray)
 
     // Lauern
     table.cell(audit_cockpit, 0, 2, "LAUERN (Radar)" + star_l, bgcolor=color.rgb(20,20,20), text_color=color.yellow)
     table.cell(audit_cockpit, 1, 2, str.tostring(c_lauern), bgcolor=color.rgb(20,20,20), text_color=color.silver)
     table.cell(audit_cockpit, 2, 2, str.tostring(wr_lauern, "#.#") + "%", bgcolor=wr_lauern >= 50 ? color.rgb(10,50,10) : color.rgb(40,10,10), text_color=color.white)
-    table.cell(audit_cockpit, 3, 2, str.tostring(r_lauern_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)
+    table.cell(audit_cockpit, 3, 2, (eur_lauern > 0 ? "+" : "") + str.tostring(eur_lauern, "#.##") + " €", bgcolor=bg_eur_l, text_color=color.white)
 
     // Feuer Frei
     table.cell(audit_cockpit, 0, 3, "FEUER FREI" + star_f, bgcolor=color.rgb(20,20,20), text_color=color.blue)
     table.cell(audit_cockpit, 1, 3, str.tostring(c_feuer), bgcolor=color.rgb(20,20,20), text_color=color.silver)
     table.cell(audit_cockpit, 2, 3, str.tostring(wr_feuer, "#.#") + "%", bgcolor=wr_feuer >= 50 ? color.rgb(10,50,10) : color.rgb(40,10,10), text_color=color.white)
-    table.cell(audit_cockpit, 3, 3, str.tostring(r_feuer_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)
+    table.cell(audit_cockpit, 3, 3, (eur_feuer > 0 ? "+" : "") + str.tostring(eur_feuer, "#.##") + " €", bgcolor=bg_eur_f, text_color=color.white)
 
     // Golden Setup
     table.cell(audit_cockpit, 0, 4, "GOLDEN SETUP" + star_g, bgcolor=color.rgb(20,20,20), text_color=color.lime)
     table.cell(audit_cockpit, 1, 4, str.tostring(c_golden), bgcolor=color.rgb(20,20,20), text_color=color.white)
     table.cell(audit_cockpit, 2, 4, str.tostring(wr_golden, "#.#") + "%", bgcolor=wr_golden >= 50 ? color.rgb(10,60,10) : color.rgb(60,10,10), text_color=color.white)
-    table.cell(audit_cockpit, 3, 4, str.tostring(r_golden_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)
+    table.cell(audit_cockpit, 3, 4, (eur_golden > 0 ? "+" : "") + str.tostring(eur_golden, "#.##") + " €", bgcolor=bg_eur_g, text_color=color.white)
 
     // Metrik Omega
     table.cell(audit_cockpit, 0, 5, "VIX Efficiency (Blocked by OMEGA): " + str.tostring(total_missed_omega), bgcolor=color.rgb(10,10,10), text_color=color.orange, text_size=size.small)

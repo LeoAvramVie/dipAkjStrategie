@@ -173,9 +173,12 @@ string vacuum_qual = vacuum_ok ? ("High (TP " + str.tostring(tp_density, "#.#") 
 // ==========================================
 // --- 6. SIGNAL-IDENTIFIKATION ---
 // ==========================================
-// LAUERN (Radar an, Scharf 1/2)
-bool is_lauern_long   = weinstein_stage == 2 and close[1] > d_up[1] and not firewall_l
-bool is_lauern_short  = weinstein_stage == 4 and close[1] < d_lo[1] and not firewall_s
+// LAUERN (Radar an, Scharf 1/2) - Löst aus, sobald Hysterese intra-bar berührt wird!
+bool is_radar_l = high >= d_up + (atr_val * 0.2)
+bool is_lauern_long   = weinstein_stage == 2 and is_radar_l and not firewall_l
+
+bool is_radar_s = low <= d_lo - (atr_val * 0.2)
+bool is_lauern_short  = weinstein_stage == 4 and is_radar_s and not firewall_s
 
 // FEUER FREI (Trigger Raw)
 bool long_trigger = close > sp_price
@@ -370,8 +373,9 @@ if barstate.islast
     table.cell(cp, 0, 19, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, tooltip="Gap-Schutz für deine Einstiegsorder. Vermeidet Slippage, wenn der Markt extem wild über deinen Preis springt.")
     table.cell(cp, 1, 19, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
 
+    string shares_display = shares > 0 ? str.tostring(shares) : "- (VIX too high)"
     table.cell(cp, 0, 20, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50, 50, 50), text_color=color.white, tooltip="Die Anzahl an Aktien, mit denen du EXAKT dein gewünschtes asymmetrisches (€) 1R Risiko triffst.")
-    table.cell(cp, 1, 20, str.tostring(shares), bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+    table.cell(cp, 1, 20, shares_display, bgcolor=color.rgb(30, 30, 30), text_color=color.white)
 
     table.cell(cp, 0, 21, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime, tooltip="Das 1:1 CRV Ziel. Verkaufe hier exakt 50% deiner Position (Risk-Recycling) und ziehe den restlichen Stop auf Break-Even.")
     table.cell(cp, 1, 21, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime)
@@ -379,8 +383,9 @@ if barstate.islast
     table.cell(cp, 0, 22, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange, tooltip="Institutioneller Stop-Loss (1.5x ATR). Schützt vor Rauschen und Gaps.")
     table.cell(cp, 1, 22, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange)
 
-    table.cell(cp, 0, 23, "🏃 Runner-Target", bgcolor=color.rgb(50, 50, 50), text_color=color.fuchsia, tooltip="Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.")
-    table.cell(cp, 1, 23, "EMA 21: " + f_p(ema21), bgcolor=color.rgb(30, 30, 30), text_color=color.fuchsia)
+    color ema_col = w_trend == 1 ? color.blue : (w_trend == -1 ? color.red : color.rgb(80, 80, 80))
+    table.cell(cp, 0, 23, "🏃 Runner-Target", bgcolor=color.rgb(50, 50, 50), text_color=ema_col, tooltip="Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.")
+    table.cell(cp, 1, 23, "EMA 21: " + f_p(ema21), bgcolor=color.rgb(30, 30, 30), text_color=ema_col)
 
 // ==========================================
 // --- 10. VISUALS & ALARME ---
@@ -393,25 +398,34 @@ if barstate.islast and w_trend != 0
     l_sl := line.new(bar_index, sl_price, bar_index + 5, sl_price, color=color.red, width=1)
     l_tp := line.new(bar_index, tp_price, bar_index + 5, tp_price, color=color.lime, width=1)
     lbl_sp := label.new(bar_index + 5, sp_price, "🎯 Entry", color=color.yellow, textcolor=color.black, style=label.style_label_left, size=size.small)
-    lbl_sl := label.new(bar_index + 5, sl_price, "🏁 Stop", color=color.red, textcolor=color.white, style=label.style_label_left, size=size.small)
+    lbl_sl := label.new(bar_index + 5, sl_price, "🏁 Stop (1.0x ATR)", color=color.red, textcolor=color.white, style=label.style_label_left, size=size.small)
     lbl_tp := label.new(bar_index + 5, tp_price, "💸 TP", color=color.lime, textcolor=color.black, style=label.style_label_left, size=size.small)
 
-if barstate.isrealtime and barstate.isconfirmed
-    bool is_omega = vix_c > 35.0
-    bool is_delta = vix_c > 25.0 and vix_c <= 35.0
+// ==========================================
+// --- 11. ALARMSYSTEM (Cascade v20.6) ---
+// ==========================================
 
-    if is_omega
-        // Im OMEGA-Regime feuern wir keine Entry-Alarme. Pine Script kennt kein 'pass'.
-        int _dummy = 0 
-    else if is_delta and (is_golden_long or is_sniper_long)
-        // Reduziertes Risiko für Longs im High VIX Environment (DELTA)
-        alert(mode_prefix + " - 📡 INFO/LAUERN LONG " + syminfo.ticker + ": Reduziertes Risiko (" + str.tostring(active_risk_l, "#.##") + "€). In: " + f_p(sp_price), alert.freq_once_per_bar)
-    else if is_golden_long or is_golden_short
-        float r_val = w_trend == 1 ? active_risk_l : active_risk_s
-        alert(mode_prefix + " - 🏆 GOLDEN SETUP " + syminfo.ticker + ": Risiko " + str.tostring(r_val, "#.##") + "€. In: " + f_p(sp_price) + " | TP1: 1:1 Goal | TP2: Trail EMA 21", alert.freq_once_per_bar)
-    else if is_sniper_long or is_sniper_short
-        float r_val = w_trend == 1 ? active_risk_l : active_risk_s
-        // DELTA Shorts landen hier, weil is_sniper_short greift
-        alert(mode_prefix + " - 🎯 ACTION/FEUER FREI " + syminfo.ticker + ": Risiko " + str.tostring(r_val, "#.##") + "€. In: " + f_p(sp_price) + " | TP1: 1:1 Goal | TP2: Trail EMA 21", alert.freq_once_per_bar)
-    else if is_lauern_long or is_lauern_short
-        alert(mode_prefix + " - 📡 RADAR " + syminfo.ticker + ": Lauer-Modus!", alert.freq_once_per_bar)
+bool alert_lauern_l = is_lauern_long and not is_lauern_long[1]
+bool alert_lauern_s = is_lauern_short and not is_lauern_short[1]
+
+bool alert_feuer_l  = raw_feuer_long and not raw_feuer_long[1]
+bool alert_feuer_s  = raw_feuer_short and not raw_feuer_short[1]
+
+bool alert_golden_l = is_golden_long and not is_golden_long[1]
+bool alert_golden_s = is_golden_short and not is_golden_short[1]
+
+// FIRE ALERTS (Mit Richtung & Regime)
+if alert_lauern_l
+    alert("📡 " + mode_prefix + " - LAUERN [LONG]: Scharf 1/2 bei " + syminfo.ticker, alert.freq_once_per_bar)
+if alert_lauern_s
+    alert("📡 " + mode_prefix + " - LAUERN [SHORT]: Scharf 1/2 bei " + syminfo.ticker, alert.freq_once_per_bar)
+
+if alert_feuer_l
+    alert("🎯 " + mode_prefix + " - FEUER FREI [LONG]: Scharf 2/2 + Trigger Hit! Bitte Volume UI checken bei " + syminfo.ticker, alert.freq_once_per_bar)
+if alert_feuer_s
+    alert("🎯 " + mode_prefix + " - FEUER FREI [SHORT]: Scharf 2/2 + Trigger Hit! Bitte Volume UI checken bei " + syminfo.ticker, alert.freq_once_per_bar)
+
+if alert_golden_l
+    alert("🌟 " + mode_prefix + " - GOLDEN SETUP [LONG]: Premium Setup bestätigt bei " + syminfo.ticker, alert.freq_once_per_bar)
+if alert_golden_s
+    alert("🌟 " + mode_prefix + " - GOLDEN SETUP [SHORT]: Premium Setup bestätigt bei " + syminfo.ticker, alert.freq_once_per_bar)
