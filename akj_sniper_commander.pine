@@ -14,13 +14,15 @@ group_strat      = "MK-Strategie Parameter"
 bb_len           = input.int(10, "Bollinger Länge", group=group_strat)
 bb_mult          = input.float(1.0, "Bollinger Multiplikator", group=group_strat)
 wpr_len          = input.int(4, "Williams %R Länge", group=group_strat)
-atr_len          = input.int(14, "ATR Länge (Filter)", group=group_strat)
+atr_len          = input.int(14, "ATR Länge (Filter/Radar)", group=group_strat)
+atr_stop_mult    = input.float(1.0, "ATR Stop Multiplikator", group=group_strat, step=0.1) // Reduziert auf 1.0 für mehr Sensitivität
 
-group_vol_filter = "Volumen Filter (v20.5)"
+group_vol_filter = "Volumen Filter (v20.6)"
 vol_timeframe    = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
-min_stop_density = input.float(3.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
-max_tp_density   = input.float(8.0, "Max. TP-Widerstand (%)", group=group_vol_filter)
-rld_limit        = input.float(20.0, "RLD Vakuum Limit (%)", group=group_vol_filter)
+min_stop_density = input.float(1.5, "Min. Stop-Versicherung (%) (FEUER)", group=group_vol_filter)
+max_tp_density   = input.float(15.0, "Max. TP-Widerstand (%) (FEUER)", group=group_vol_filter)
+golden_stop_density = input.float(3.0, "Min. Stop-Versicherung (%) (GOLDEN)", group=group_vol_filter)
+golden_tp_density = input.float(8.0, "Max. TP-Widerstand (%) (GOLDEN)", group=group_vol_filter)
 
 group_rs         = "Sektor & Relative Stärke (v20.5)"
 use_auto_etf     = input.bool(true, "Auto-Detect Sektor", group=group_rs)
@@ -104,8 +106,7 @@ if close[1] < d_lo[1] and close[2] < d_lo[2]
 if close[1] > d_up[1] and close[2] > d_up[2]
     setup_strict_short := false
 
-bool is_in_radar_long  = close[1] > d_up[1] or setup_strict_long
-bool is_in_radar_short = close[1] < d_lo[1] or setup_strict_short
+bool is_doji = math.abs(close - open) < (atr_val * 0.1)
 
 // ==========================================
 // --- 4. PREIS-BERECHNUNG ---
@@ -167,33 +168,33 @@ if array.size(lower_tf_vol_arr) > 0
     current_bar_lower_vol := array.sum(lower_tf_vol_arr)
 
 float rld_pct = avg_anchor_vol > 0 ? (current_bar_lower_vol / avg_anchor_vol) * 100 : 0
-bool rld_valid = rld_pct < rld_limit // Dient nur noch der Info, nicht mehr als Signal-Blocker
+bool rld_valid = rld_pct < 20.0 
 bool vacuum_ok = tp_density <= max_tp_density
 string vacuum_qual = vacuum_ok ? ("High (TP " + str.tostring(tp_density, "#.#") + "%)") : ("Low (TP " + str.tostring(tp_density, "#.#") + "%)")
 
 // ==========================================
 // --- 6. SIGNAL-IDENTIFIKATION ---
 // ==========================================
-bool is_doji = math.abs(close - open) < (atr_val * 0.1)
+// LAUERN (Radar an, Scharf 1/2)
+bool is_lauern_long   = weinstein_stage == 2 and close[1] > d_up[1] and not firewall_l
+bool is_lauern_short  = weinstein_stage == 4 and close[1] < d_lo[1] and not firewall_s
 
-// Long-Signal
-bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_lo
-bool is_sniper_long  = w_trend == 1  and setup_strict_long  and long_trigger
+// FEUER FREI (Trigger Raw)
+bool long_trigger = close > sp_price
+bool short_trigger = close < sp_price
+bool raw_feuer_long  = is_lauern_long and setup_strict_long and long_trigger
+bool raw_feuer_short = is_lauern_short and setup_strict_short and short_trigger
 
-// Short-Signal
-bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
-bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger
+// VALIDATED FEUER
+bool feuer_vol_l = stop_density >= min_stop_density and tp_density <= max_tp_density
+bool feuer_vol_s = stop_density >= min_stop_density and tp_density <= max_tp_density
+bool is_sniper_long  = raw_feuer_long and feuer_vol_l
+bool is_sniper_short = raw_feuer_short and feuer_vol_s
 
-// Golden Setup 
-bool rld_approved_tp = vacuum_ok // RLD-Check entkoppelt!
-bool vol_condition  = stop_density >= min_stop_density and rld_approved_tp
-
-// Firewall blockt je nach Regime
-bool is_golden_long  = is_sniper_long  and vol_condition and not firewall_l
-bool is_golden_short = is_sniper_short and vol_condition and not firewall_s
-
-bool is_lauern_long   = w_trend == 1  and is_in_radar_long  and d_wpr >= 70 and not is_sniper_long and not firewall_l
-bool is_lauern_short  = w_trend == -1 and is_in_radar_short and d_wpr <= 30 and not is_sniper_short and not firewall_s
+// GOLDEN
+bool golden_vol = stop_density >= golden_stop_density and tp_density <= golden_tp_density
+bool is_golden_long  = raw_feuer_long and golden_vol
+bool is_golden_short = raw_feuer_short and golden_vol
 
 // ==========================================
 // --- 7. SEKTOR & RELATIVE STÄRKE ---
@@ -261,12 +262,12 @@ color color_himmelblau = color.rgb(0, 191, 255)
 color color_hellrot = color.rgb(240, 128, 128)
 color color_gold = color.rgb(13, 255, 0)
 
-bool is_any_action = is_sniper_long or is_sniper_short or is_golden_long or is_golden_short
-color action_color = (is_sniper_long or is_golden_long) ? color.blue : color.red
-
 // Trend UI Strings
 string wt_txt = w_trend == 1 ? "BULLISCH ⬆️ (Sticky)" : w_trend == -1 ? "BÄRISCH ⬇️ (Sticky)" : "NEUTRAL ↔️"
 color  wt_bg  = w_trend == 1 ? color.blue : w_trend == -1 ? color.red : color.rgb(30, 30, 30)
+
+bool is_in_radar_long = close[1] > d_up[1] or setup_strict_long
+bool is_in_radar_short = close[1] < d_lo[1] or setup_strict_short
 
 string dt_txt = setup_strict_long ? "LONG (Scharf)" : setup_strict_short ? "SHORT (Scharf)" : is_in_radar_long ? "LONG (Radar)" : is_in_radar_short ? "SHORT (Radar)" : "NEUTRAL"
 color  dt_bg  = setup_strict_long ? color.blue : setup_strict_short ? color.red : (is_in_radar_long or is_in_radar_short) ? color.yellow : color.rgb(30, 30, 30)
@@ -281,8 +282,11 @@ else if w_trend == -1
     c_txt := (close > open and not is_doji) ? "OK ✅" : "WAIT ⏳"
     c_bg  := (close > open and not is_doji) ? color.red : color.rgb(30, 30, 30)
 
-if is_any_action
-    ws_bg := action_color, c_bg := action_color, wt_bg := action_color, dt_bg := action_color
+// Highlight overrides
+if raw_feuer_long or raw_feuer_short or is_golden_long or is_golden_short
+    c_bg := (raw_feuer_long or is_golden_long) ? color.blue : color.red
+    wt_bg := c_bg
+    dt_bg := c_bg
 
 // ==========================================
 // --- 9. COCKPIT UI ---
@@ -291,42 +295,8 @@ var table cp = table.new(position.top_right, 2, 24, border_width=1, border_color
 f_p(val) => na(val) ? "-" : str.tostring(val, "#.##")
 
 if barstate.islast
-    string tac_txt = "STAY"
-    color tac_bg = color.rgb(20, 20, 20)
-    
-    bool is_omega = vix_c > 35.0
-    bool is_delta = vix_c > 25.0 and vix_c <= 35.0
-
-    if is_omega
-        tac_txt := "!!! FIREWALL LOCK !!!"
-        tac_bg  := color.red
-    else if is_delta and (is_golden_long or is_sniper_long)
-        tac_txt := "LAUERN LONG (VIX HIGH)"
-        tac_bg  := color.yellow
-    else if is_delta and (is_golden_short or is_sniper_short)
-        tac_txt := "!!! FEUER FREI SHORT !!!"
-        tac_bg  := color.red
-    else if is_golden_long
-        tac_txt := "!! GOLDEN LONG !!"
-        tac_bg  := color_gold
-    else if is_golden_short
-        tac_txt := "!! GOLDEN SHORT !!"
-        tac_bg  := color_gold
-    else if is_sniper_long
-        tac_txt := "! FEUER FREI LONG !"
-        tac_bg  := color.blue
-    else if is_sniper_short
-        tac_txt := "! FEUER FREI SHORT !"
-        tac_bg  := color.red
-    else if is_lauern_long
-        tac_txt := "LAUERN LONG"
-        tac_bg  := color.yellow
-    else if is_lauern_short
-        tac_txt := "LAUERN SHORT"
-        tac_bg  := color.yellow
-    
     table.cell(cp, 0, 0, " STATUS ", bgcolor=color.black, text_color=color.white, text_size=size.normal)
-    table.cell(cp, 1, 0, tac_txt, bgcolor=tac_bg, text_color=(tac_bg == color.yellow or tac_bg == color_gold) ? color.black : color.white, text_size=size.normal)
+    table.cell(cp, 1, 0, header_txt, bgcolor=header_bg, text_color=(header_bg == color.yellow or header_bg == color.lime) ? color.black : color.white, text_size=size.normal)
 
     table.cell(cp, 0, 1, "--- MARKT-KONTEXT ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 1, 1, 1)

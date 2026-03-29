@@ -19,12 +19,10 @@ ema_exit         = input.int(21, "Trailing Stop EMA", group=group_strat)
 group_vol_filter = "Volumen Filter (v20.5)"
 vol_timeframe    = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
 backtest_flex_mode = input.bool(true, "Backtest-Modus (Lockerere Filter)", group=group_vol_filter)
-min_stop_density = input.float(3.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
-max_tp_density   = input.float(8.0, "Max. TP-Widerstand (%)", group=group_vol_filter)
-rld_limit        = input.float(20.0, "RLD Vakuum Limit (%)", group=group_vol_filter) // Dient nur noch der Info, nicht mehr als Signal-Blocker
-
-opt_min_stop = backtest_flex_mode ? 1.5  : min_stop_density
-opt_max_tp   = backtest_flex_mode ? 12.0 : max_tp_density
+min_stop_density = input.float(1.5, "Min. Stop-Versicherung (%) (FEUER)", group=group_vol_filter)
+max_tp_density   = input.float(15.0, "Max. TP-Widerstand (%) (FEUER)", group=group_vol_filter)
+golden_stop_density = input.float(3.0, "Min. Stop-Versicherung (%) (GOLDEN)", group=group_vol_filter)
+golden_tp_density   = input.float(8.0, "Max. TP-Widerstand (%) (GOLDEN)", group=group_vol_filter)
 
 // ==========================================
 // --- ATR & Atmendes Risiko-Regime ---
@@ -100,7 +98,7 @@ d_wpr = math.abs(ta.wpr(wpr_len))
 bool is_doji = math.abs(close - open) < (atr_val * 0.1)
 float ema21 = ta.ema(close, ema_exit)
 
-float atr_stop_dist = atr_val * 1.5
+float atr_stop_dist = atr_val * 1.0 // v20.6: ATR Stop auf 1.0 reduziert
 
 float sp_long  = high
 float sl_long  = low - atr_stop_dist
@@ -148,9 +146,11 @@ float current_bar_lower_vol = array.size(lower_tf_vol_arr) > 0 ? array.sum(lower
 float rld_pct_l = avg_anchor_vol_l > 0 ? (current_bar_lower_vol / avg_anchor_vol_l) * 100 : 0
 float rld_pct_s = avg_anchor_vol_s > 0 ? (current_bar_lower_vol / avg_anchor_vol_s) * 100 : 0
 
-// Vakuum-Condition basiert nun auf reiner TP-Weitsicht, RLD bremst bei Breakout Volumen nicht mehr!
-bool vol_cond_long  = stop_density_l >= opt_min_stop and tp_density_l <= opt_max_tp
-bool vol_cond_short = stop_density_s >= opt_min_stop and tp_density_s <= opt_max_tp
+// Vakuum-Condition basiert nun auf reiner TP-Weitsicht, RLD entkoppelt
+bool vol_feuer_l  = stop_density_l >= min_stop_density and tp_density_l <= max_tp_density
+bool vol_feuer_s  = stop_density_s >= min_stop_density and tp_density_s <= max_tp_density
+bool vol_golden_l = stop_density_l >= golden_stop_density and tp_density_l <= golden_tp_density
+bool vol_golden_s = stop_density_s >= golden_stop_density and tp_density_s <= golden_tp_density
 
 bool long_trigger  = d_wpr >= 80 and close < open and not is_doji and close > d_lo
 bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
@@ -184,14 +184,16 @@ var float p_golden = 0.0
 
 var int total_missed_omega = 0
 
-// Definition der Audit-Level
-bool base_lauern_l = weinstein_stage == 2 and w_trend == 1 and setup_strict_long and barstate.isconfirmed
-bool base_feuer_l  = base_lauern_l and long_trigger
-bool base_golden_l = base_feuer_l and vol_cond_long
+// Definition der Audit-Level (v20.6 Sensitivity)
+bool base_lauern_l = weinstein_stage == 2 and close[1] > d_up[1] and barstate.isconfirmed // Sofort Radar bei ersten Band-Bruch!
+bool raw_feuer_l   = base_lauern_l and setup_strict_long and long_trigger // Scharf 2/2 + Kerze
+bool base_feuer_l  = raw_feuer_l and vol_feuer_l // Alarm feuert schon bei raw, Audit trackt Feuer wenn >1.5%
+bool base_golden_l = raw_feuer_l and vol_golden_l // Golden braucht >3.0%
 
-bool base_lauern_s = weinstein_stage == 4 and w_trend == -1 and setup_strict_short and barstate.isconfirmed
-bool base_feuer_s  = base_lauern_s and short_trigger
-bool base_golden_s = base_feuer_s and vol_cond_short
+bool base_lauern_s = weinstein_stage == 4 and close[1] < d_lo[1] and barstate.isconfirmed
+bool raw_feuer_s   = base_lauern_s and setup_strict_short and short_trigger
+bool base_feuer_s  = raw_feuer_s and vol_feuer_s
+bool base_golden_s = raw_feuer_s and vol_golden_s
 
 // Evaluierung offener virtueller Trades
 if array.size(virtual_trades) > 0
@@ -329,6 +331,11 @@ if barstate.islast
     table.cell(audit_cockpit, 0, 0, "AKJ v20.5 SNR-State-Audit", bgcolor=color.black, text_color=color.white, text_size=size.large)
     table.merge_cells(audit_cockpit, 0, 0, 3, 0)
     
+    // Star-Ticker Label Logic
+    string star_l = wr_lauern >= 50 ? " ⭐" : ""
+    string star_f = wr_feuer >= 50 ? " ⭐" : ""
+    string star_g = wr_golden >= 50 ? " ⭐" : ""
+
     // Header
     table.cell(audit_cockpit, 0, 1, "Status-Typ", bgcolor=color.rgb(30,30,30), text_color=color.gray)
     table.cell(audit_cockpit, 1, 1, "Signal-Events", bgcolor=color.rgb(30,30,30), text_color=color.gray)
@@ -336,19 +343,19 @@ if barstate.islast
     table.cell(audit_cockpit, 3, 1, "Ø Profit (R) pro Signal", bgcolor=color.rgb(30,30,30), text_color=color.gray)
 
     // Lauern
-    table.cell(audit_cockpit, 0, 2, "LAUERN (Radar)", bgcolor=color.rgb(20,20,20), text_color=color.yellow)
+    table.cell(audit_cockpit, 0, 2, "LAUERN (Radar)" + star_l, bgcolor=color.rgb(20,20,20), text_color=color.yellow)
     table.cell(audit_cockpit, 1, 2, str.tostring(c_lauern), bgcolor=color.rgb(20,20,20), text_color=color.silver)
     table.cell(audit_cockpit, 2, 2, str.tostring(wr_lauern, "#.#") + "%", bgcolor=wr_lauern >= 50 ? color.rgb(10,50,10) : color.rgb(40,10,10), text_color=color.white)
     table.cell(audit_cockpit, 3, 2, str.tostring(r_lauern_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)
 
     // Feuer Frei
-    table.cell(audit_cockpit, 0, 3, "FEUER FREI", bgcolor=color.rgb(20,20,20), text_color=color.blue)
+    table.cell(audit_cockpit, 0, 3, "FEUER FREI" + star_f, bgcolor=color.rgb(20,20,20), text_color=color.blue)
     table.cell(audit_cockpit, 1, 3, str.tostring(c_feuer), bgcolor=color.rgb(20,20,20), text_color=color.silver)
     table.cell(audit_cockpit, 2, 3, str.tostring(wr_feuer, "#.#") + "%", bgcolor=wr_feuer >= 50 ? color.rgb(10,50,10) : color.rgb(40,10,10), text_color=color.white)
     table.cell(audit_cockpit, 3, 3, str.tostring(r_feuer_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)
 
     // Golden Setup
-    table.cell(audit_cockpit, 0, 4, "GOLDEN SETUP", bgcolor=color.rgb(20,20,20), text_color=color.lime)
+    table.cell(audit_cockpit, 0, 4, "GOLDEN SETUP" + star_g, bgcolor=color.rgb(20,20,20), text_color=color.lime)
     table.cell(audit_cockpit, 1, 4, str.tostring(c_golden), bgcolor=color.rgb(20,20,20), text_color=color.white)
     table.cell(audit_cockpit, 2, 4, str.tostring(wr_golden, "#.#") + "%", bgcolor=wr_golden >= 50 ? color.rgb(10,60,10) : color.rgb(60,10,10), text_color=color.white)
     table.cell(audit_cockpit, 3, 4, str.tostring(r_golden_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)

@@ -216,22 +216,22 @@
         </div>
 
         <div class="glass-card">
-            <h3>IV. Backtest-Anleitung (IBKR Abgleich)</h3>
-            <p>Es liegt ein separates <code>akj_sniper_backtest_v20_5.pine</code> Script bei. Dieses simuliert ein exaktes 50.000€ Depot, zieht 2.00€ Kommission ab und rechnet 1 Tick Slippage pro Trade.</p>
+            <h3>IV. Das Kaskaden-Alarmsystem (v20.6 Sensitivity)</h3>
+            <p>Das Alarmsystem wurde komplett überarbeitet und als 3-stufiger Funnel aufgebaut. Zu restriktive Volume-Filter am Anfang verschlucken oft die besten Trades – deshalb atmet das System jetzt. Das System bindet sich zudem adaptiv immer an den aktuellen Risk-Mode (z. B. "DELTA Mode - 🎯 FEUER FREI [SHORT]").</p>
             <ul>
-                <li>Lade das Script im Pine Editor und speichere es im Chart.</li>
-                <li>Nutze den Tab <strong>"Strategietester"</strong> unten in TradingView, um den "Simulated Net Profit" auf Aktien zu prüfen.</li>
-                <li>Wenn du auf <strong>Tagescharts</strong> deiner realen IBKR-Trades gehst (LHA, TEAM, CSCO, PYPL), zeigt das System dir unten rechts tabellarisch eine <em>"IBKR Reality Check Note"</em> an, in der Abweichungen deines Handelns vom Code transparent aufgelistet werden.</li>
+                <li><strong>📡 LAUERN (Radar):</strong> Die Vorbereitungs-Stufe. Feuert sofort, wenn die Weinstein Stage aktiv ist und die allererste Kerze das Band durchbricht (Scharf 1/2). Ziel: Du verpasst keine Vorbereitung mehr. Das Setup taucht sofort gelb im Cockpit auf.</li>
+                <li><strong>🎯 FEUER FREI (Der Trigger):</strong> Feuert, sobald die zweite Kerze das Band bricht (Scharf 2/2) und die Kerzenregel erfüllt ist. <strong>WICHTIG:</strong> Dieser Alarm kommt unabhängig von der Qualität der Volumen-Mauer! Wir tolerieren hier bewusst Rauschen (ATR auf 1.0 gesenkt, Stop-Density Minimum nur 1.5%), um garantiert jeden technischen Trigger-Einstieg zu erwischen.</li>
+                <li><strong>🌟 GOLDEN SETUP (Premium):</strong> Der absolute High-Grade Trade. Nur Setups, die neben dem manuellen Trigger auch noch eine exzellente Volumen-Struktur (>3% Stop-Mauer, <8% Vakuum-Widerstand) ins Orderbuch legen, erreichen diesen Status.</li>
             </ul>
         </div>
 
         <div class="glass-card">
-            <h3>V. Die statistische Kante (Edge Audit)</h3>
-            <p>Die Backtest-Engine wurde auf ein umfassendes <strong>State-Audit-System</strong> umgestellt. Auf dem Chart erscheint nun direkt das Cockpit. Dieses trackt historisch den gesamten Ticker (Signale und Phasen).</p>
+            <h3>V. Die statistische Kante (Edge Audit & Ticker-Stars)</h3>
+            <p>Die Backtest-Engine trackt historisch den gesamten Ticker über das Kaskaden-Radar. Sobald die 1:1 TP1 Winrate für ein Setup über 50% liegt, zeichnet das System die Setup-Stufe mit dem Sternchen-Label "⭐ STAR-TICKER" aus!</p>
             <ul>
-                <li><strong>LAUERN:</strong> Wie oft das Asset in Position lief (Phase + Trend + Hysterese).</li>
-                <li><strong>FEUER FREI:</strong> Wie oft eine Scharf-Kerze den Trigger in Lauerposition zog.</li>
-                <li><strong>GOLDEN:</strong> Wie oft zudem das Volumen-Setup (TP-Vakuum & SL-Mauer) stimmte.</li>
+                <li><strong>LAUERN:</strong> Wie oft das Asset in Position lief (Stage + Scharf 1).</li>
+                <li><strong>FEUER FREI:</strong> Wie oft der reine Trigger bei Mindestvolumen (>1.5%) zuschlug.</li>
+                <li><strong>GOLDEN:</strong> Wie oft zudem das exzellente Momentum-Volumen (Premium-Mauer) stimmte.</li>
             </ul>
             <div class="alert-box">
                 <div class="alert-icon">📈</div>

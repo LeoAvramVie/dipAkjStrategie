@@ -52,12 +52,15 @@ Neben der asymmetrischen Risk-Logik schlägt unter der Haube ein neues mathemati
 2.  **Vakuum-Definition (Entkopplung):** Das Vakuum basiert nun rein auf der historischen Preis-Volumen-Struktur bis zum Target. Es bewertet, ob der Weg historisch "frei" ist. Zuvor hat der RLD-Check hohes Live-Volumen der Breakout-Kerze fälschlicherweise bestraft – dies ist behoben! RLD dient nun rein als informatives Element.
 3.  **Sticky Trend Hysterese:** Um Rauschen an den Bändern auszufiltern, muss ein Trendausbruch nun 0.2 ATR über/unter das Band hinausschießen.
 
----
-### IV. Das Alarmsystem (Risk-Recycling & Phase-Shift)
-Das Alarmsystem bindet sich nun adaptiv immer an den aktuellen Risk-Mode. Du erhältst Pings wie: "DELTA Mode - 🎯 SNIPER: Risk-Recycling bereit!".
-Risk-Recycling bedeutet in der v20.5 Backtest-Strategie folgendes: **Sobald das feste CRV (Risiko) 1:1 erreicht ist, werden 50% der Position aus dem Markt genommen und der Stop-Loss läuft sofort auf Break-Even nach.**
+### IV. Das Kaskaden-Alarmsystem (v20.6 Sensitivity)
+Das Alarmsystem wurde in v20.6 komplett überarbeitet und als 3-stufiger Funnel aufgebaut. Dies löst das Problem, dass zu restriktive Filter am Anfang die besten Trades komplett verschluckt haben.
+Das System bindet sich nun adaptiv immer an den aktuellen Risk-Mode. Du erhältst detaillierte Pings (z. B. "DELTA Mode - 🎯 FEUER FREI [SHORT]").
 
----
+1. **📡 LAUERN (Radar):** Die Vorbereitungs-Stufe. Feuert sofort, wenn die Weinstein Stage aktiv ist und die allererste Kerze das Band durchbricht (Scharf 1/2). Ziel: Du verpasst keine Vorbereitung mehr. Das Setup taucht gelb im Cockpit auf.
+2. **🎯 FEUER FREI (Der Trigger):** Feuert, sobald die zweite Kerze das Band bricht (Scharf 2/2) und die Kerzenregel (WPR Extreme + Doji Filter) erfüllt ist. **WICHTIG:** Dieser Alarm kommt unabhängig von der Qualität der Volumen-Mauer! Wir tolerieren hier mehr Rauschen (ATR auf 1.0 gesenkt, Stop-Density Minimum nur 1.5%), um garantiert jeden technischen Trigger-Einstieg zu erwischen.
+3. **🌟 GOLDEN SETUP (Premium):** Der absolute High-Grade Trade. Nur Setups, die neben dem Trigger auch noch eine exzellente Volumen-Struktur (>3% Stop-Mauer, <8% Vakuum-Widerstand) ins Orderbuch legen, erreichen diesen Status.
+
+Risk-Recycling: **Sobald das feste CRV (Risiko) 1:1 erreicht ist, werden 50% der Position aus dem Markt genommen und der Stop-Loss läuft sofort auf Break-Even nach.**
 ### V. Backtest-Anleitung (IBKR Abgleich)
 Es liegt ein separates `akj_sniper_backtest_v20_5.pine` Script bei. Dieses simuliert ein exaktes 50.000€ Depot, zieht 2.00€ Kommission ab und rechnet 1 Tick Slippage pro Trade.
 *   Lade das Script im Pine Editor.
