@@ -309,28 +309,28 @@ if barstate.islast
     table.cell(cp, 0, 8, "--- SNIPER METRIKEN ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 8, 1, 8)
 
-    table.cell(cp, 0, 9, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 9, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität (ATR) automatisch an. Basis: 150€.")
     table.cell(cp, 1, 9, str.tostring(dyn_risk, "#.##") + " €", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
 
-    table.cell(cp, 0, 10, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 10, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.")
     table.cell(cp, 1, 10, str.tostring(anchor_bars) + " Bars ago", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
 
-    table.cell(cp, 0, 11, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 11, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).")
     table.cell(cp, 1, 11, vacuum_qual, bgcolor=rld_valid ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10), text_color=color.white)
 
-    // MK-VALIDIERUNG
-    table.cell(cp, 0, 12, "--- MK-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    // SIGNAL-VALIDIERUNG
+    table.cell(cp, 0, 12, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 12, 1, 12)
 
-    table.cell(cp, 0, 13, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 13, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle.")
     table.cell(cp, 1, 13, c_txt, bgcolor=c_bg, text_color=color.white)
 
     color s_v_bg = stop_density >= min_stop_density ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 14, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 14, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer unter deinem Stop. Erfordert >10% Volumen-Konzentration zum Schutz deiner Position.")
     table.cell(cp, 1, 14, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white)
     
     color t_v_bg = rld_approved_tp ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 15, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 15, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis bis zum Ziel. Ein Wert <8% signalisiert freien Lauf bis zum Take-Profit.")
     table.cell(cp, 1, 15, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white)
 
     // ORDER-MATRIX
