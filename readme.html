@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AKJ 2.0 Sniper-Commander - Documentation</title>
+    <title>AKJ 2.0 Sniper-Commander v20.5 - Documentation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,14 +17,13 @@
             --card-bg: rgba(20, 20, 20, 0.6);
             --card-border: rgba(255, 255, 255, 0.08);
             --glass-blur: blur(16px);
-            --gradient-text: linear-gradient(135deg, #fff 0%, #888 100%);
         }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
             background-image: radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.03), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.03), transparent 25%);
+                              radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.03), transparent 25%);
             color: var(--text-main);
             margin: 0;
             padding: 0;
@@ -33,364 +31,164 @@
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 4rem;
-            position: relative;
-        }
-
+        .container { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
+        header { text-align: center; margin-bottom: 4rem; }
+        
         h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin: 0;
+            font-size: 3.5rem; font-weight: 700; margin: 0;
             background: linear-gradient(to right, #ffffff, #a0a0a0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             letter-spacing: -0.05em;
         }
-
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: var(--accent-glow);
-            margin-top: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--card-border), transparent);
-            margin: 3rem 0;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-top: 3rem;
-            margin-bottom: 1.5rem;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .section-title::before {
-            content: '';
-            display: block;
-            width: 8px;
-            height: 24px;
-            background: var(--accent-glow);
-            border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-        }
-
-        h3 {
-            font-size: 1.4rem;
-            color: #fff;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        strong {
-            color: #fff;
-            font-weight: 600;
-        }
+        
+        h2 { font-size: 1.5rem; font-weight: 400; color: var(--accent-glow); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--card-border), transparent); margin: 3rem 0; }
+        
+        .section-title { font-size: 1.8rem; font-weight: 600; margin-top: 3rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 1rem; }
+        .section-title::before { content: ''; display: block; width: 8px; height: 24px; background: var(--accent-glow); border-radius: 4px; box-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+        
+        h3 { font-size: 1.4rem; color: #fff; margin-top: 2rem; margin-bottom: 1rem; }
+        p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem; }
+        strong { color: #fff; font-weight: 600; }
 
         .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--card-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.15); }
 
-        .glass-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 2rem 0; border-radius: 12px; overflow: hidden; background: rgba(10, 10, 10, 0.4); border: 1px solid var(--card-border); }
+        th, td { padding: 1.2rem; text-align: left; border-bottom: 1px solid var(--card-border); }
+        th { background: rgba(255, 255, 255, 0.03); font-weight: 600; color: #fff; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.05em; }
+        tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
+        td:first-child { font-weight: 700; color: var(--accent-glow); }
 
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 2rem 0;
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(10, 10, 10, 0.4);
-            border: 1px solid var(--card-border);
-        }
+        code { background: rgba(255, 255, 255, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; color: #fff; }
 
-        th,
-        td {
-            padding: 1.2rem;
-            text-align: left;
-            border-bottom: 1px solid var(--card-border);
-        }
+        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-right: 0.5rem; text-transform: uppercase; }
+        .badge.green { background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3); }
+        .badge.blue { background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.3); }
+        .badge.yellow { background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.3); }
+        .badge.red { background: rgba(255, 0, 85, 0.1); color: #ff0055; border: 1px solid rgba(255, 0, 85, 0.3); }
+        .badge.gray { background: rgba(255, 255, 255, 0.1); color: #ccc; border: 1px solid rgba(255, 255, 255, 0.3); }
 
-        th {
-            background: rgba(255, 255, 255, 0.03);
-            font-weight: 600;
-            color: #fff;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.05em;
-        }
+        ul, ol { padding-left: 0; margin-bottom: 1.5rem; list-style: none; }
+        ul li { position: relative; padding-left: 1.5rem; margin-bottom: 0.8rem; color: var(--text-muted); }
+        ul li::before { content: '•'; position: absolute; left: 0; color: var(--accent-glow); font-weight: bold; }
+        ol { list-style: decimal inside; color: var(--text-muted); }
+        ol li { margin-bottom: 0.8rem; }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr {
-            transition: background 0.2s;
-        }
-
-        tbody tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        td:first-child {
-            font-weight: 700;
-            color: var(--accent-glow);
-        }
-
-        code {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.9em;
-            color: #fff;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .badge.green {
-            background: rgba(0, 255, 136, 0.1);
-            color: #00ff88;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-        }
-
-        .badge.blue {
-            background: rgba(0, 240, 255, 0.1);
-            color: #00f0ff;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-        }
-
-        .badge.yellow {
-            background: rgba(255, 204, 0, 0.1);
-            color: #ffcc00;
-            border: 1px solid rgba(255, 204, 0, 0.3);
-        }
-
-        .badge.red {
-            background: rgba(255, 0, 85, 0.1);
-            color: #ff0055;
-            border: 1px solid rgba(255, 0, 85, 0.3);
-        }
-
-        ul,
-        ol {
-            padding-left: 0;
-            margin-bottom: 1.5rem;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        ul li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--accent-glow);
-            font-weight: bold;
-        }
-
-        ol li {
-            margin-bottom: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .quote {
-            border-left: 4px solid var(--accent-secondary);
-            padding-left: 1.5rem;
-            font-style: italic;
-            color: #fff;
-            margin: 2rem 0;
-            background: linear-gradient(90deg, rgba(255, 0, 85, 0.05), transparent);
-            padding: 1.5rem;
-            border-radius: 0 8px 8px 0;
-        }
-
-        a {
-            color: var(--accent-glow);
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
+        .quote { border-left: 4px solid var(--accent-secondary); padding-left: 1.5rem; font-style: italic; color: #fff; margin: 2rem 0; background: linear-gradient(90deg, rgba(255,0,85,0.05), transparent); padding: 1.5rem; border-radius: 0 8px 8px 0; }
+        
+        .sub-header { background: rgba(0, 240, 255, 0.05); color: var(--accent-glow) !important; font-size: 0.8em; text-transform: uppercase; letter-spacing: 2px; text-align: center !important; }
     </style>
 </head>
-
 <body>
     <div class="container">
         <header>
             <h1>AKJ 2.0 Sniper-Commander</h1>
-            <h2>Das taktische Lagezentrum (v20.4 Elite)</h2>
+            <h2>Das taktische Lagezentrum (v20.5 Elite)</h2>
         </header>
 
         <div class="divider"></div>
 
         <h2 class="section-title">TEIL 1: FACHLICHES DOSSIER (System-Handbuch)</h2>
-        <p>Hier ist die detaillierte, fachliche und technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.4.</p>
+        <p>Hier ist die detaillierte, fachliche und technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.5. Das System wurde in v20.5 um ein dynamisches Risikomanagement, Anchored Volume Profile (AVP) und strengere Doji-/Hysterese-Filter erweitert.</p>
 
         <div class="glass-card">
-            <h3>I. Das Cockpit (Dashboard) – Zeile für Zeile</h3>
-            <p>Das Cockpit ist deine einzige Quelle der Wahrheit. Es verarbeitet hunderte Datenpunkte in Millisekunden
-                und spuckt nur das aus, was für die Exekution relevant ist.</p>
-
+            <h3>I. Das Cockpit (Dashboard) – Die neue v20.5 Architektur</h3>
+            <p>Das HUD wurde logisch gruppiert, um dir während des Tradings den perfekten Überblick über Kontext, Metriken und Exekution zu geben.</p>
+            
             <div style="overflow-x: auto;">
                 <table>
                     <thead>
                         <tr>
-                            <th>Zeile</th>
-                            <th>Bezeichnung</th>
-                            <th>Mögliche Werte</th>
-                            <th>Technische Logik & Bedeutung</th>
+                            <th>Kategorie</th>
+                            <th>Metrik / Wert</th>
+                            <th>Erklärung & v20.5 Update</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- STATUS -->
+                        <tr><td colspan="3" class="sub-header">1. STATUS-ZEILE</td></tr>
                         <tr>
-                            <td>0</td>
-                            <td><strong>Strategie</strong></td>
-                            <td><span class="badge green">!!! GOLDEN SETUP !!!</span><br><span class="badge blue">!!!
-                                    FEUER FREI !!!</span><br><span class="badge yellow">LAUERN</span><br>Keine (Schwarz)
-                            </td>
-                            <td><strong>Elite-Alarm:</strong> Sniper + Stopversicherung > 10% + TP Widerstand < 8% (oder
-                                    Flex-Ratio).<br><strong>Sniper:</strong> Alle tech. Regeln (Trend, Setup, Williams,
-                                    Kerze) erfüllt.<br><strong>Vor-Alarm:</strong> Trend da, Williams in Zone, aber
-                                    Kerze fehlt.<br><strong>Warte-Status:</strong> Aktie technisch unbrauchbar.</td>
+                            <td><strong>Status</strong></td>
+                            <td><span class="badge green">!! GOLDEN !!</span> <span class="badge blue">! FEUER FREI !</span> <span class="badge yellow">LAUERN</span> <span class="badge gray">STAY</span></td>
+                            <td>Gibt den finalen Exekutions-Status vor, inkl. Richtung (LONG/SHORT).</td>
                         </tr>
+                        
+                        <!-- MARKT-KONTEXT -->
+                        <tr><td colspan="3" class="sub-header">2. MARKT-KONTEXT</td></tr>
                         <tr>
-                            <td>1</td>
                             <td><strong>🌍 Sektor</strong></td>
-                            <td>Name (ETF-Ticker)</td>
-                            <td>Dynamisches Mapping via <code>syminfo.sector</code>. ETF (z.B. XLE) Zuordnung. Blau =
-                                ETF > SMA 10, Rot = ETF < SMA 10.</td>
+                            <td>Sektor ETF (z.B. SMH)</td>
+                            <td>Dynamisches Mapping via <code>syminfo.sector</code>.</td>
                         </tr>
                         <tr>
-                            <td>2</td>
                             <td><strong>💪 Rel. Stärke</strong></td>
                             <td>STARK, MITTEL, SCHWACH</td>
-                            <td>Vergleicht 20-Tage-Performance der Aktie mit Sektor-ETF. Blau = Outperformance.</td>
+                            <td>Vergleicht die 20-Tage-Performance der Aktie mit dem Sektor-ETF.</td>
                         </tr>
                         <tr>
-                            <td>3</td>
                             <td><strong>📈 Weinstein Stage</strong></td>
-                            <td>STAGE 2 OK Long ✅<br>STAGE 4 OK Short ✅<br>SEITWÄRTS</td>
-                            <td>Regimewechsel: Wochenkurs > SMA 30 + SMA steigend. Seitwärts = Todeszone.</td>
+                            <td>STAGE 2 Long / STAGE 4 Short / SEITWÄRTS</td>
+                            <td>Regimewechsel via Wochen-SMA 30. Verankert das Volumenprofil (AVP).</td>
+                        </tr>
+
+                        <!-- SNIPER-METRIKEN -->
+                        <tr><td colspan="3" class="sub-header">3. SNIPER-METRIKEN (Die v20.5 Engine)</td></tr>
+                        <tr>
+                            <td><strong>📊 Risk-O-Meter (1R)</strong></td>
+                            <td>Zahlenwert in €</td>
+                            <td><strong>NEU v20.5:</strong> Dynamisches 1R basierend auf dem VIX. An volatilen Tagen wird das Basis-Risiko von z.B. 150€ automatisch reduziert (VIX/ATR-Ratio).</td>
                         </tr>
                         <tr>
-                            <td>4</td>
-                            <td><strong>Wochentrend</strong></td>
-                            <td>LONG, SHORT, ---</td>
-                            <td>Sticky Trend: 2 Wochenschlüsse außerhalb BB (10/1).</td>
+                            <td><strong>⚓ Anchor-Info</strong></td>
+                            <td>X Bars ago</td>
+                            <td><strong>NEU v20.5:</strong> Zeigt an, vor wie vielen Bars das Anchored Volume Profile (AVP) gestartet wurde (Start beim letzten Weinstein-Stage Wechsel, max 300 Bars).</td>
                         </tr>
                         <tr>
-                            <td>5</td>
-                            <td><strong>Tagstrend</strong></td>
-                            <td>LONG, SHORT, LAUERN, ---</td>
-                            <td>Taktischer Trigger: 2 Tage außerhalb BB (Scharf). 1 Tag (Radar).</td>
+                            <td><strong>📐 Vacuum Quality</strong></td>
+                            <td>High / Low Quality</td>
+                            <td><strong>NEU v20.5:</strong> Relative Liquidity Density (RLD). Ein TP-Widerstand ist nur valide, wenn die Dichte < 20% des Durchschnittsvolumens im Anker-Zeitraum liegt.</td>
                         </tr>
+
+                        <!-- MK-VALIDIERUNG -->
+                        <tr><td colspan="3" class="sub-header">4. MK-VALIDIERUNG</td></tr>
                         <tr>
-                            <td>6</td>
-                            <td><strong>⚡ Williams %R</strong></td>
-                            <td>Absolute Skala</td>
-                            <td>Schnelle 4er-Periode (<code>wpr_len=4</code>) für harte Ausschläge. >80 = Überverkauft
-                                (Panik/Dip).</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
                             <td><strong>🕯️ Kerzenregel</strong></td>
-                            <td>OK ✅, WAIT ⏳</td>
-                            <td>Bestätigungs-Filter (Wir kaufen den Dip!): Close < Open (Rote Kerze) bei Long. Close>
-                                    Open (Grün) bei Short. Dojis verboten!</td>
+                            <td>OK ✅ / WAIT ⏳</td>
+                            <td>Wir kaufen den Dip! <strong>NEU v20.5:</strong> Ein ATR-Doji-Filter (Körper > 10% der ATR) verhindert falsche Signale an Pivot-Zonen.</td>
                         </tr>
                         <tr>
-                            <td>8</td>
-                            <td><strong>Stoppreis (SP)</strong></td>
-                            <td>Zahlenwert</td>
-                            <td>Trigger: 2 Ticks über High / unter Low der Signalkerze.</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td><strong>LimitPreis (LP)</strong></td>
-                            <td>Zahlenwert</td>
-                            <td>Sicherheit: SP +/- Limit-Offset. Maximale Schmerzgrenze für Slippage.</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td><strong>Anzahl</strong></td>
-                            <td>Zahlenwert</td>
-                            <td>Risiko-Kalkulator: Berechnet Stücke für exakt z.B. 150€ (1R) Risiko.</td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td><strong>TP-Teilverkauf</strong></td>
-                            <td>Zahlenwert</td>
-                            <td>Risk-Recycling: Das 1:1 Ziel. 50% Verkauf, Rest auf Break-Even.</td>
-                        </tr>
-                        <tr>
-                            <td>12</td>
-                            <td><strong>Stopp-Loss (SL)</strong></td>
-                            <td>Zahlenwert</td>
-                            <td>Feuerschutz: 2 Ticks unter Low / über High der Signalkerze.</td>
-                        </tr>
-                        <tr>
-                            <td>13</td>
-                            <td><strong>Stopversicherung</strong></td>
+                            <td><strong>🛡️ Stopversicherung</strong></td>
                             <td>Prozentwert (%)</td>
-                            <td>Mauer-Check (4H): Volumen zwischen SP und SL. Ziel: >10%.</td>
+                            <td>Volumen zwischen SP und SL. Ziel: > 10%.</td>
                         </tr>
                         <tr>
-                            <td>14</td>
-                            <td><strong>TP Widerstand</strong></td>
+                            <td><strong>🚧 TP Widerstand</strong></td>
                             <td>Prozentwert (%)</td>
-                            <td>Vakuum-Check (4H): Volumen zwischen SP und TP. Ziel: <8%.< /td>
+                            <td>Volumen zwischen SP und TP. Ziel: < 8% UND bestandener RLD-Check.</td>
+                        </tr>
+
+                        <!-- ORDER-MATRIX -->
+                        <tr><td colspan="3" class="sub-header">5. ORDER-MATRIX</td></tr>
+                        <tr>
+                            <td><strong>🎯 SP | 🤝 LP</strong></td>
+                            <td>Zahlenwerte ($)</td>
+                            <td>Stoppreis (SP) als Trigger und LimitPreis (LP) als absolute Schmerzgrenze für Slippage.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🔢 Stk (Anzahl)</strong></td>
+                            <td>Zahlenwert</td>
+                            <td>Berechnete Stückzahl basierend auf dem neuen dynamischen Risk-O-Meter.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>💸 TP | 🏁 SL</strong></td>
+                            <td>Zahlenwerte ($)</td>
+                            <td>Take Profit (1:1 Ziel, Teilverkauf) und Stop-Loss (Feuerschutz-Level).</td>
                         </tr>
                     </tbody>
                 </table>
@@ -398,52 +196,21 @@
         </div>
 
         <div class="glass-card">
-            <h3>II. Das Alarmsystem – Die 3-Stufen-Rakete</h3>
-            <p>Wir nutzen <code>alert.freq_once_per_bar</code>, um intraday informiert zu werden, ohne TradingView zu
-                überlasten.</p>
-
+            <h3>II. Das Alarmsystem (Risk-Recycling & Phase-Shift)</h3>
             <ul>
-                <li><strong>1. Stufe: 📡 RADAR (Die Mobilmachung)</strong><br>
-                    <strong>Trigger:</strong> Williams %R berührt die Zone >=80 (Long) oder <=20 (Short), während der
-                        Wochentrend passt.<br>
-                        <strong>Zweck:</strong> Dieser Alarm weckt dich auf. Die Aktie fällt in das Beuteschema. Das
-                        Setup ist noch nicht fertig, aber die Vorbereitung (Volumen-Check auf 4H) beginnt jetzt.
-                </li>
-
-                <li><strong>2. Stufe: 🎯 SNIPER (Der Marschbefehl)</strong><br>
-                    <strong>Trigger:</strong> Alle technischen Regeln sind gleichzeitig erfüllt: Wochentrend passt
-                    (Sticky), Tagessetup Scharf, %R ist extrem, Kerzenfarbe bestätigt, KEIN Bollinger-Bruch (MK 4.7/5.6
-                    Inner-Close).<br>
-                    <strong>Zweck:</strong> Signal zur Order-Vorbereitung. TWS öffnen und Stop-Limit-Order bereitlegen.
-                </li>
-
-                <li><strong>3. Stufe: 🏆 GOLDEN SETUP (Die Elite-Exekution)</strong><br>
-                    <strong>Trigger:</strong> Alle Sniper-Bedingungen PLUS: Stopversicherung >= 10% und TP Widerstand <=
-                        8% (oder freigegeben durch Flex-Ratio unterhalb des Brick-Wall-Caps).<br>
-                        <strong>Zweck:</strong> Alarm mit der höchsten statistischen Signifikanz. Hier liegt die Mauer
-                        hinter deinem Stop und das Vakuum vor deinem Ziel. Vorrang vor allen anderen!
-                </li>
+                <li><strong>1. 📡 RADAR:</strong> "AVP Anchor validiert. Lauer-Modus!" (Williams %R erreicht Zone, Anchor läuft).</li>
+                <li><strong>2. 🎯 SNIPER:</strong> "Risk-Recycling bereit! Feuer frei!" (Alle Preis-Action Regeln + ATR-Doji-Filter + Sticky-Hysterese bestanden). TWS öffnen!</li>
+                <li><strong>3. 🏆 GOLDEN SETUP:</strong> "Phase-Shift erkannt!" (Volumenprofil passt, RLD-Vakuum bestätigt). Höchste Validierungsstufe!</li>
             </ul>
         </div>
 
         <div class="glass-card">
-            <h3>III. Technische Besonderheiten für Anti Gravity</h3>
-            <ul>
-                <li><strong>MTF-Volumen-Synchronisation:</strong> Die Volumen-Engine scannt im Hintergrund 400 Bars auf
-                    dem 4H-Timeframe (<code>request.security</code>), liefert die Daten aber verzögerungsfrei in das
-                    1D-Cockpit.</li>
-                <li><strong>Proportionale Volumenberechnung:</strong> Das Script berechnet mathematisch exakt, welcher
-                    prozentuale Anteil des Volumens einer Kerze innerhalb der Preisgrenzen von SP/SL und SP/TP liegt. Es
-                    ist keine Schätzung, es ist Physik.</li>
-                <li><strong>Visualisierung (HUD):</strong> Linien für Einstieg, Stop und Ziel werden dynamisch ab der
-                    aktuellen Kerze gezeichnet für den sofortigen visuellen Abgleich.</li>
-            </ul>
-            <div class="quote">
-                <strong>Jens’ strategische Zusammenfassung:</strong><br>
-                „Dieses System ist darauf getrimmt, den Zufall auszuschalten. Wir bewirtschaften Wahrscheinlichkeiten
-                durch eine Filter-Kaskade: Strategie -> Taktik -> Struktur -> Finanzen. Nur wenn ein Ticker durch alle
-                Filter fällt, bekommt er unser Geld.“
-            </div>
+            <h3>III. v20.5 Core Logik-Upgrades</h3>
+            <ol>
+                <li><strong>Repaint Protection:</strong> Absicherung des Multi-Timeframe (MTF) 4H Volumens auf dem Tageschart via <code>request.security_lower_tf()</code> und <code>barstate.isconfirmed</code>. Kein Vormogeln mehr unfertiger Kerzen!</li>
+                <li><strong>Anchored Volume Profile (AVP):</strong> Das System scannt nicht mehr stumpf 100 Tage zurück, sondern verankert den Beginn der Volumenmessung am Punkt des letzten signifikanten Regimewechsels (Weinstein Stage-Shift).</li>
+                <li><strong>Sticky Trend Hysterese:</strong> Um Rauschen an den Bollinger Bändern auszufiltern, muss ein Trendausbruch nun 0.2 ATR über/unter das Band hinausschießen, um den Setup-Zustand auszulösen.</li>
+            </ol>
         </div>
 
         <div class="divider"></div>
@@ -452,138 +219,36 @@
 
         <div class="glass-card">
             <h3>1. Architektur und Ausführungslogik</h3>
-            <p>Das Skript ist als Overlay-Indikator konzipiert (<code>overlay=true</code>). Es berechnet komplexe
-                diskretionäre Handelssignale durch State-Tracking, Volumendichteprofiler und MTF-Analyse
-                (Multi-Timeframe). Das UI wird via Lazy-Evaluation (<code>if barstate.islast</code>) isoliert am Ende
-                des Scripts gezeichnet, um Performance-Limits der TradingView-Engine zu umgehen.</p>
+            <p>Das Pine Script ist strikt modular aufgebaut. UI ist in Tabellen gekapselt und Alarme reagieren <code>freq_once_per_bar</code> bei echten Bestätigungen. Das neue v20.5 HUD greift tabellengestützt auf diese Engine zu.</p>
         </div>
 
         <div class="glass-card">
-            <h3>2. Variablen & State-Tracking (Die "Sticky" Logik)</h3>
-            <p>Das System nutzt <code>var</code> Deklarationen, um Zustände algorithmisch über mehrere Bars hinweg
-                beizubehalten, bis eine saubere Gegensignatur auftritt.</p>
-
-            <h4>2.1 Trend-Identifikation (Woche & Tag)</h4>
+            <h3>2. Dynamisches Risiko & ATR Hysterese</h3>
             <ul>
-                <li><strong>Wochentrend (<code>w_trend</code>) & Tagestrend (<code>d_trend</code>):</strong><br>
-                    <strong>Werte:</strong> <code>1</code> (Long), <code>-1</code> (Short), <code>0</code>
-                    (Neutral).<br>
-                    <strong>Berechnung:</strong> Abgeleitet von Bollinger Band-Verschiebungen (z.B. Funktion
-                    <code>f_bb_d()</code>). Schließt eine Kerze über dem oberen Band (<code>close > d_up</code>),
-                    springt der Trend-State auf 1. Er bleibt zwingend auf 1, bis der Preis das gegenüberliegende untere
-                    Band berührt (<code>low < d_lo</code>). Das Modul fungiert als asymmetrischer Noise-Filter.
-                </li>
-            </ul>
-
-            <h4>2.2 Oszillator & Trigger-Logik</h4>
-            <ul>
-                <li><strong>Williams %R (<code>d_wpr</code>):</strong> Nutzt eine schnelle Lookback-Periode von
-                    <code>wpr_len = 4</code> für harte, gnadenlose Reaktionen. Die absolute Skala wird genutzt, um
-                    Extremzonen abzugreifen (>=80 für Panik/Dip im Long, <=20 für Short). Die Standardperiode 14 wäre
-                        für dieses Edge-System viel zu träge.</li>
-            </ul>
-
-            <h4>2.3 Die MK-Regeln (Strikte Einstiegs-Prüfung)</h4>
-            <ul>
-                <li><strong>MK 4.7 / 5.6 Bollinger-Bruch (<code>setup_strict_long</code> /
-                        <code>setup_strict_short</code>):</strong><br>
-                    State-Machine Tracking für den Tagestrend. Ist der Preis nach 2 Kerzen immer noch intakt, wird das
-                    Setup für den Radar scharfgestellt (<code>true</code>). Ein Close auf der falschen Seite des Bandes
-                    de-eskaliert das Setup sofort (<code>false</code>). Verhindert den Einstieg in extreme
-                    Überdehnungen, weil das Signal-Buy explizit verlangt, dass die Kerze wieder in das Innere des Bandes
-                    schließt (<code>close > d_lo</code>).</li>
-                <li><strong>Kerzenregel (<code>long_trigger</code> / <code>short_trigger</code>):</strong><br>
-                    Der finale Filter – wir kaufen in die Panik:<br>
-                    <strong>Long-Trigger:</strong> <code>close &lt; open</code> (Rote Kerze, Dip). Dojis
-                    (<code>close == open</code>) sind hart verboten.<br>
-                    <strong>Short-Trigger:</strong> <code>close &gt; open</code> (Grüne Kerze, Relief-Rallye). Dojis
-                    verboten.
-                </li>
+                <li><code>atr_buffer = atr_val * 0.2</code> verhindert Fakeouts an den Bollinger Bändern durch einen Noise-Puffer.</li>
+                <li><code>use_dyn_risk</code> schaltet den VIX-Quotienten ein: <code>risk_per_trade * (20.0 / vix_c)</code>. Das schützt in Panikphasen das Kapital durch Positionsverkleinerung und berechnet <code>shares</code> dynamisch.</li>
             </ul>
         </div>
 
         <div class="glass-card">
-            <h3>3. Signal-Klassen (Die Pyramiden-Logik)</h3>
-            <p>Die booleschen Variablen für Trading-Signale sind streng disjunkt und hierarchisch abgekapselt:</p>
-            <ol style="color: var(--text-muted); padding-left: 1.5rem;">
-                <li><strong>Radar (<code>is_lauern_long</code> / <code>short</code>):</strong> Bestätigung, dass die
-                    Price-Action auf Tagesbasis scharf ist (Trend intakt, Preissetup formiert sich).</li>
-                <li><strong>Sniper (<code>is_sniper_long</code> / <code>short</code>):</strong> Wochentrend intakt +
-                    Tages-Setup scharf + Williams %R im Extrembereich (>= 80) + Kerzenbestätigung (Rote Kerze) +
-                    Inner-Bollinger Close (<code>close > d_lo</code>). Das pure Price-Action-Signal.</li>
-                <li><strong>Golden (<code>is_golden_long</code> / <code>short</code>):</strong> <code>is_sniper</code> +
-                    <code>vol_condition</code> (Quantitative Volumen-Verifizierung).</li>
-            </ol>
-        </div>
-
-        <div class="glass-card">
-            <h3>4. Multi-Timeframe (MTF) Support & Volumenprofiling</h3>
-            <p>Die Kern-Innovation ist die dynamische Volumen-Dichteberechnung im Chart. Das Skript greift via
-                <code>request.security(..., barmerge.lookahead_off)</code> auf höhere Timeframes zurück (Standard:
-                <code>4H</code>), ohne Lookahead-Bias zu generieren.</p>
+            <h3>3. Lower Timeframe Repaint-Schutz (RLD)</h3>
+            <p>Anstatt nur per Standard-Request zu pushen, fragt v20.5 die Lower TF Daten hart ab: <code>request.security_lower_tf(syminfo.tickerid, "240", volume)</code>.</p>
             <ul>
-                <li><strong><code>f_calc_tf_vol()</code>:</strong> Custom-Function, die über die letzten
-                    <code>vol_len</code> (Standard: 60) Bars im <code>vol_timeframe</code> iteriert.<br>
-                    Sammelt das aggregierte Volumen (<code>volume[i]</code>) innerhalb der Preiszone Stop-Loss
-                    <code>[sp_price, sl_price]</code> -> <code>stop_volume</code>.<br>
-                    Sammelt Volumen in der Gewinnzone <code>[sp_price, tp_price]</code> -> <code>tp_volume</code>.<br>
-                    Wandelt die absoluten Werte in prozentuale Relation zum Gesamtvolumen um (<code>stop_density</code>,
-                    <code>tp_density</code>).</li>
-                <li><strong><code>vol_condition</code> (Die Logik-Matrix):</strong><br>
-                    Ein Golden-Setup benötigt grundlegend <code>stop_density >= min_stop_density</code> und
-                    <code>tp_density <= max_tp_density</code>.</li>
-                <li><strong>Die Flex-Ratio & Brick Wall Cap (v20.4):</strong><br>
-                    Das System erlaubt elastische Setups: <code>density_ratio = stop_density / tp_density</code>. Ist
-                    Ratio > <code>min_vol_ratio</code> (1.5x), wird das Setup auch bei leichten Volumenschwächen
-                    genehmigt.<br>
-                    <strong>Hard Limit Exception:</strong> Ein harter Cap
-                    (<code>brick_wall_cap = max_tp_density * 1.5</code>) blockiert das Setup jedoch kompromisslos, falls
-                    der absolute TP-Widerstand überdimensioniert ist (z.B. > 15%).
-                </li>
+                <li>Die Relative Liquidity Density (RLD) rechnet: <code>(current_bar_lower_vol / avg_anchor_vol) * 100</code>.</li>
+                <li>Ein Volumen-Vakuum bis zum TP (Take Profit) wird nur freigegeben (<code>rld_valid = true</code>), wenn der Pct-Wert unter <code>rld_limit</code> (20.0%) liegt. Das bedeutet echte Beschleunigungs-Leere.</li>
             </ul>
         </div>
 
         <div class="glass-card">
-            <h3>5. Diskretionäre Variablen (HUD Analyse)</h3>
-            <p>Das Skript berechnet parallel institutionelle Kontext-Daten, die die Bool-Signale und Alarme logisch
-                <strong>niemals</strong> beeinflussen:</p>
-            <ul>
-                <li><strong>Dynamisches Sektor-Mapping (<code>f_get_auto_sector()</code>):</strong> Nutzt native
-                    Variablen <code>syminfo.sector</code> & <code>syminfo.industry</code>. Mappt diese über Switch-Cases
-                    in US-Benchmarkt-Ticker um (z.B. Sektor "Semiconductors" mapped auf <code>SMH</code>).</li>
-                <li><strong>Relative Stärke (<code>perf_diff</code>):</strong> Holt von dem identifizierten Ticker via
-                    <code>request.security</code> die Schlusskurse der letzten 20 Bars und berechnet die
-                    Performance-Differenz zur aktuellen Basis-Aktie. Zuweisung: <code>> 2.0</code> = STARK,
-                    <code>&lt; -2.0</code> = SCHWACH.</li>
-                <li><strong>Stan Weinstein Stage:</strong> Analysiert über MTF den wöchentlichen SMA 30.<br>
-                    <code>Stage 2</code>: Weekly Close > SMA 30 <strong>und</strong> (SMA 30 steigt).<br>
-                    <code>Stage 4</code>: Weekly Close &lt; SMA 30 <strong>und</strong> (SMA 30 fällt).
-                </li>
-            </ul>
+            <h3>4. Anchored Iterator</h3>
+            <p>Die eigene Volumen-Funktion <code>f_calc_tf_vol_anchored</code> bekommt einen dynamischen Lookback in <code>anchor_bars</code> übergeben. Dadurch wird die Density-Ratio nicht durch irrelevante alte Historie der Aktie vor dem letzten Trendbruch verzerrt, sondern fängt genau dort an, wo das institutionelle Geld den Wechsel eingeleitet hat.</p>
         </div>
 
-        <div class="glass-card">
-            <h3>6. Order-Preiskalkulation</h3>
-            <p>Zentrale Variablen für Limit-Preise für die UI-Ausgabe (und optionale spätere API-Anbindung):</p>
-            <ul>
-                <li><code>sp_price</code> (Trigger / Stop-Preis für Entry): <code>high + puffer</code> (bei Long).</li>
-                <li><code>sl_price</code> (Initial Stop-Loss): <code>low - puffer</code> (bei Long).</li>
-                <li><code>tp_price</code> (Teilverkauf / T1): Ein berechneter Zielpreis
-                    (<code>(sp_price - sl_price) * 1.0</code> -> 1R) für Teilverkäufe.</li>
-                <li><code>shares</code>: Kalkulierte Stückzahl basierend auf
-                    <code>risk_per_trade / (sp_price - sl_price)</code>.</li>
-            </ul>
-        </div>
-
-        <div class="glass-card">
-            <h3>7. Alarmsystem (<code>alert</code> calls)</h3>
-            <p>Die Skript-Ausführung <code>alert()</code> triggert bei Erfüllung der logischen Baumstruktur mit dem
-                Parameter <code>alert.freq_once_per_bar</code>. Dadurch reagiert der Indikator live auf
-                Intrabar-Schwankungen (z.B. %R springt über Schwelle), um Diskretions-Trader frühzeitig "auf den Ping"
-                zu holen, noch bevor die Kerze endgültig schließt.</p>
+        <div class="quote">
+            <strong>Der AKJ 2.0 v20.5 Leitgedanke:</strong><br>
+            "Der Sniper-Commander v20.5 schließt die mathematische Brücke zwischen Volatilität und Volumen. Er handelt nicht nur, wenn das Setup 'da ist', sondern wenn die Volumen-Textur im Markt den Trade auch effektiv zulässt."
         </div>
 
     </div>
 </body>
-
 </html>
