@@ -393,7 +393,7 @@ if barstate.islast
     table.cell(cp, 0, 21, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime, tooltip="Das 1:1 CRV Ziel. Verkaufe hier exakt 50% deiner Position (Risk-Recycling) und ziehe den restlichen Stop auf Break-Even.")
     table.cell(cp, 1, 21, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime)
 
-    table.cell(cp, 0, 22, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange, tooltip="Initialer institutioneller ATR-Stop (1.5 * ATR14). Schützt dich vor massiven Ausbrüchen entgegen deiner Richtung.")
+    table.cell(cp, 0, 22, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange, tooltip="Institutioneller Stop-Loss (1.5x ATR). Schützt vor Rauschen und Gaps.")
     table.cell(cp, 1, 22, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange)
 
     table.cell(cp, 0, 23, "🏃 Runner-Target", bgcolor=color.rgb(50, 50, 50), text_color=color.fuchsia, tooltip="Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.")

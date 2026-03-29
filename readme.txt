@@ -43,6 +43,7 @@ In v20.5 Elite wurde das einfache "VIX an/aus" Flag (Firewall) durch ein hoch-in
 *   **2. Regime DELTA (VIX 25 - 35):** Es herrscht Unruhe und Abwärtsdruck. Hier wird die Strategie zu einem absoluten "Short-Spezialisten", um die Gewinnwahrscheinlichkeiten bei hoher Markt-Angst zu optimieren. Bei Long-Trades wird das Risiko zum reinen Kapitalschutz geviertelt (25% R). Short-Trades bleiben auf **100% Risiko**, um Panikverkäufe als Gewinnbeschleuniger zu nutzen.
 *   **3. Regime OMEGA (VIX > 35):** Massive Volatilität / Schwarze Schwäne. Der Markt ist dysfunktional, Gaps und Slippage zerstören CRVs. Beide Seiten werden gnadenlos mit 0% Risiko blockiert.
 
+> **Mathematische Risiko-Kontrolle (Shares):** Die Berechnung der Stückzahl ist zu 100% wasserdicht an den ATR-Stop gekoppelt (`shares = floor(dyn_risk / abs(Entry - SL))`). Das bedeutet: Unabhängig von der individuellen Volatilität der Aktie und der Weite des 1.5x ATR-Stops, verbrennt das System bei einem Stop-Out punktgenau maximal 150 € (oder den aktuellen DELTA-Betrag). Das Kapital ist absolut geschützt.
 ---
 ### III. v20.5 Innovationen (Filter-Kalibrierung & Vakuum-Definition)
 Neben der asymmetrischen Risk-Logik schlägt unter der Haube ein neues mathematisches Herz, welches die größten Probleme klassischer MTF-Indikatoren löst:

@@ -196,6 +196,13 @@
                 <strong>3. Regime OMEGA (VIX > 35):</strong><br>
                 Massive Volatilität / Schwarze Schwäne. Der Markt ist dysfunktional. Beide Seiten werden gnadenlos mit 0% Risiko blockiert, um das Depot vor extremen Gaps und Slippage zu schützen.
             </div>
+
+            <div class="alert-box" style="margin-top: 15px;">
+                <div class="alert-icon" style="background: rgba(255, 170, 0, 0.2); color: #ffaa00;">🛡️</div>
+                <div class="alert-content">
+                    <p style="margin: 0;"><strong>Mathematische Risiko-Kontrolle (Shares):</strong> Die Berechnung der Stückzahl ist zu 100% wasserdicht an den ATR-Stop gekoppelt (<code>shares = floor(dyn_risk / abs(Entry - SL))</code>). Unabhängig von der individuellen Volatilität der Aktie und der Weite des 1.5x ATR-Stops, verbrennt das System bei einem Stop-Out punktgenau maximal 150 € (bzw. den aktuellen DELTA-Betrag). Das Kapital ist absolut geschützt.</p>
+                </div>
+            </div>
         </div>
 
         <div class="glass-card">
