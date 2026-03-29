@@ -20,9 +20,9 @@ Das HUD wurde logisch in Blöcken gruppiert, um dir während des Tradings den pe
 *   **Risk-O-Meter:** „Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an.“
 *   **Risk-Mode (Adaptiv):** „ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilität.“
 *   **Anchor-Info:** „Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.“
-*   **Vacuum Quality:** „Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).“
+*   **Vacuum Quality:** „Prüft den historischen Ziel-Widerstand (TP < 8%). Der RLD-Current-Volumen Check blockiert Trades nicht mehr fälschlicherweise bei Breakouts.“
 *   **Kerzenregel:** „Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.“
-*   **Stopversicherung:** „Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position.“
+*   **Stopversicherung:** „Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >3% zur Absicherung der Position.“
 *   **TP Widerstand:** „Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.“
 
 > ⚠️ **NUTZER-HINWEIS:** Dieses Cockpit dient als Navigationshilfe zur Skalierung eines 50k Depots. Handeln Sie nur, wenn die Signal-Validierung grün leuchtet.
@@ -35,11 +35,11 @@ In v20.5 Elite wurde das einfache "VIX an/aus" Flag (Firewall) durch ein hoch-in
 *   **3. Regime OMEGA (VIX > 35):** Massive Volatilität / Schwarze Schwäne. Der Markt ist dysfunktional, Gaps und Slippage zerstören CRVs. Beide Seiten werden gnadenlos mit 0% Risiko blockiert.
 
 ---
-### III. v20.5 Innovationen (Das Kern-Upgrade)
+### III. v20.5 Innovationen (Filter-Kalibrierung & Vakuum-Definition)
 Neben der asymmetrischen Risk-Logik schlägt unter der Haube ein neues mathematisches Herz, welches die größten Probleme klassischer MTF-Indikatoren löst:
 
-1.  **Die AVP/RLD-Synergie (Der Gamechanger):** Klassische Profiler messen einfach stumpf feste Tage. Die **v20.5 Anker-Logik** startet den Volumen-Zähler erst zu dem exakten Zeitpunkt, an dem das "Smart Money" die Weinstein-Phase historisch gedreht hat. Verbunden mit dem **RLD-Check** (Relative Liquidity Density) sichern wir unsere Stops über diese Anker-Aufschichtung ab. Diese Synergie steigert die Qualität der Trades massiv.
-2.  **Repaint Protection:** Absicherung des Multi-Timeframe (MTF) 4H Volumens auf dem Tageschart via `request.security_lower_tf()` und `barstate.isconfirmed`. Alarme triggern streng ohne Intrabar-Verzerrungen.
+1.  **Filter-Kalibrierung auf 3% (Die AVP-Synergie):** Die **v20.5 Anker-Logik** startet den Volumen-Zähler exakt zu dem Zeitpunkt, an dem das "Smart Money" die Weinstein-Phase historisch gedreht hat. Da dies ein absolutes Qualitäts-Volumen ist, reicht bereits eine Schwellenwert-Kalibrierung von **3% Stopversicherung** als starker institutioneller Schutzwall aus!
+2.  **Vakuum-Definition (Entkopplung):** Das Vakuum basiert nun rein auf der historischen Preis-Volumen-Struktur bis zum Target. Es bewertet, ob der Weg historisch "frei" ist. Zuvor hat der RLD-Check hohes Live-Volumen der Breakout-Kerze fälschlicherweise bestraft – dies ist behoben! RLD dient nun rein als informatives Element.
 3.  **Sticky Trend Hysterese:** Um Rauschen an den Bändern auszufiltern, muss ein Trendausbruch nun 0.2 ATR über/unter das Band hinausschießen.
 
 ---

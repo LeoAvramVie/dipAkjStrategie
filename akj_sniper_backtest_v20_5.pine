@@ -18,14 +18,13 @@ ema_exit         = input.int(21, "Trailing Stop EMA", group=group_strat)
 
 group_vol_filter = "Volumen Filter (v20.5)"
 vol_timeframe    = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
-use_flex         = input.bool(true, "Backtest Flex-Mode (Signaldichte erhöhen)", group=group_vol_filter)
-min_stop_density = input.float(10.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
+backtest_flex_mode = input.bool(true, "Backtest-Modus (Lockerere Filter)", group=group_vol_filter)
+min_stop_density = input.float(3.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
 max_tp_density   = input.float(8.0, "Max. TP-Widerstand (%)", group=group_vol_filter)
-rld_limit        = input.float(20.0, "RLD Vakuum Limit (%)", group=group_vol_filter)
+rld_limit        = input.float(20.0, "RLD Vakuum Limit (%)", group=group_vol_filter) // Dient nur noch der Info, nicht mehr als Signal-Blocker
 
-opt_min_stop = use_flex ? 8.0  : min_stop_density
-opt_max_tp   = use_flex ? 12.0 : max_tp_density
-opt_rld      = use_flex ? 30.0 : rld_limit
+opt_min_stop = backtest_flex_mode ? 1.5  : min_stop_density
+opt_max_tp   = backtest_flex_mode ? 12.0 : max_tp_density
 
 // ==========================================
 // --- ATR & Atmendes Risiko-Regime ---
@@ -112,9 +111,9 @@ float sl_short = high + puffer
 float tp_short = sp_short - (sl_short - sp_short)
 
 // ==========================================
-// --- 4. MAP AVP CACHING (Performance) ---
 // ==========================================
-var avp_cache = map.new<int, float>()
+// --- 4. VOLUMEN-STRUKTUR (Hintergrund-Radar) ---
+// ==========================================
 
 f_calc_tf_vol_anchored(sp, sl, tp, lookback) =>
     float s_dens = 0.0, float t_dens = 0.0, float avg_v = 0.0
@@ -123,25 +122,20 @@ f_calc_tf_vol_anchored(sp, sl, tp, lookback) =>
     float upper_t = math.max(sp, tp), float lower_t = math.min(sp, tp)
     int lb = math.min(lookback, 300)
     
-    int cache_key = bar_index
-    if map.contains(avp_cache, cache_key)
-        avg_v := map.get(avp_cache, cache_key)
-    else
-        if lb > 0
-            for i = 0 to lb - 1
-                float bar_h = high[i], float bar_l = low[i], float bar_vol = volume[i]
-                total_v += bar_vol
-                float bar_range = bar_h - bar_l
-                if bar_range > 0
-                    float intersect_s = math.max(0, math.min(bar_h, upper_s) - math.max(bar_l, lower_s))
-                    zone_vol_s += bar_vol * (intersect_s / bar_range)
-                    float intersect_t = math.max(0, math.min(bar_h, upper_t) - math.max(bar_l, lower_t))
-                    zone_vol_t += bar_vol * (intersect_t / bar_range)
-            avg_v := total_v / lb
-            if total_v > 0
-                s_dens := (zone_vol_s / total_v) * 100
-                t_dens := (zone_vol_t / total_v) * 100
-            map.put(avp_cache, cache_key, avg_v)
+    if lb > 0
+        for i = 0 to lb - 1
+            float bar_h = high[i], float bar_l = low[i], float bar_vol = volume[i]
+            total_v += bar_vol
+            float bar_range = bar_h - bar_l
+            if bar_range > 0
+                float intersect_s = math.max(0, math.min(bar_h, upper_s) - math.max(bar_l, lower_s))
+                zone_vol_s += bar_vol * (intersect_s / bar_range)
+                float intersect_t = math.max(0, math.min(bar_h, upper_t) - math.max(bar_l, lower_t))
+                zone_vol_t += bar_vol * (intersect_t / bar_range)
+        avg_v := total_v / lb
+        if total_v > 0
+            s_dens := (zone_vol_s / total_v) * 100
+            t_dens := (zone_vol_t / total_v) * 100
 
     [s_dens, t_dens, avg_v]
 
@@ -154,8 +148,9 @@ float current_bar_lower_vol = array.size(lower_tf_vol_arr) > 0 ? array.sum(lower
 float rld_pct_l = avg_anchor_vol_l > 0 ? (current_bar_lower_vol / avg_anchor_vol_l) * 100 : 0
 float rld_pct_s = avg_anchor_vol_s > 0 ? (current_bar_lower_vol / avg_anchor_vol_s) * 100 : 0
 
-bool vol_cond_long  = stop_density_l >= opt_min_stop and tp_density_l <= opt_max_tp and rld_pct_l < opt_rld
-bool vol_cond_short = stop_density_s >= opt_min_stop and tp_density_s <= opt_max_tp and rld_pct_s < opt_rld
+// Vakuum-Condition basiert nun auf reiner TP-Weitsicht, RLD bremst bei Breakout Volumen nicht mehr!
+bool vol_cond_long  = stop_density_l >= opt_min_stop and tp_density_l <= opt_max_tp
+bool vol_cond_short = stop_density_s >= opt_min_stop and tp_density_s <= opt_max_tp
 
 bool long_trigger  = d_wpr >= 80 and close < open and not is_doji and close > d_lo
 bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
@@ -256,17 +251,13 @@ if barstate.islast
     if firewall_l and firewall_s
         debug_str := "Blocked: VIX OMEGA"
     else if stop_density_l < opt_min_stop and w_trend == 1
-        debug_str := "Blocked (Long): Wall < 10%"
+        debug_str := "Blocked: Wall " + str.tostring(opt_min_stop) + "%"
     else if stop_density_s < opt_min_stop and w_trend == -1
-        debug_str := "Blocked (Short): Wall < 10%"
+        debug_str := "Blocked: Wall " + str.tostring(opt_min_stop) + "%"
     else if tp_density_l > opt_max_tp and w_trend == 1
-        debug_str := "Blocked (Long): TP > 8%"
+        debug_str := "Blocked: TP > " + str.tostring(opt_max_tp) + "%"
     else if tp_density_s > opt_max_tp and w_trend == -1
-        debug_str := "Blocked (Short): TP > 8%"
-    else if rld_pct_l > opt_rld and w_trend == 1
-        debug_str := "Blocked (Long): RLD Vakuum"
-    else if rld_pct_s > opt_rld and w_trend == -1
-        debug_str := "Blocked (Short): RLD Vakuum"
+        debug_str := "Blocked: TP > " + str.tostring(opt_max_tp) + "%"
         
     table.cell(rep_tab, 0, 5, "Debug Status", text_color=color.white, bgcolor=color.rgb(40,40,40))
     table.cell(rep_tab, 1, 5, debug_str, text_color=color.orange, bgcolor=color.rgb(20,20,20))

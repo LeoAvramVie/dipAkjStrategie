@@ -129,9 +129,9 @@
                 <li><strong>Risk-O-Meter:</strong> „Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an.“</li>
                 <li><strong>Risk-Mode:</strong> „ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilität.“</li>
                 <li><strong>Anchor-Info:</strong> „Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.“</li>
-                <li><strong>Vacuum Quality:</strong> „Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).“</li>
+                <li><strong>Vacuum Quality:</strong> „Prüft den historischen Ziel-Widerstand (TP < 8%). Der RLD-Current-Volumen Check blockiert Trades nicht mehr fälschlicherweise bei Breakouts.“</li>
                 <li><strong>Kerzenregel:</strong> „Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.“</li>
-                <li><strong>Stopversicherung:</strong> „Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position.“</li>
+                <li><strong>Stopversicherung:</strong> „Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >3% zur Absicherung der Position.“</li>
                 <li><strong>TP Widerstand:</strong> „Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.“</li>
             </ul>
 
@@ -164,11 +164,11 @@
                         <tr><td class="tooltip-hint" title="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an."><strong>📊 Risk-O-Meter (1R)</strong></td><td>Zahlenwert in €</td></tr>
                         <tr><td class="tooltip-hint" title="ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilität."><strong>🛡️ Risk-Mode</strong></td><td><span class="badge green">ALPHA</span> <span class="badge orange">DELTA</span> <span class="badge red">OMEGA</span></td></tr>
                         <tr><td class="tooltip-hint" title="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt."><strong>⚓ Anchor-Info</strong></td><td>X Bars ago</td></tr>
-                        <tr><td class="tooltip-hint" title="Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum)."><strong>📐 Vacuum Quality</strong></td><td>High / Low Quality</td></tr>
+                        <tr><td class="tooltip-hint" title="Prüft den historischen Ziel-Widerstand (TP < 8%). Der RLD-Current-Volumen Check blockiert Trades nicht mehr fälschlicherweise bei Breakouts."><strong>📐 Vacuum Quality</strong></td><td>High / Low Quality</td></tr>
 
                         <tr><td colspan="2" class="sub-header">5. SIGNAL-VALIDIERUNG</td></tr>
                         <tr><td class="tooltip-hint" title="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen."><strong>🕯️ Kerzenregel</strong></td><td>OK ✅ / WAIT ⏳</td></tr>
-                        <tr><td class="tooltip-hint" title="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position."><strong>🛡️ Stopversicherung</strong></td><td>Prozentwert (%)</td></tr>
+                        <tr><td class="tooltip-hint" title="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >3% zur Absicherung der Position."><strong>🛡️ Stopversicherung</strong></td><td>Prozentwert (%)</td></tr>
                         <tr><td class="tooltip-hint" title="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit."><strong>🚧 TP Widerstand</strong></td><td>Prozentwert (%)</td></tr>
 
                         <tr><td colspan="2" class="sub-header">6. ORDER-MATRIX</td></tr>
@@ -199,9 +199,10 @@
         </div>
 
         <div class="glass-card">
-            <h3>III. v20.5 Innovationen (Das Kern-Upgrade)</h3>
+            <h3>III. v20.5 Innovationen (Filter-Kalibrierung & Vakuum-Definition)</h3>
             <ol>
-                <li><strong>Die AVP/RLD-Synergie (Der Gamechanger):</strong> Klassische Profiler messen einfach stumpf feste Tage. Die <strong>v20.5 Anker-Logik</strong> startet den Volumen-Zähler erst zu dem exakten Zeitpunkt, an dem das "Smart Money" die Weinstein-Phase historisch gedreht hat. Verbunden mit dem <strong>RLD-Check</strong> (Relative Liquidity Density) sichern wir unsere Stops über diese Anker-Aufschichtung ab.</li>
+                <li><strong>Filter-Kalibrierung auf 3% (Die AVP-Synergie):</strong> Die <strong>v20.5 Anker-Logik</strong> startet den Volumen-Zähler exakt zu dem Zeitpunkt, an dem das "Smart Money" die Weinstein-Phase historisch gedreht hat. Da dies ein absolutes Qualitäts-Volumen ist, reicht bereits eine Schwellenwert-Kalibrierung von <strong>3% Stopversicherung</strong> als starker institutioneller Schutzwall aus!</li>
+                <li><strong>Vakuum-Definition (Entkopplung):</strong> Das Vakuum basiert nun rein auf der historischen Preis-Volumen-Struktur bis zum Target. Es bewertet, ob der Weg historisch "frei" ist. Zuvor hat der RLD-Check hohes Live-Volumen der Breakout-Kerze fälschlicherweise bestraft – dies ist behoben! RLD dient nun rein als informatives Element.</li>
                 <li><strong>Repaint Protection (Alarme):</strong> Alarme lösen NUR aus, wenn <code>barstate.isrealtime</code> und <code>barstate.isconfirmed</code> wahr sind. Keine trügerischen Intrabar-Verzerrungen mehr! Alle Alarme sind zudem direkt an den aktuellen Risk-Mode gebunden (z.B. "DELTA Mode - 🎯 SNIPER: Risk-Recycling bereit!").</li>
                 <li><strong>Risk-Recycling:</strong> Im Strategy Backtest bewiesen – Berührt der Preis das Initialrisiko als Gewinn (1:1 CRV), wird gnadenlos die Hälfte (50%) in Cash getauscht und der Rest-Stopp auf den Break-Even-Preis gezogen.</li>
             </ol>

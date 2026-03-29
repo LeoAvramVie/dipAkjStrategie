@@ -18,7 +18,7 @@ atr_len          = input.int(14, "ATR Länge (Filter)", group=group_strat)
 
 group_vol_filter = "Volumen Filter (v20.5)"
 vol_timeframe    = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
-min_stop_density = input.float(10.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
+min_stop_density = input.float(3.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
 max_tp_density   = input.float(8.0, "Max. TP-Widerstand (%)", group=group_vol_filter)
 rld_limit        = input.float(20.0, "RLD Vakuum Limit (%)", group=group_vol_filter)
 
@@ -132,35 +132,33 @@ float active_risk_display = w_trend == -1 ? active_risk_s : active_risk_l
 // ==========================================
 // --- 5. VOLUMEN-STRUKTUR ---
 // ==========================================
-f_calc_tf_vol_anchored(sp, sl, tp, do_calc, lookback) =>
+f_calc_tf_vol_anchored(sp, sl, tp, lookback) =>
     float s_dens = 0.0
     float t_dens = 0.0
     float avg_v = 0.0
-    if do_calc
-        float zone_vol_s = 0.0
-        float zone_vol_t = 0.0
-        float total_v    = 0.0
-        float upper_s = math.max(sp, sl), float lower_s = math.min(sp, sl)
-        float upper_t = math.max(sp, tp), float lower_t = math.min(sp, tp)
-        int lb = math.min(lookback, 300)
-        if lb > 0
-            for i = 0 to lb - 1
-                float bar_h = high[i], float bar_l = low[i], float bar_vol = volume[i]
-                total_v += bar_vol
-                float bar_range = bar_h - bar_l
-                if bar_range > 0
-                    float intersect_s = math.max(0, math.min(bar_h, upper_s) - math.max(bar_l, lower_s))
-                    zone_vol_s += bar_vol * (intersect_s / bar_range)
-                    float intersect_t = math.max(0, math.min(bar_h, upper_t) - math.max(bar_l, lower_t))
-                    zone_vol_t += bar_vol * (intersect_t / bar_range)
-            avg_v := total_v / lb
-            if total_v > 0
-                s_dens := (zone_vol_s / total_v) * 100
-                t_dens := (zone_vol_t / total_v) * 100
+    float zone_vol_s = 0.0
+    float zone_vol_t = 0.0
+    float total_v    = 0.0
+    float upper_s = math.max(sp, sl), float lower_s = math.min(sp, sl)
+    float upper_t = math.max(sp, tp), float lower_t = math.min(sp, tp)
+    int lb = math.min(lookback, 300)
+    if lb > 0
+        for i = 0 to lb - 1
+            float bar_h = high[i], float bar_l = low[i], float bar_vol = volume[i]
+            total_v += bar_vol
+            float bar_range = bar_h - bar_l
+            if bar_range > 0
+                float intersect_s = math.max(0, math.min(bar_h, upper_s) - math.max(bar_l, lower_s))
+                zone_vol_s += bar_vol * (intersect_s / bar_range)
+                float intersect_t = math.max(0, math.min(bar_h, upper_t) - math.max(bar_l, lower_t))
+                zone_vol_t += bar_vol * (intersect_t / bar_range)
+        avg_v := total_v / lb
+        if total_v > 0
+            s_dens := (zone_vol_s / total_v) * 100
+            t_dens := (zone_vol_t / total_v) * 100
     [s_dens, t_dens, avg_v]
 
-bool needs_vol_calc = is_in_radar_long or is_in_radar_short or barstate.islast
-[stop_density, tp_density, avg_anchor_vol] = request.security(syminfo.tickerid, vol_timeframe, f_calc_tf_vol_anchored(sp_price, sl_price, tp_price, needs_vol_calc, anchor_bars))
+[stop_density, tp_density, avg_anchor_vol] = request.security(syminfo.tickerid, vol_timeframe, f_calc_tf_vol_anchored(sp_price, sl_price, tp_price, anchor_bars))
 
 lower_tf_vol_arr = request.security_lower_tf(syminfo.tickerid, vol_timeframe, volume)
 float current_bar_lower_vol = 0.0
@@ -168,8 +166,9 @@ if array.size(lower_tf_vol_arr) > 0
     current_bar_lower_vol := array.sum(lower_tf_vol_arr)
 
 float rld_pct = avg_anchor_vol > 0 ? (current_bar_lower_vol / avg_anchor_vol) * 100 : 0
-bool rld_valid = rld_pct < rld_limit
-string vacuum_qual = rld_valid ? "High" : "Low (" + str.tostring(rld_pct, "#.#") + "%)"
+bool rld_valid = rld_pct < rld_limit // Dient nur noch der Info, nicht mehr als Signal-Blocker
+bool vacuum_ok = tp_density <= max_tp_density
+string vacuum_qual = vacuum_ok ? ("High (TP " + str.tostring(tp_density, "#.#") + "%)") : ("Low (TP " + str.tostring(tp_density, "#.#") + "%)")
 
 // ==========================================
 // --- 6. SIGNAL-IDENTIFIKATION ---
@@ -185,7 +184,7 @@ bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_
 bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger
 
 // Golden Setup 
-bool rld_approved_tp = tp_density <= max_tp_density and rld_valid
+bool rld_approved_tp = vacuum_ok // RLD-Check entkoppelt!
 bool vol_condition  = stop_density >= min_stop_density and rld_approved_tp
 
 // Firewall blockt je nach Regime
@@ -361,8 +360,8 @@ if barstate.islast
     table.cell(cp, 0, 11, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.")
     table.cell(cp, 1, 11, str.tostring(anchor_bars) + " Bars ago", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
 
-    table.cell(cp, 0, 12, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).")
-    table.cell(cp, 1, 12, vacuum_qual, bgcolor=rld_valid ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10), text_color=color.white)
+    table.cell(cp, 0, 12, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft den historischen Ziel-Widerstand (TP < 8%). Der RLD-Current-Volumen Check blockiert Trades nicht mehr fälschlicherweise bei Breakouts.")
+    table.cell(cp, 1, 12, vacuum_qual, bgcolor=vacuum_ok ? color.rgb(0, 180, 0) : color.rgb(60, 10, 10), text_color=color.white)
 
     table.cell(cp, 0, 13, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 13, 1, 13)
@@ -371,7 +370,7 @@ if barstate.islast
     table.cell(cp, 1, 14, c_txt, bgcolor=c_bg, text_color=color.white)
 
     color s_v_bg = stop_density >= min_stop_density ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 15, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position.")
+    table.cell(cp, 0, 15, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >3% zur Absicherung der Position.")
     table.cell(cp, 1, 15, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white)
     
     color t_v_bg = rld_approved_tp ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
