@@ -1,0 +1,79 @@
+# AKJ 2.0 Sniper-Commander
+## Technische Dokumentation für Entwickler (Pine Script v6)
+
+### 1. Architektur und Ausführungslogik
+Das Skript ist als Overlay-Indikator konzipiert (`overlay=true`). Es berechnet komplexe diskretionäre Handelssignale durch State-Tracking, Volumendichteprofiler und MTF-Analyse (Multi-Timeframe). Das UI wird via Lazy-Evaluation (`if barstate.islast`) isoliert am Ende des Scripts gezeichnet, um Performance-Limits der TradingView-Engine zu umgehen.
+
+---
+
+### 2. Variablen & State-Tracking (Die "Sticky" Logik)
+Das System nutzt `var` Deklarationen, um Zustände algorithmisch über mehrere Bars hinweg beizubehalten, bis eine saubere Gegensignatur auftritt.
+
+#### 2.1 Trend-Identifikation (Woche & Tag)
+*   **Wochentrend (`w_trend`) & Tagestrend (`d_trend`):** 
+    *   **Werte:** `1` (Long), `-1` (Short), `0` (Neutral).
+    *   **Berechnung:** Abgeleitet von Bollinger Band-Verschiebungen (z.B. Funktion `f_bb_d()`). Schließt eine Kerze über dem oberen Band (`close > d_up`), springt der Trend-State `var int d_trend` auf 1. Er bleibt zwingend auf 1, bis der Preis das gegenüberliegende untere Band berührt (`low < d_lo`). Das Modul fungiert als asymmetrischer Noise-Filter.
+
+#### 2.2 Oszillator & Trigger-Logiken
+*   **Williams %R (`d_wpr`):** Klassischer Indikator, berechnet über `ta.wpr(14)`. Die Skala reicht nominell von 0 bis -100, wird vom Skript aber auf -100 bis +100 normalisiert (`(ta.wpr(14) + 50) * 2`).
+*   **`long_lunte` / `short_lunte` (Die "brennende Lunte"):**
+    Prüft via `ta.highest(d_wpr, setup_len_d) >= 80`. Ist der Oszillator innerhalb der definierten Lookback-Periode einmalig über +80 gesprungen, ist das System für ein Signal "scharfgestellt", auch wenn sich der Oszillator intra-bar wieder abkühlt.
+
+#### 2.3 Die MK-Regeln (Strikte Einstiegs-Prüfung)
+*   **MK 4.7 / 5.6 Bollinger-Bruch (`setup_strict_long` / `setup_strict_short`):**
+    Überprüft zwingend, dass sich die Signal-Kerze nach einem Extremwert wieder in der relativen Normalisierung befindet: `close < d_up` (für Long). Verhindert den Einstieg in massive Band-Überdehnungen (False Breakouts).
+*   **Kerzenregel (`long_trigger` / `short_trigger`):**
+    Überprüft die finale Bestätigung der Kerzenrichtung am aktuellen Bar. Ein Long-Trigger feuert nur, wenn `close > open`.
+
+---
+
+### 3. Signal-Klassen (Die Pyramiden-Logik)
+Die booleschen Variablen für Trading-Signale sind streng disjunkt und hierarchisch abgekapselt:
+
+1.  **Radar (`is_lauern_long` / `short`):** Abstimmung der Basistrends (`w_trend == 1 and d_trend == 1`).
+2.  **Sniper (`is_sniper_long` / `short`):** Aktives Lauern + `long_lunte` + `setup_strict_long` + `long_trigger`. Dies ist das unbestätigte, pure Price-Action-Signal.
+3.  **Golden (`is_golden_long` / `short`):** `is_sniper` + `vol_condition` (Quantitative Volumen-Verifizierung).
+
+---
+
+### 4. Multi-Timeframe (MTF) Support & Volumenprofiling
+Die Kern-Innovation ist die dynamische Volumen-Dichteberechnung im Chart. Das Skript greift via `request.security(..., barmerge.lookahead_off)` auf höhere Timeframes zurück (Standard: `4H`), ohne Lookahead-Bias zu generieren.
+
+*   **`f_calc_tf_vol()`:** Eine Custom-Function, die über die letzten `vol_len` (Standard: 60) Bars im `vol_timeframe` iteriert.
+    *   Sammelt das aggregierte Volumen (`volume[i]`) innerhalb der Preiszone Stop-Loss `[sp_price, sl_price]` -> `stop_volume`.
+    *   Sammelt Volumen in der Gewinnzone `[sp_price, tp_price]` -> `tp_volume`.
+    *   Wandelt die absoluten Werte in prozentuale Relation zum Gesamtvolumen um (`stop_density`, `tp_density`).
+*   **`vol_condition` (Die Logik-Matrix):**
+    Ein Golden-Setup benötigt grundlegend `stop_density >= min_stop_density` und `tp_density <= max_tp_density`.
+*   **Die Flex-Ratio & Brick Wall Cap (v20.4):**
+    Das System erlaubt elastische Setups: `density_ratio = stop_density / tp_density`. Ist Ratio > `min_vol_ratio` (1.5x), wird das Setup auch bei leichten Volumenschwächen genehmigt.
+    **Hard Limit Exception:** Ein harter Cap (`brick_wall_cap = max_tp_density * 1.5`) blockiert das Setup jedoch kompromisslos, falls der absolute TP-Widerstand überdimensioniert ist (z.B. > 12%).
+
+---
+
+### 5. Diskretionäre Variablen (HUD Analyse)
+Das Skript berechnet parallel institutionelle Kontext-Daten, die die Bool-Signale (`is_sniper`, `is_golden`) und Alarme logisch **niemals** beeinflussen:
+
+*   **Dynamisches Sektor-Mapping (`f_get_auto_sector()`):** Nutzt native Variablen `syminfo.sector` & `syminfo.industry`. Mappt diese über Switch-Cases in US-Benchmarkt-Ticker um (z.B. Sektor "Semiconductors" mapped auf `SMH`).
+*   **Relative Stärke (`perf_diff`):** Holt von dem identifizierten Ticker via `request.security` die Schlusskurse der letzten 20 Bars und berechnet die Performance-Differenz zur aktuellen Basis-Aktie (`(close - close[19])/close[19] * 100`).
+    *   Zuweisung: `> 2.0` = STARK, `< -2.0` = SCHWACH.
+*   **Stan Weinstein Stage:** Analysiert über MTF den wöchentlichen SMA 30.
+    *   `Stage 2`: Weekly Close > SMA 30 **und** (SMA 30 steigt im Vergleich zur vorherigen Woche `[1]`).
+    *   `Stage 4`: Weekly Close < SMA 30 **und** (SMA 30 fällt im Vergleich zur vorherigen Woche `[1]`).
+
+---
+
+### 6. Order-Preiskalkulation
+Zentrale Variablen für Limit-Preise für die UI-Ausgabe (und optionale spätere API-Anbindung):
+*   `sp_price` (Trigger / Stop-Preis für Entry): `high + puffer` (bei Long), `low - puffer` (bei Short).
+*   `sl_price` (Initial Stop-Loss): `low - puffer` (bei Long). Das absolute gegenüberliegende Kerzenende.
+*   `tp_price` (Teilverkauf / T1): Ein berechneter Zielpreis (`(sp_price - sl_price) * 1.0` -> 1R) für Teilverkäufe.
+*   `shares`: Kalkulierte Stückzahl basierend auf `risk_per_trade / (sp_price - sl_price)`.
+
+---
+
+### 7. Alarmsystem (`alert` calls)
+Die Skript-Ausführung `alert()` triggert bei Erfüllung der logischen Baumstruktur mit dem Parameter `alert.freq_once_per_bar`. Dadurch reagiert der Indikator live auf Intrabar-Schwankungen (z.B. %R springt über Schwelle), um Diskretions-Trader frühzeitig "auf den Ping" zu holen, noch bevor die Kerze endgültig schließt und die finalen MK 4.7 Regeln einrasten.
+
+---
+V20.4 Elite Edition | Code Maintenance File
