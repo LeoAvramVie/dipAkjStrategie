@@ -155,109 +155,147 @@ bool vol_cond_short = stop_density_s >= opt_min_stop and tp_density_s <= opt_max
 bool long_trigger  = d_wpr >= 80 and close < open and not is_doji and close > d_lo
 bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
 
-bool fire_long  = weinstein_stage == 2 and w_trend == 1  and setup_strict_long  and long_trigger  and vol_cond_long  and not firewall_l and barstate.isconfirmed
-bool fire_short = weinstein_stage == 4 and w_trend == -1 and setup_strict_short and short_trigger and vol_cond_short and not firewall_s and barstate.isconfirmed
+// ==========================================
+// --- 5. FUNNEL & STATUS-AUDIT SYSTEM (v20.5) ---
+// ==========================================
+type VirtualTrade
+    int   t_class // 1 = Lauern, 2 = Feuer Frei, 3 = Golden
+    int   dir     // 1 = Long, -1 = Short
+    float sl
+    float tp
+
+var virtual_trades = array.new<VirtualTrade>()
+
+// Stat-Counter (Closed Trades: Win vs Loss)
+var int w_lauern = 0
+var int w_feuer = 0
+var int w_golden = 0
+
+var int l_lauern = 0
+var int l_feuer = 0
+var int l_golden = 0
+
+var int total_missed_omega = 0
+
+// Definition der Audit-Level
+bool base_lauern_l = weinstein_stage == 2 and w_trend == 1 and setup_strict_long and barstate.isconfirmed
+bool base_feuer_l  = base_lauern_l and long_trigger
+bool base_golden_l = base_feuer_l and vol_cond_long
+
+bool base_lauern_s = weinstein_stage == 4 and w_trend == -1 and setup_strict_short and barstate.isconfirmed
+bool base_feuer_s  = base_lauern_s and short_trigger
+bool base_golden_s = base_feuer_s and vol_cond_short
+
+// Evaluierung offener virtueller Trades
+if array.size(virtual_trades) > 0
+    for i = array.size(virtual_trades) - 1 to 0
+        VirtualTrade vt = array.get(virtual_trades, i)
+        
+        bool sl_hit = false
+        bool tp_hit = false
+        
+        if vt.dir == 1
+            if low <= vt.sl
+                sl_hit := true
+            if high >= vt.tp
+                tp_hit := true
+        else
+            if high >= vt.sl
+                sl_hit := true
+            if low <= vt.tp
+                tp_hit := true
+                
+        if sl_hit or tp_hit
+            // Pessimistischer Ansatz: SL schlägt TP bei gleicher Kerze
+            if sl_hit and tp_hit
+                tp_hit := false 
+                
+            if tp_hit
+                if vt.t_class == 1
+                    w_lauern += 1
+                else if vt.t_class == 2
+                    w_feuer += 1
+                else
+                    w_golden += 1
+            else
+                if vt.t_class == 1
+                    l_lauern += 1
+                else if vt.t_class == 2
+                    l_feuer += 1
+                else
+                    l_golden += 1
+                    
+            array.remove(virtual_trades, i)
+
+// Neue Setups ins Audit einspeisen
+if base_lauern_l
+    if firewall_l
+        if base_golden_l
+            total_missed_omega += 1
+    else
+        array.push(virtual_trades, VirtualTrade.new(1, 1, sl_long, sp_long + (sp_long - sl_long)))
+        if base_feuer_l
+            array.push(virtual_trades, VirtualTrade.new(2, 1, sl_long, sp_long + (sp_long - sl_long)))
+        if base_golden_l
+            array.push(virtual_trades, VirtualTrade.new(3, 1, sl_long, sp_long + (sp_long - sl_long)))
+
+if base_lauern_s
+    if firewall_s
+        if base_golden_s
+            total_missed_omega += 1
+    else
+        array.push(virtual_trades, VirtualTrade.new(1, -1, sl_short, sp_short - (sl_short - sp_short)))
+        if base_feuer_s
+            array.push(virtual_trades, VirtualTrade.new(2, -1, sl_short, sp_short - (sl_short - sp_short)))
+        if base_golden_s
+            array.push(virtual_trades, VirtualTrade.new(3, -1, sl_short, sp_short - (sl_short - sp_short)))
 
 // ==========================================
-// --- 5. RISK RECYCLING BACKTEST EXECUTIONS ---
+// --- 6. AUDIT-COCKPIT UI ---
 // ==========================================
-var float entry_price = na
-var float current_sl = na
-var bool  tp_hit_1 = false
-var int   trade_dir = 0 
+var table audit_tab = table.new(position.top_left, 4, 6, border_width=1, border_color=color.rgb(40,40,40))
 
-// Long Einstieg
-if fire_long and strategy.position_size == 0
-    int qty = int(dyn_shares_l(sp_long, sl_long))
-    if qty > 0
-        strategy.entry("Long", strategy.long, qty=qty, stop=sp_long)
-        entry_price := sp_long
-        current_sl  := sl_long
-        tp_hit_1    := false
-        trade_dir   := 1
-
-// Short Einstieg
-if fire_short and strategy.position_size == 0
-    int qty = int(dyn_shares_s(sp_short, sl_short))
-    if qty > 0
-        strategy.entry("Short", strategy.short, qty=qty, stop=sp_short)
-        entry_price := sp_short
-        current_sl  := sl_short
-        tp_hit_1    := false
-        trade_dir   := -1
-
-// Management (1:1 Teilverkauf & Trailing Stop)
-if strategy.position_size > 0
-    if trade_dir == 1
-        float target = entry_price + (entry_price - current_sl)
-        if not tp_hit_1 and high >= target
-            strategy.close("Long", qty_percent=50, comment="TP 1:1")
-            current_sl := entry_price // BE Stop
-            tp_hit_1 := true
-        
-        if tp_hit_1
-            if close < ema21 or w_trend == -1
-                strategy.close("Long", comment="Trail/Trend Break")
-        
-        strategy.exit("SL_Long", "Long", stop=current_sl)
-
-    else if trade_dir == -1
-        float target = entry_price - (current_sl - entry_price) // Mathematischer Offset für Short TP
-        if not tp_hit_1 and low <= target
-            strategy.close("Short", qty_percent=50, comment="TP 1:1")
-            current_sl := entry_price // BE Stop
-            tp_hit_1 := true
-        
-        if tp_hit_1
-            if close > ema21 or w_trend == 1
-                strategy.close("Short", comment="Trail/Trend Break")
-        
-        strategy.exit("SL_Short", "Short", stop=current_sl)
-else
-    trade_dir := 0
-
-// ==========================================
-// --- 6. IBKR OVERLAY & MISS-ANALYSE ---
-// ==========================================
-var int missed_goldens_vix = 0
-if (w_trend == 1 and setup_strict_long and vol_cond_long and firewall_l)
-    missed_goldens_vix += 1
-if (w_trend == -1 and setup_strict_short and vol_cond_short and firewall_s)
-    missed_goldens_vix += 1
-
-string ibkr_report = "--- IBKR REALITY CHECK ---\n"
-if syminfo.ticker == "LHA" or syminfo.ticker == "TEAM" or syminfo.ticker == "PYPL" or syminfo.ticker == "CSCO"
-    ibkr_report += "Tick: " + syminfo.ticker + "\n"
-    if syminfo.ticker == "CSCO"
-        ibkr_report += "Hinweis: CSCO Long (Entry~80.10) " 
-        ibkr_report += firewall_l ? "wurde durch OMEGA Mode blockiert.\n" : "wurde durch ALPHA/DELTA zugelassen.\n"
-
-var table rep_tab = table.new(position.bottom_right, 2, 8, border_width=1)
 if barstate.islast
-    table.cell(rep_tab, 0, 0, "AKJ v20.5 Backtest Metriken", bgcolor=color.black, text_color=color.white)
-    table.merge_cells(rep_tab, 0, 0, 1, 0)
-    table.cell(rep_tab, 0, 1, "OMEGA Blocks (Opportunity Cost)", text_color=color.white, bgcolor=color.rgb(30,30,30))
-    table.cell(rep_tab, 1, 1, str.tostring(missed_goldens_vix) + " Trades", text_color=color.yellow, bgcolor=color.rgb(30,30,30))
-    table.cell(rep_tab, 0, 2, "Net Profit (Simulated)", text_color=color.white, bgcolor=color.rgb(30,30,30))
-    table.cell(rep_tab, 1, 2, str.tostring(strategy.netprofit, "#.##") + " €", text_color=strategy.netprofit > 0 ? color.lime : color.red, bgcolor=color.rgb(30,30,30))
-    table.cell(rep_tab, 0, 3, "Win Rate (Teilverkäufe 1:1)", text_color=color.white, bgcolor=color.rgb(30,30,30))
-    table.cell(rep_tab, 1, 3, str.tostring(strategy.wintrades / math.max(1, strategy.closedtrades) * 100, "#.##") + "%", text_color=color.white, bgcolor=color.rgb(30,30,30))
-    
-    // Ausgabe der Realdaten IBKR
-    table.cell(rep_tab, 0, 4, "IBKR Sync Note", text_color=color.white, bgcolor=color.blue)
-    table.cell(rep_tab, 1, 4, (syminfo.ticker == "CSCO" or syminfo.ticker == "TEAM" or syminfo.ticker == "PYPL" or syminfo.ticker == "LHA") ? ibkr_report : "N/A", text_color=color.white, bgcolor=color.rgb(20,20,20))
+    int c_lauern = l_lauern + w_lauern
+    int c_feuer  = l_feuer + w_feuer
+    int c_golden = l_golden + w_golden
 
-    string debug_str = "Clear (Setup Ready)"
-    if firewall_l and firewall_s
-        debug_str := "Blocked: VIX OMEGA"
-    else if stop_density_l < opt_min_stop and w_trend == 1
-        debug_str := "Blocked: Wall " + str.tostring(opt_min_stop) + "%"
-    else if stop_density_s < opt_min_stop and w_trend == -1
-        debug_str := "Blocked: Wall " + str.tostring(opt_min_stop) + "%"
-    else if tp_density_l > opt_max_tp and w_trend == 1
-        debug_str := "Blocked: TP > " + str.tostring(opt_max_tp) + "%"
-    else if tp_density_s > opt_max_tp and w_trend == -1
-        debug_str := "Blocked: TP > " + str.tostring(opt_max_tp) + "%"
-        
-    table.cell(rep_tab, 0, 5, "Debug Status", text_color=color.white, bgcolor=color.rgb(40,40,40))
-    table.cell(rep_tab, 1, 5, debug_str, text_color=color.orange, bgcolor=color.rgb(20,20,20))
+    float wr_lauern = c_lauern > 0 ? (w_lauern / c_lauern) * 100 : 0.0
+    float wr_feuer  = c_feuer > 0 ? (w_feuer / c_feuer) * 100 : 0.0
+    float wr_golden = c_golden > 0 ? (w_golden / c_golden) * 100 : 0.0
+
+    // Profit Berechnung mit Risk Recycling: Win = +0.5R, Loss = -1.0R
+    float r_lauern_avg = c_lauern > 0 ? ((w_lauern * 0.5) + (l_lauern * -1.0)) / c_lauern : 0.0
+    float r_feuer_avg  = c_feuer > 0 ? ((w_feuer * 0.5) + (l_feuer * -1.0)) / c_feuer : 0.0
+    float r_golden_avg = c_golden > 0 ? ((w_golden * 0.5) + (l_golden * -1.0)) / c_golden : 0.0
+
+    table.cell(audit_tab, 0, 0, "AKJ v20.5 SNR-State-Audit", bgcolor=color.black, text_color=color.white, text_size=size.large)
+    table.merge_cells(audit_tab, 0, 0, 3, 0)
+    
+    // Header
+    table.cell(audit_tab, 0, 1, "Status-Typ", bgcolor=color.rgb(30,30,30), text_color=color.gray)
+    table.cell(audit_tab, 1, 1, "Anzahl (Hist)", bgcolor=color.rgb(30,30,30), text_color=color.gray)
+    table.cell(audit_tab, 2, 1, "Win % (1:1 TP)", bgcolor=color.rgb(30,30,30), text_color=color.gray)
+    table.cell(audit_tab, 3, 1, "Ø Profit (R) pro Signal", bgcolor=color.rgb(30,30,30), text_color=color.gray)
+
+    // Lauern
+    table.cell(audit_tab, 0, 2, "LAUERN (Radar)", bgcolor=color.rgb(20,20,20), text_color=color.yellow)
+    table.cell(audit_tab, 1, 2, str.tostring(c_lauern), bgcolor=color.rgb(20,20,20), text_color=color.silver)
+    table.cell(audit_tab, 2, 2, str.tostring(wr_lauern, "#.#") + "%", bgcolor=wr_lauern >= 60 ? color.rgb(10,50,10) : color.rgb(40,10,10), text_color=color.white)
+    table.cell(audit_tab, 3, 2, str.tostring(r_lauern_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)
+
+    // Feuer Frei
+    table.cell(audit_tab, 0, 3, "FEUER FREI", bgcolor=color.rgb(20,20,20), text_color=color.blue)
+    table.cell(audit_tab, 1, 3, str.tostring(c_feuer), bgcolor=color.rgb(20,20,20), text_color=color.silver)
+    table.cell(audit_tab, 2, 3, str.tostring(wr_feuer, "#.#") + "%", bgcolor=wr_feuer >= 60 ? color.rgb(10,50,10) : color.rgb(40,10,10), text_color=color.white)
+    table.cell(audit_tab, 3, 3, str.tostring(r_feuer_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)
+
+    // Golden Setup
+    table.cell(audit_tab, 0, 4, "GOLDEN SETUP", bgcolor=color.rgb(20,20,20), text_color=color.lime)
+    table.cell(audit_tab, 1, 4, str.tostring(c_golden), bgcolor=color.rgb(20,20,20), text_color=color.white)
+    table.cell(audit_tab, 2, 4, str.tostring(wr_golden, "#.#") + "%", bgcolor=wr_golden >= 60 ? color.rgb(10,60,10) : color.rgb(60,10,10), text_color=color.white)
+    table.cell(audit_tab, 3, 4, str.tostring(r_golden_avg, "#.##") + " R", bgcolor=color.rgb(20,20,20), text_color=color.silver)
+
+    // Metrik Omega
+    table.cell(audit_tab, 0, 5, "VIX Efficiency (Blocked by OMEGA): " + str.tostring(total_missed_omega), bgcolor=color.rgb(10,10,10), text_color=color.orange, text_size=size.small)
+    table.merge_cells(audit_tab, 0, 5, 3, 5)

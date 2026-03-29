@@ -53,3 +53,17 @@ Es liegt ein separates `akj_sniper_backtest_v20_5.pine` Script bei. Dieses simul
 *   Lade das Script im Pine Editor.
 *   Nutze den **Tab "Strategietester"** in TradingView, um den "Simulated Net Profit" zu prüfen.
 *   Wenn du auf Ticker wie LHA, TEAM, CSCO oder PYPL im Chart gehst, zeigt dir die eingebaute "IBKR Reality Check Note" unten rechts tabellarisch an, warum deine echten Depot-Ausführungen im IBKR-Statement historisch von der harten Indikator-Logik abweichen (z.B. wegen fehlendem VIX Filter bei CSCO).
+
+---
+### VI. Die statistische Kante (Edge)
+Die Backtest-Engine wurde von klassischer Exekution auf ein umfassendes **Funnel- & Status-Audit-System** umgestellt. Auf dem Chart erscheint nun direkt das "State-Audit Cockpit". 
+Dieses trackt die gesamte Historie des Tickers (alle Signale und Phasen), ohne von Pine-Script Constraints blockiert zu werden.
+
+**Wie wird die Trefferquote gelesen?**
+* **LAUERN:** Wie oft das Asset in Position lief (Phase 2/4 + Trend + Hysterese).
+* **FEUER FREI:** Wie oft eine Scharf-Kerze den Trigger in der Lauer-Position zog.
+* **GOLDEN SETUP:** Wie oft zudem das gesamte Volumen-Setup (Schutz-Wall & Vakuum) stimmte.
+
+Wenn bei einem Typen die Win-Rate (Kurs erreicht 1R Ziel, bevor der Initial-Stop-Loss platzt) im **grünen Bereich (>60%)** liegt, hast du in diesem Asset einen systematischen, bewiesenen Edge! Der Ø Profit inkludiert zudem das Risk-Recycling (sichere +0.5R bei Gewinn, -1.0R bei Verlust).
+
+> **Handlungsanweisung:** „Handeln Sie bevorzugt Ticker, deren GOLDEN SETUP Trefferquote historisch über 60% liegt.“
