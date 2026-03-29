@@ -7,7 +7,7 @@ indicator("AKJ 2.0 Sniper-Commander v20.5", overlay=true, max_labels_count=500)
 group_rm         = "Risikomanagement"
 risk_per_trade   = input.float(150.0, "Basis Risiko pro Trade (€)", group=group_rm)
 limit_offset_pct = input.float(0.2, "Limit-Offset (%)", group=group_rm)
-puffer_ticks     = input.int(2, "Puffer in Ticks", group=group_rm)
+atr_stop_mult    = input.float(1.5, "ATR Stop Multiplikator", group=group_rm)
 use_dyn_risk     = input.bool(true, "Asymmetrisches Risk (Alpha/Delta/Omega)", group=group_rm)
 
 group_strat      = "MK-Strategie Parameter"
@@ -30,6 +30,7 @@ user_etf         = input.symbol("SPY", "Manueller Sektor-ETF", group=group_rs)
 // --- ATR & Atmendes Risiko-Regime (Asymmetrisch) ---
 // ==========================================
 atr_val = ta.atr(atr_len)
+ema21   = ta.ema(close, 21)
 vix_c = request.security("CBOE:VIX", "1D", close, lookahead=barmerge.lookahead_off)
 
 // Asymmetrische Risk Multiplier Logik
@@ -109,15 +110,15 @@ bool is_in_radar_short = close[1] < d_lo[1] or setup_strict_short
 // ==========================================
 // --- 4. PREIS-BERECHNUNG ---
 // ==========================================
-puffer = syminfo.mintick * puffer_ticks
+float atr_stop_dist = atr_val * atr_stop_mult
 
-float sp_long  = high + puffer
-float sl_long  = low - puffer
+float sp_long  = high
+float sl_long  = low - atr_stop_dist
 float r_l = math.abs(sp_long - sl_long)
 int shares_l = r_l > 0 ? math.floor(active_risk_l / r_l) : 0
 
-float sp_short = low - puffer
-float sl_short = high + puffer
+float sp_short = low
+float sl_short = high + atr_stop_dist
 float r_s = math.abs(sp_short - sl_short)
 int shares_s = r_s > 0 ? math.floor(active_risk_s / r_s) : 0
 
@@ -286,7 +287,7 @@ if is_any_action
 // ==========================================
 // --- 9. COCKPIT UI ---
 // ==========================================
-var table cp = table.new(position.top_right, 2, 23, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
+var table cp = table.new(position.top_right, 2, 24, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
 f_p(val) => na(val) ? "-" : str.tostring(val, "#.##")
 
 if barstate.islast
@@ -330,7 +331,7 @@ if barstate.islast
     table.cell(cp, 0, 1, "--- MARKT-KONTEXT ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 1, 1, 1)
     
-    table.cell(cp, 0, 2, "🌍 Sektor", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 2, "🌍 Sektor", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Der maßgebliche Sektor-ETF der Aktie. Dient zur Bestimmung des Marktumfelds und der relativen Stärke.")
     table.cell(cp, 1, 2, sec_txt, bgcolor=sec_bg, text_color=color.white)
 
     table.cell(cp, 0, 3, "💪 Rel. Stärke", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance und erhöht die Wahrscheinlichkeit für einen erfolgreichen Trade.")
@@ -380,20 +381,23 @@ if barstate.islast
     table.cell(cp, 0, 17, "--- ORDER-MATRIX ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 17, 1, 17)
 
-    table.cell(cp, 0, 18, "🎯 Stoppreis (SP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
+    table.cell(cp, 0, 18, "🎯 Stoppreis (SP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, tooltip="Dein Einstiegs-Preis (Trigger). Platziere hier deine Stop-Buy (Long) oder Stop-Sell (Short) Limit-Order.")
     table.cell(cp, 1, 18, f_p(sp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
 
-    table.cell(cp, 0, 19, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
+    table.cell(cp, 0, 19, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, tooltip="Gap-Schutz für deine Einstiegsorder. Vermeidet Slippage, wenn der Markt extem wild über deinen Preis springt.")
     table.cell(cp, 1, 19, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
 
-    table.cell(cp, 0, 20, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50, 50, 50), text_color=color.white)
+    table.cell(cp, 0, 20, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50, 50, 50), text_color=color.white, tooltip="Die Anzahl an Aktien, mit denen du EXAKT dein gewünschtes asymmetrisches (€) 1R Risiko triffst.")
     table.cell(cp, 1, 20, str.tostring(shares), bgcolor=color.rgb(30, 30, 30), text_color=color.white)
 
-    table.cell(cp, 0, 21, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime)
+    table.cell(cp, 0, 21, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime, tooltip="Das 1:1 CRV Ziel. Verkaufe hier exakt 50% deiner Position (Risk-Recycling) und ziehe den restlichen Stop auf Break-Even.")
     table.cell(cp, 1, 21, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime)
 
-    table.cell(cp, 0, 22, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange)
+    table.cell(cp, 0, 22, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange, tooltip="Initialer institutioneller ATR-Stop (1.5 * ATR14). Schützt dich vor massiven Ausbrüchen entgegen deiner Richtung.")
     table.cell(cp, 1, 22, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange)
+
+    table.cell(cp, 0, 23, "🏃 Runner-Target", bgcolor=color.rgb(50, 50, 50), text_color=color.fuchsia, tooltip="Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.")
+    table.cell(cp, 1, 23, "EMA 21: " + f_p(ema21), bgcolor=color.rgb(30, 30, 30), text_color=color.fuchsia)
 
 // ==========================================
 // --- 10. VISUALS & ALARME ---
@@ -421,10 +425,10 @@ if barstate.isrealtime and barstate.isconfirmed
         alert(mode_prefix + " - 📡 INFO/LAUERN LONG " + syminfo.ticker + ": Reduziertes Risiko (" + str.tostring(active_risk_l, "#.##") + "€). In: " + f_p(sp_price), alert.freq_once_per_bar)
     else if is_golden_long or is_golden_short
         float r_val = w_trend == 1 ? active_risk_l : active_risk_s
-        alert(mode_prefix + " - 🏆 GOLDEN SETUP " + syminfo.ticker + ": Risiko " + str.tostring(r_val, "#.##") + "€. In: " + f_p(sp_price) + " | TP(1:1): " + f_p(tp_price), alert.freq_once_per_bar)
+        alert(mode_prefix + " - 🏆 GOLDEN SETUP " + syminfo.ticker + ": Risiko " + str.tostring(r_val, "#.##") + "€. In: " + f_p(sp_price) + " | TP1: 1:1 Goal | TP2: Trail EMA 21", alert.freq_once_per_bar)
     else if is_sniper_long or is_sniper_short
         float r_val = w_trend == 1 ? active_risk_l : active_risk_s
         // DELTA Shorts landen hier, weil is_sniper_short greift
-        alert(mode_prefix + " - 🎯 ACTION/FEUER FREI " + syminfo.ticker + ": Risiko " + str.tostring(r_val, "#.##") + "€. In: " + f_p(sp_price), alert.freq_once_per_bar)
+        alert(mode_prefix + " - 🎯 ACTION/FEUER FREI " + syminfo.ticker + ": Risiko " + str.tostring(r_val, "#.##") + "€. In: " + f_p(sp_price) + " | TP1: 1:1 Goal | TP2: Trail EMA 21", alert.freq_once_per_bar)
     else if is_lauern_long or is_lauern_short
         alert(mode_prefix + " - 📡 RADAR " + syminfo.ticker + ": Lauer-Modus!", alert.freq_once_per_bar)

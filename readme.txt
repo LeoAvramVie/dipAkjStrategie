@@ -13,6 +13,7 @@ Das HUD wurde logisch in Blöcken gruppiert, um dir während des Tradings den pe
 💡 **NEU IN v20.5:** Die Werte im Cockpit besitzen interaktive Tooltips. Wenn du mit der Maus (Mouse-over) über die Parameter-Titel in TradingView fährst, liefert das System dir sofortige strategische Erklärungen. 
 
 **Folgende Tooltips sind im Chart aktiv:**
+*   **Sektor:** „Der maßgebliche Sektor-ETF der Aktie. Dient zur Bestimmung des Marktumfelds und der relativen Stärke.“
 *   **Rel. Stärke:** „Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance und erhöht die Wahrscheinlichkeit für einen erfolgreichen Trade.“
 *   **Weinstein-Stage:** „Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short).“
 *   **Wochentrend:** „Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt.“
@@ -24,6 +25,14 @@ Das HUD wurde logisch in Blöcken gruppiert, um dir während des Tradings den pe
 *   **Kerzenregel:** „Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.“
 *   **Stopversicherung:** „Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >3% zur Absicherung der Position.“
 *   **TP Widerstand:** „Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.“
+
+**ORDER-MATRIX TOOLTIPS:**
+*   **Stoppreis (SP):** „Dein Einstiegs-Preis (Trigger). Platziere hier deine Stop-Buy (Long) oder Stop-Sell (Short) Limit-Order.“
+*   **LimitPreis (LP):** „Gap-Schutz für deine Einstiegsorder. Vermeidet Slippage, wenn der Markt extem wild über deinen Preis springt.“
+*   **Anzahl (Stk):** „Die Anzahl an Aktien, mit denen du EXAKT dein gewünschtes asymmetrisches (€) 1R Risiko triffst.“
+*   **TP (Teilverkauf):** „Das 1:1 CRV Ziel. Verkaufe hier exakt 50% deiner Position (Risk-Recycling) und ziehe den restlichen Stop auf Break-Even.“
+*   **Stopp-Loss (SL):** „Initialer institutioneller ATR-Stop (1.5 * ATR14). Schützt dich vor massiven Ausbrüchen entgegen deiner Richtung.“
+*   **Runner-Target:** „Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.“
 
 > ⚠️ **NUTZER-HINWEIS:** Dieses Cockpit dient als Navigationshilfe zur Skalierung eines 50k Depots. Handeln Sie nur, wenn die Signal-Validierung grün leuchtet.
 
@@ -67,3 +76,11 @@ Dieses trackt die gesamte Historie des Tickers (alle Signale und Phasen), ohne v
 Wenn bei einem Typen die Win-Rate (Kurs erreicht 1R Ziel, bevor der Initial-Stop-Loss platzt) im **grünen Bereich (>50%)** liegt, hast du in diesem Asset einen systematischen, bewiesenen Edge! Der Ø Profit inkludiert zudem das Risk-Recycling (sichere +0.5R bei Gewinn, -1.0R bei Verlust).
 
 > **Handlungsanweisung:** „Das Audit zeigt nun die echte historische Trefferquote basierend auf Signal-Ereignissen. Ein Wert über 50% bei 'GOLDEN SETUP' signalisiert einen statistischen Edge.“
+
+---
+### VII. Professional Swing-Trading (ATR-Stops & Runner-Logik)
+v20.5 nutzt nun institutionelle ATR-Stops und eine Runner-Logik am EMA 21, um Gewinne in starken Trends (Stage 2/4) zu maximieren und unnötige Ausstopper zu vermeiden.
+
+**Das 50/50 Risk-Recycling:**
+*   **TP1 (1:1 CRV):** Sobald die Distanz des ATR-Stops als Gewinn erreicht ist, werden 50% der Position verkauft. Der Stop für den Rest wandert auf Break-Even.
+*   **TP2 (Der Runner):** Die verbleibenden 50% reiten den Trend so lange, bis der Tages-Schlusskurs den EMA 21 in die entgegengesetzte Richtung kreuzt oder sich die Weinstein-Phase ändert.
