@@ -160,11 +160,11 @@ bool is_doji = math.abs(close - open) < (atr_val * 0.1) // ATR-Doji-Filter
 
 // Long-Signal
 bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_lo
-bool is_sniper_long  = w_trend == 1  and setup_strict_long  and long_trigger and barstate.isconfirmed
+bool is_sniper_long  = w_trend == 1  and setup_strict_long  and long_trigger
 
 // Short-Signal
 bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
-bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger and barstate.isconfirmed
+bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger
 
 // Golden Setup includes RLD
 bool rld_approved_tp = tp_density <= max_tp_density and rld_valid
@@ -248,6 +248,14 @@ color color_gold = color.rgb(13, 255, 0)
 bool is_any_action = is_sniper_long or is_sniper_short or is_golden_long or is_golden_short
 color action_color = (is_sniper_long or is_golden_long) ? color.blue : color.red
 
+// Trend UI Strings
+string wt_txt = w_trend == 1 ? "BULLISCH ⬆️ (Sticky)" : w_trend == -1 ? "BÄRISCH ⬇️ (Sticky)" : "NEUTRAL ↔️"
+color  wt_bg  = w_trend == 1 ? color.blue : w_trend == -1 ? color.red : color.rgb(30, 30, 30)
+
+string dt_txt = setup_strict_long ? "LONG (Scharf)" : setup_strict_short ? "SHORT (Scharf)" : is_in_radar_long ? "LONG (Radar)" : is_in_radar_short ? "SHORT (Radar)" : "NEUTRAL"
+color  dt_bg  = setup_strict_long ? color.blue : setup_strict_short ? color.red : (is_in_radar_long or is_in_radar_short) ? color.yellow : color.rgb(30, 30, 30)
+
+// Candles
 string c_txt = ""
 color  c_bg  = color.rgb(30, 30, 30)
 if w_trend == 1
@@ -258,7 +266,7 @@ else if w_trend == -1
     c_bg  := (close > open and not is_doji) ? color.red : color.rgb(30, 30, 30)
 
 if is_any_action
-    ws_bg := action_color, c_bg := action_color
+    ws_bg := action_color, c_bg := action_color, wt_bg := action_color, dt_bg := action_color
 
 // ==========================================
 // --- 9. COCKPIT UI (v20.5 Architektur) ---
@@ -287,52 +295,62 @@ if barstate.islast
     table.cell(cp, 0, 4, "📈 Weinstein Stage", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
     table.cell(cp, 1, 4, ws_txt, bgcolor=ws_bg, text_color=color.white)
 
-    // SNIPER-METRIKEN
-    table.cell(cp, 0, 5, "--- SNIPER METRIKEN ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    // TREND-ANALYSE
+    table.cell(cp, 0, 5, "--- TREND-ANALYSE (v20.5) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 5, 1, 5)
 
-    table.cell(cp, 0, 6, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
-    table.cell(cp, 1, 6, str.tostring(dyn_risk, "#.##") + " €", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+    table.cell(cp, 0, 6, "📅 Wochentrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 1, 6, wt_txt, bgcolor=wt_bg, text_color=color.white)
 
-    table.cell(cp, 0, 7, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
-    table.cell(cp, 1, 7, str.tostring(anchor_bars) + " Bars ago", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+    table.cell(cp, 0, 7, "☀️ Tagestrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 1, 7, dt_txt, bgcolor=dt_bg, text_color=(dt_bg == color.yellow) ? color.black : color.white)
 
-    table.cell(cp, 0, 8, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
-    table.cell(cp, 1, 8, vacuum_qual, bgcolor=rld_valid ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10), text_color=color.white)
+    // SNIPER-METRIKEN
+    table.cell(cp, 0, 8, "--- SNIPER METRIKEN ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    table.merge_cells(cp, 0, 8, 1, 8)
+
+    table.cell(cp, 0, 9, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 1, 9, str.tostring(dyn_risk, "#.##") + " €", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+
+    table.cell(cp, 0, 10, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 1, 10, str.tostring(anchor_bars) + " Bars ago", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+
+    table.cell(cp, 0, 11, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 1, 11, vacuum_qual, bgcolor=rld_valid ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10), text_color=color.white)
 
     // MK-VALIDIERUNG
-    table.cell(cp, 0, 9, "--- MK-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 9, 1, 9)
+    table.cell(cp, 0, 12, "--- MK-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    table.merge_cells(cp, 0, 12, 1, 12)
 
-    table.cell(cp, 0, 10, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
-    table.cell(cp, 1, 10, c_txt, bgcolor=c_bg, text_color=color.white)
+    table.cell(cp, 0, 13, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 1, 13, c_txt, bgcolor=c_bg, text_color=color.white)
 
     color s_v_bg = stop_density >= min_stop_density ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 11, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
-    table.cell(cp, 1, 11, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white)
+    table.cell(cp, 0, 14, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 1, 14, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white)
     
     color t_v_bg = rld_approved_tp ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 12, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
-    table.cell(cp, 1, 12, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white)
+    table.cell(cp, 0, 15, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 1, 15, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white)
 
     // ORDER-MATRIX
-    table.cell(cp, 0, 13, "--- ORDER-MATRIX ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 13, 1, 13)
+    table.cell(cp, 0, 16, "--- ORDER-MATRIX ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    table.merge_cells(cp, 0, 16, 1, 16)
 
-    table.cell(cp, 0, 14, "🎯 Stoppreis (SP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
-    table.cell(cp, 1, 14, f_p(sp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
+    table.cell(cp, 0, 17, "🎯 Stoppreis (SP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
+    table.cell(cp, 1, 17, f_p(sp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
 
-    table.cell(cp, 0, 15, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
-    table.cell(cp, 1, 15, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
+    table.cell(cp, 0, 18, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
+    table.cell(cp, 1, 18, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
 
-    table.cell(cp, 0, 16, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50, 50, 50), text_color=color.white)
-    table.cell(cp, 1, 16, str.tostring(shares), bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+    table.cell(cp, 0, 19, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50, 50, 50), text_color=color.white)
+    table.cell(cp, 1, 19, str.tostring(shares), bgcolor=color.rgb(30, 30, 30), text_color=color.white)
 
-    table.cell(cp, 0, 17, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime)
-    table.cell(cp, 1, 17, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime)
+    table.cell(cp, 0, 20, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime)
+    table.cell(cp, 1, 20, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime)
 
-    table.cell(cp, 0, 18, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange)
-    table.cell(cp, 1, 18, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange)
+    table.cell(cp, 0, 21, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange)
+    table.cell(cp, 1, 21, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange)
 
 // ==========================================
 // --- 10. VISUALS & ALARME ---
@@ -348,7 +366,8 @@ if barstate.islast and w_trend != 0
     lbl_sl := label.new(bar_index + 5, sl_price, "🏁 Stop", color=color.red, textcolor=color.white, style=label.style_label_left, size=size.small)
     lbl_tp := label.new(bar_index + 5, tp_price, "💸 1:1 TP", color=color.lime, textcolor=color.black, style=label.style_label_left, size=size.small)
 
-if barstate.isrealtime
+// Strict Repaint Protection: Ensure alarms ONLY trigger on confirmed bars to avoid intrabar fakeouts
+if barstate.isrealtime and barstate.isconfirmed
     if is_golden_long or is_golden_short
         alert("🏆 GOLDEN SETUP " + syminfo.ticker + ": Phase-Shift erkannt! In: " + f_p(sp_price) + " | Qty: " + str.tostring(shares) + " | TP(1:1): " + f_p(tp_price), alert.freq_once_per_bar)
     else if is_sniper_long or is_sniper_short

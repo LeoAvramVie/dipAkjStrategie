@@ -63,7 +63,7 @@
         th { background: rgba(255, 255, 255, 0.03); font-weight: 600; color: #fff; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.05em; }
         tr:last-child td { border-bottom: none; }
         tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
-        td:first-child { font-weight: 700; color: var(--accent-glow); }
+        td:first-child { font-weight: 700; color: var(--accent-glow); width: 25%; }
 
         code { background: rgba(255, 255, 255, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; color: #fff; }
 
@@ -137,8 +137,21 @@
                             <td>Regimewechsel via Wochen-SMA 30. Verankert das Volumenprofil (AVP).</td>
                         </tr>
 
+                        <!-- TREND-ANALYSE -->
+                        <tr><td colspan="3" class="sub-header">3. TREND-ANALYSE (v20.5)</td></tr>
+                        <tr>
+                            <td><strong>📅 Wochentrend</strong></td>
+                            <td>BULLISCH ⬆️ / BÄRISCH ⬇️ / NEUTRAL ↔️</td>
+                            <td><strong>Sticky-Logik:</strong> Wir erfordern zwingend zwei Wochenschlüsse (2-Closes-Regel) außerhalb der Bollinger Bänder. Das macht das System enorm resistent ("sticky") gegen kurzfristige Fakes. Es springt nicht nervös herum.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>☀️ Tagestrend</strong></td>
+                            <td>LONG (Radar/Scharf) / SHORT (Radar/Scharf)</td>
+                            <td><strong>NEU v20.5 ATR-Hysterese:</strong> Ein Ausbruch gilt nur noch, wenn er die Bänder um <code>0.2 * ATR</code> durchbricht. Mikro-Berührungen (Rauschen) generieren keine falschen Alarme mehr.</td>
+                        </tr>
+
                         <!-- SNIPER-METRIKEN -->
-                        <tr><td colspan="3" class="sub-header">3. SNIPER-METRIKEN (Die v20.5 Engine)</td></tr>
+                        <tr><td colspan="3" class="sub-header">4. SNIPER-METRIKEN (Die v20.5 Engine)</td></tr>
                         <tr>
                             <td><strong>📊 Risk-O-Meter (1R)</strong></td>
                             <td>Zahlenwert in €</td>
@@ -147,7 +160,7 @@
                         <tr>
                             <td><strong>⚓ Anchor-Info</strong></td>
                             <td>X Bars ago</td>
-                            <td><strong>NEU v20.5:</strong> Zeigt an, vor wie vielen Bars das Anchored Volume Profile (AVP) gestartet wurde (Start beim letzten Weinstein-Stage Wechsel, max 300 Bars).</td>
+                            <td><strong>NEU v20.5 AVP:</strong> v20.5 ist die exakteste Version für die <strong>100k-Skalierung</strong>, da das AVP an echte strukturelle Ursprungspunkte (Weinstein-Stage-Wechsel) gebunden wird, anstatt blind "die letzten 100 Tage" zu berechnen.</td>
                         </tr>
                         <tr>
                             <td><strong>📐 Vacuum Quality</strong></td>
@@ -156,7 +169,7 @@
                         </tr>
 
                         <!-- MK-VALIDIERUNG -->
-                        <tr><td colspan="3" class="sub-header">4. MK-VALIDIERUNG</td></tr>
+                        <tr><td colspan="3" class="sub-header">5. MK-VALIDIERUNG</td></tr>
                         <tr>
                             <td><strong>🕯️ Kerzenregel</strong></td>
                             <td>OK ✅ / WAIT ⏳</td>
@@ -174,7 +187,7 @@
                         </tr>
 
                         <!-- ORDER-MATRIX -->
-                        <tr><td colspan="3" class="sub-header">5. ORDER-MATRIX</td></tr>
+                        <tr><td colspan="3" class="sub-header">6. ORDER-MATRIX</td></tr>
                         <tr>
                             <td><strong>🎯 SP | 🤝 LP</strong></td>
                             <td>Zahlenwerte ($)</td>
@@ -207,9 +220,9 @@
         <div class="glass-card">
             <h3>III. v20.5 Core Logik-Upgrades</h3>
             <ol>
-                <li><strong>Repaint Protection:</strong> Absicherung des Multi-Timeframe (MTF) 4H Volumens auf dem Tageschart via <code>request.security_lower_tf()</code> und <code>barstate.isconfirmed</code>. Kein Vormogeln mehr unfertiger Kerzen!</li>
-                <li><strong>Anchored Volume Profile (AVP):</strong> Das System scannt nicht mehr stumpf 100 Tage zurück, sondern verankert den Beginn der Volumenmessung am Punkt des letzten signifikanten Regimewechsels (Weinstein Stage-Shift).</li>
-                <li><strong>Sticky Trend Hysterese:</strong> Um Rauschen an den Bollinger Bändern auszufiltern, muss ein Trendausbruch nun 0.2 ATR über/unter das Band hinausschießen, um den Setup-Zustand auszulösen.</li>
+                <li><strong>Repaint Protection (Alarme):</strong> Alarme und Sniper-Signale lösen NUR aus, wenn <code>barstate.isrealtime</code> und <code>barstate.isconfirmed</code> wahr sind. Keine trügerischen Intrabar-Verzerrungen mehr!</li>
+                <li><strong>Anchored Volume Profile (AVP):</strong> Das System scannt nicht mehr stumpf feste Zeitfenster, sondern verankert den Beginn der Volumenmessung kompromisslos am Punkt des letzten signifikanten Regimewechsels (Weinstein Stage-Shift). <strong>Die 100k-Skalierung erfordert exakt diese Präzision, denn nur das Volumen des Smart Money *nach* einem Regimewechsel hat statistische Hebelwirkung.</strong></li>
+                <li><strong>Sticky Trend Hysterese:</strong> Um Rauschen an den Bollinger Bändern auszufiltern, muss ein Trendausbruch nun 0.2 ATR über/unter das Band hinausschießen, um den Tagestrend-Setup-Zustand auszulösen.</li>
             </ol>
         </div>
 
@@ -219,14 +232,14 @@
 
         <div class="glass-card">
             <h3>1. Architektur und Ausführungslogik</h3>
-            <p>Das Pine Script ist strikt modular aufgebaut. UI ist in Tabellen gekapselt und Alarme reagieren <code>freq_once_per_bar</code> bei echten Bestätigungen. Das neue v20.5 HUD greift tabellengestützt auf diese Engine zu.</p>
+            <p>Das Pine Script ist strikt modular aufgebaut. UI ist in Tabellen (nun 22 Zeilen) gekapselt und Alarme reagieren <code>freq_once_per_bar</code> bei harten Bestätigungen (<code>barstate.isconfirmed</code>). Das neue v20.5 HUD greift nahtlos auf diese Logic-Engine zu.</p>
         </div>
 
         <div class="glass-card">
             <h3>2. Dynamisches Risiko & ATR Hysterese</h3>
             <ul>
-                <li><code>atr_buffer = atr_val * 0.2</code> verhindert Fakeouts an den Bollinger Bändern durch einen Noise-Puffer.</li>
-                <li><code>use_dyn_risk</code> schaltet den VIX-Quotienten ein: <code>risk_per_trade * (20.0 / vix_c)</code>. Das schützt in Panikphasen das Kapital durch Positionsverkleinerung und berechnet <code>shares</code> dynamisch.</li>
+                <li><code>atr_buffer = atr_val * 0.2</code> verhindert Fakeouts an den Bollinger Bändern durch einen Noise-Puffer. Dadurch schwankt das System im Radar-Mode signifikant weniger.</li>
+                <li><code>use_dyn_risk</code> schaltet den VIX-Quotienten ein: <code>risk_per_trade * (20.0 / vix_c)</code>. Das schützt in Panikphasen das Kapital durch intelligente Positionsverkleinerung und berechnet <code>shares</code> dynamisch.</li>
             </ul>
         </div>
 
@@ -235,13 +248,13 @@
             <p>Anstatt nur per Standard-Request zu pushen, fragt v20.5 die Lower TF Daten hart ab: <code>request.security_lower_tf(syminfo.tickerid, "240", volume)</code>.</p>
             <ul>
                 <li>Die Relative Liquidity Density (RLD) rechnet: <code>(current_bar_lower_vol / avg_anchor_vol) * 100</code>.</li>
-                <li>Ein Volumen-Vakuum bis zum TP (Take Profit) wird nur freigegeben (<code>rld_valid = true</code>), wenn der Pct-Wert unter <code>rld_limit</code> (20.0%) liegt. Das bedeutet echte Beschleunigungs-Leere.</li>
+                <li>Ein Volumen-Vakuum bis zum TP (Take Profit) wird nur freigegeben (<code>rld_valid = true</code>), wenn der Pct-Wert unter <code>rld_limit</code> (20.0%) liegt. Das bedeutet echte Beschleunigungs-Leere (Thin Air).</li>
             </ul>
         </div>
 
         <div class="glass-card">
             <h3>4. Anchored Iterator</h3>
-            <p>Die eigene Volumen-Funktion <code>f_calc_tf_vol_anchored</code> bekommt einen dynamischen Lookback in <code>anchor_bars</code> übergeben. Dadurch wird die Density-Ratio nicht durch irrelevante alte Historie der Aktie vor dem letzten Trendbruch verzerrt, sondern fängt genau dort an, wo das institutionelle Geld den Wechsel eingeleitet hat.</p>
+            <p>Die eigene MTF Volumen-Funktion <code>f_calc_tf_vol_anchored</code> bekommt einen dynamischen Lookback in <code>anchor_bars</code> übergeben. Dadurch wird die Density-Ratio nicht durch irrelevante alte Historie der Aktie oder simple Moving Averages vor dem letzten Trendbruch verzerrt. Es fängt genau dort an, wo das institutionelle Geld den Wechsel eingeleitet hat.</p>
         </div>
 
         <div class="quote">
