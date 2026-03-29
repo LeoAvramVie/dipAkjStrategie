@@ -54,10 +54,16 @@ Neben der asymmetrischen Risk-Logik schlägt unter der Haube ein neues mathemati
 
 ### IV. Das Kaskaden-Alarmsystem (v20.6 Sensitivity)
 Das Alarmsystem wurde in v20.6 komplett überarbeitet und als 3-stufiger Funnel aufgebaut. Dies löst das Problem, dass zu restriktive Filter am Anfang die besten Trades komplett verschluckt haben.
-Das System bindet sich nun adaptiv immer an den aktuellen Risk-Mode. Du erhältst detaillierte Pings (z. B. "DELTA Mode - 🎯 FEUER FREI [SHORT]").
+Das Alarmsystem ist als Kaskade aufgebaut, bei der der Williams %R (4) Momentum-Oszillator als Kern-Trigger dient. Die Signale sind in Stufen unterteilt, um frühzeitig zu warnen und dann präzise abzufeuern. Wir nutzen die 70/30-Zonen für die frühestmögliche Beobachtung (um keine Zeit bei der Limit-Planung zu verlieren), während wir für die tatsächliche Exekution auf das finale 80/20 Extrem warten.
 
-1. **📡 LAUERN (Radar):** Die Vorbereitungs-Stufe. Feuert sofort, wenn die Weinstein Stage aktiv ist und die allererste Kerze das Band durchbricht (Scharf 1/2). Ziel: Du verpasst keine Vorbereitung mehr. Das Setup taucht gelb im Cockpit auf.
-2. **🎯 FEUER FREI (Der Trigger):** Feuert, sobald die zweite Kerze das Band bricht (Scharf 2/2) und die Kerzenregel (WPR Extreme + Doji Filter) erfüllt ist. **WICHTIG:** Dieser Alarm kommt unabhängig von der Qualität der Volumen-Mauer! Wir tolerieren hier mehr Rauschen (ATR auf 1.0 gesenkt, Stop-Density Minimum nur 1.5%), um garantiert jeden technischen Trigger-Einstieg zu erwischen.
+1. **📡 LAUERN (Radar & 70er WPR Trigger):**
+   - Das Setup erfüllt die Trend-Kriterien (Phase 2/4) und hat die Bollinger-Band-Hysterese berührt.
+   - Der erste Alarm wird ausgelöst, wenn das WPR-Momentum den **70er Bereich (Long)** oder **30er Bereich (Short)** erreicht. Du weißt nun: "Achtung, das Setup baut sich auf!"
+
+2. **🎯 FEUER FREI (Sniper & 80er WPR Trigger):**
+   - Sobald die Kauf-Kerzenregel zuschlägt und das WPR-Momentum das tiefe Extrem von **80 (Long)** oder **20 (Short)** erreicht, erfolgt der finale Exekutions-Trigger.
+   - Hat die Aktie hierbei min. 1.5% Stopversicherung, erscheint der blaue FEUER FREI Status.
+
 3. **🌟 GOLDEN SETUP (Premium):** Der absolute High-Grade Trade. Nur Setups, die neben dem Trigger auch noch eine exzellente Volumen-Struktur (>3% Stop-Mauer, <8% Vakuum-Widerstand) ins Orderbuch legen, erreichen diesen Status.
 
 Risk-Recycling: **Sobald das feste CRV (Risiko) 1:1 erreicht ist, werden 50% der Position aus dem Markt genommen und der Stop-Loss läuft sofort auf Break-Even nach.**
