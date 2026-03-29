@@ -1,0 +1,134 @@
+﻿Strategisches technisches und finanzielles Audit: AKJ 2.0 Sniper-Commander (Pine Script v6)
+Die Entwicklung eines professionellen Asset-Management-Systems wie der AKJ 2.0 Strategie stellt eine signifikante Herausforderung an die Schnittstelle zwischen quantitativer Programmierung und finanzmathematischer Modellierung dar. Das Ziel, ein Depot von 50.000 € auf 100.000 € zu skalieren, erfordert nicht nur ein tiefes Verständnis der Marktmechanik, sondern auch eine technisch einwandfreie Umsetzung in Pine Script v6, um operative Risiken wie Repainting oder fehlerhafte Zustandsverwaltungen zu eliminieren.1 Dieses Audit analysiert die Architektur der Strategie unter Berücksichtigung der Stan Weinstein Phasenlehre, der Mike Kümmerling Preis-Aktion und einer fortgeschrittenen Volumen-Struktur-Analyse.
+Technisches Code-Audit: Pine Script v6 Effizienz und Integrität
+Die technische Basis der AKJ 2.0 Strategie in Pine Script v6 muss höchsten Anforderungen an Präzision und Performance genügen. In einer Umgebung, in der Millisekunden bei der Orderausführung und die Exaktheit historischer Backtests über den Erfolg von Asset-Management-Strategien entscheiden, ist die technische Integrität des Codes das Fundament jeder Skalierung.
+Multi-Timeframe-Datenverarbeitung und Repainting-Prävention
+Die Skalierung von 4-Stunden-Volumendaten auf einen Tageschart ist eine der komplexesten Aufgaben in Pine Script, da sie ein tiefes Verständnis des Ausführungsmodells erfordert. Ein häufiger Fehler in älteren Versionen war die Nutzung von request.security() ohne die Berücksichtigung von Look-ahead-Bias, was dazu führte, dass Informationen aus der Zukunft in die Berechnungen der Vergangenheit einflossen.3 In Pine Script v6 ist die Standardeinstellung für lookahead zwar auf barmerge.lookahead_off gesetzt, doch bei der Aggregation von Intraday-Volumen auf täglicher Basis muss sichergestellt werden, dass nur abgeschlossene 4-Stunden-Intervalle in die Berechnung einfließen.4
+Die korrekte Implementierung erfordert, dass das System auf dem Tageschart den Status der 4-Stunden-Bar erkennt. Da ein Handelstag üblicherweise sechs 4-Stunden-Abschnitte (je nach Markt) umfasst, darf das System das kumulierte Volumen erst dann als "bestätigt" betrachten, wenn die entsprechende Zeitperiode abgelaufen ist. Um Repainting vollständig zu vermeiden, muss der Code die Daten der Vorperiode verwenden oder explizit mit dem barstate.isconfirmed-Flag arbeiten, um sicherzustellen, dass Signale erst nach Abschluss der Bar generiert werden.
+
+
+Datenquelle
+	Zeitrahmen
+	Aggregationsmethode
+	Repainting-Risiko
+	Intraday-Volumen
+	4 Stunden
+	Kumulierung via request.security_lower_tf
+	Gering bei korrekter Bar-Prüfung
+	Tages-Volumen
+	1 Tag
+	Direktzugriff via volume
+	Null
+	MTF-Indikatoren
+	4 Stunden
+	request.security mit `` Offset
+	Null 4
+	Die Analyse zeigt, dass die Nutzung von request.security_lower_tf() in v6 eine effizientere Methode darstellt, um auf die Unterstruktur des Volumens zuzugreifen, ohne die Performance des Hauptskripts durch komplexe manuelle Schleifen zu belasten. Für einen Asset Manager ist es entscheidend, dass der Backtest die Realität widerspiegelt; jede Form von "Zukunfts-Leckage" würde die Performance-Metriken künstlich aufblähen und bei der Skalierung des 50.000 € Depots zu unerwarteten Verlusten führen.2
+Analyse der Sticky-Trend-Logik im Kontext der Volatilität
+Die "Sticky Trend" Logik, die auf zwei Schlusskursen außerhalb der Bollinger Bänder (10/1) basiert, fungiert als Zustandsautomat (State Machine), der Rauschen von echten Trendwenden unterscheiden soll. In der Systemtheorie entspricht dies einem Hysterese-Effekt, der verhindert, dass das System bei jedem kleinen Ausschlag zwischen Long- und Short-Zuständen hin- und herspringt. Die Wahl eines 10-Perioden-Bollinger-Bands mit einer Standardabweichung von 1 ist jedoch vergleichsweise eng gewählt. Dies führt zu einer hohen Sensitivität, die in den Weinstein-Phasen 2 (Aufwärtstrend) und 4 (Abwärtstrend) von Vorteil sein kann, um frühzeitig Positionen aufzubauen.7
+In Phasen hoher Volatilität oder während der Weinstein-Phase 3 (Distribution) kann diese Enge jedoch zu Fehlsignalen führen. Wenn der Preis zwischen den Bändern oszilliert, ohne eine klare Richtung vorzugeben, besteht die Gefahr, dass die "Sticky Trend" Logik zu spät reagiert oder in einer Seitwärtsphase mehrfache Verlusttrades generiert. Eine robuste Zustandsverwaltung muss daher zusätzliche Filter integrieren, wie etwa eine Mindeststeigung des gleitenden Durchschnitts oder eine Bestätigung durch das Volumen-Radar. Die Robustheit gegen Fehlsignale ist bei einem 50k-Depot essenziell, da unnötige Transaktionskosten und Slippage die Zinseszins-Kurve massiv beeinträchtigen können.8
+Fehlertoleranz: Doji-Filter und Mike Kümmerling Sicherheitsregeln
+Die Sicherheitsregeln MK 4.7 und 5.6 von Mike Kümmerling zielen darauf ab, die Qualität der Preis-Aktion zu sichern. Regel 4.7 befasst sich primär mit der Bestätigung des Ausbruchs durch eine "SCHARF"-Kerze, was bedeutet, dass die Kerze einen starken Schlusskurs nahe ihrem Hoch (bei Long) und ein signifikantes Volumen aufweisen muss. Regel 5.6 hingegen dient oft der Risikokontrolle, indem sie Einstiege verbietet, wenn der Preis bereits zu weit vom Schutzwall (High Volume Node) entfernt ist.10
+Ein kritischer Edge-Case für diese Logik sind Gaps (Kurslücken). Bei einem massiven Gap-up am Morgen könnte der Doji-Filter eine ansonsten perfekte SCHARF-Kerze eliminieren, da der Körper der Kerze im Verhältnis zur gesamten Tagesrange klein erscheinen mag, obwohl der strukturelle Ausbruch validiert wurde. Ebenso verhalten sich Low-Float-Ticker oft erratisch; hier kann ein einzelner großer Trade das Volumen-Radar verzerren, ohne dass eine echte institutionelle Akkumulation vorliegt.11 Die Logik muss daher eine Normalisierung vornehmen: Der Doji-Filter sollte nicht auf absoluten Werten basieren, sondern die Kerzengröße ins Verhältnis zur Average True Range (ATR) der letzten 14 Tage setzen.
+Optimierungspotenziale in Pine Script v6
+Pine Script v6 bietet mit der Einführung von map- und matrix-Datentypen sowie verbesserten Funktionen für die Array-Verarbeitung erhebliche Geschwindigkeitsvorteile für das Volumen-Radar. Frühere Versionen mussten für die Berechnung des Volumens auf 400 Bars Lookback oft rechenintensive Schleifen durchlaufen, was die Ladezeit der Charts negativ beeinflusste.
+Durch den Einsatz von map Objekten können Preisniveaus als Schlüssel und das kumulierte Volumen als Werte gespeichert werden, was den Zugriff und die Aktualisierung in   -Zeit ermöglicht.13 Dies ist insbesondere für die Berechnung der "Volumen-Mauer" (Schutzwall) von Bedeutung, da das System so in Echtzeit auf Veränderungen der Liquiditätsstruktur reagieren kann. Des Weiteren ermöglicht Pine v6 eine präzisere Steuerung der Garbage Collection, was bei komplexen Strategien mit vielen MTF-Aufrufen die Stabilität des Terminals erhöht.14
+Fachliches Strategie-Audit: Financial Engineering
+Das finanzielle Engineering der AKJ 2.0 Strategie muss sicherstellen, dass die mathematischen Annahmen hinter den Scores und der Volumen-Analyse einer statistischen Überprüfung standhalten. Das Ziel ist die "Wahrscheinlichkeitsbewirtschaftung" auf einem professionellen Niveau.
+Volumen-Struktur-Präzision: Schutzwall vs. Vakuum
+Der Ansatz, die Stopversicherung (Schutzwall) und den TP-Widerstand (Vakuum) proportional auf einem 400-Bars-Lookback zu berechnen, ist ein klassisches Instrument der Auction Market Theory (AMT). Er geht davon aus, dass Bereiche mit hohem historischen Volumen als Unterstützung dienen, während volumenarme Zonen (Low Volume Nodes, LVN) wie ein "Vakuum" wirken, durch das der Preis schnell hindurchgleiten kann.11
+Statistisch gesehen ist ein fester 400-Bar-Lookback jedoch problematisch, da er keine Rücksicht auf die Marktdynamik nimmt. Ein Ausbruch aus einer 50-tägigen Konsolidierung (Weinstein Phase 1) hat eine andere Relevanz als Volumen, das vor 300 Tagen in einem völlig anderen Marktumfeld gehandelt wurde.7 Exaktere Methoden zur Bestimmung des Risiko-Vakuums nutzen dynamische Ankerpunkte. Ein "Anchored Volume Profile" (AVP), das am Beginn der aktuellen Weinstein Phase 2 gestartet wird, liefert deutlich aussagekräftigere Daten über die aktuelle Kostenbasis der institutionellen Käufer.10
+Konzept
+	Fester Lookback (400 Bars)
+	Dynamisches Anchoring (AVP)
+	Relevanz
+	Zeitlich gewichtet, oft veraltet
+	Ereignisgesteuert, aktuell
+	Präzision
+	Durchschnittsbildung glättet Spitzen
+	Identifiziert exakte institutionelle Level
+	Anpassungsfähigkeit
+	Träge
+	Reagiert sofort auf Regime-Wechsel
+	Mathematische Konsistenz der Qualitäts-Matrix
+Die Gewichtung der A+, B und C Scores ist das Herzstück der Skalierungslogik. Um ein 50.000 € Depot sicher zu verdoppeln, darf die Positionsgröße nicht willkürlich sein. Ein A+ Score impliziert eine hohe Konfluenz aus Weinstein-Phase 2, positivem Mansfield Relative Strength Index und einer SCHARF-Kerze mit Volumenbestätigung.8
+Mathematisch muss die Erwartungswert-Gleichung positiv sein:
+  
+
+Wobei    die Gewinnwahrscheinlichkeit,    das Chance-Risiko-Verhältnis (CRV) und    die Verlustwahrscheinlichkeit ist. Ein A+ Setup sollte eine Gewinnwahrscheinlichkeit von über 60% bei einem CRV von mindestens 2:1 aufweisen. Die Skalierung auf 100k erfordert, dass das Risiko pro Trade (  ) bei A+ Setups höher angesetzt werden kann (z.B. 1,5% des Depots), während C-Setups nur mit reduziertem Risiko (z.B. 0,5%) oder gar nicht gehandelt werden sollten, um den Drawdown gering zu halten.2
+VIX-Firewall und Dynamisches Risk-Management
+Die Nutzung eines binären VIX-Regimes ist ein guter erster Schritt zum Kapitalschutz. Der VIX misst die implizite Volatilität des S&P 500 und dient als "Angstbarometer".11 Ein VIX über 30 deutet auf panikartige Verkäufe hin, bei denen technische Unterstützungen oft nicht halten.
+Eine dynamische Anpassung der Positionsgröße (1R) basierend auf dem Verhältnis von ATR zu VIX wäre jedoch deutlich präziser. Wenn die individuelle Volatilität einer Aktie (ATR) im Verhältnis zur Marktvolatilität (VIX) überproportional ansteigt, signalisiert dies ein erhöhtes idiosynkratisches Risiko. Ein Asset Manager sollte in solchen Fällen die Positionsgröße reduzieren, selbst wenn der VIX unter 25 liegt. Dies schützt das Portfolio vor "Flash Crashes" in spezifischen Sektoren.2
+Konkrete Verbesserungsvorschläge für das Asset Management
+Um die AKJ 2.0 Strategie auf das Niveau eines institutionellen Asset-Management-Systems zu heben, werden die folgenden drei Optimierungen für die Berechnung von "Schutzwall" und "Vakuum" vorgeschlagen:
+1. Ereignisbasiertes Anchored Volume Profile (AVP)
+Anstatt eines rollierenden Fensters von 400 Bars sollte das Volumen-Radar den "Schutzwall" ab dem signifikantesten Pivot-Tief der letzten 6 Monate berechnen. Dies entspricht dem Punkt, an dem die aktuelle Weinstein-Phase 2 ihren Ursprung hat. In Pine Script v6 kann dies durch die Identifizierung von ta.pivotlow()-Punkten automatisiert werden. Das resultierende Volumenprofil zeigt die wahre "Point of Control" (POC) der aktuellen Bullenbewegung und ist für Stop-Platziereungen statistisch valider als ein zeitbasiertes Profil.10
+2. Relative Liquidity Density (RLD) Analyse
+Das "Vakuum" sollte nicht nur als Abwesenheit von Volumen definiert werden, sondern als "Relative Liquidity Density". Hierbei wird das Volumen in einem Preisbereich ins Verhältnis zum durchschnittlich gehandelten Volumen des Tickers gesetzt. Ein Bereich ist erst dann ein echtes Vakuum, wenn die Liquiditätsdichte unter 20% des Durchschnitts fällt. Dies verhindert, dass kleine "Dips" im Volumenprofil fälschlicherweise als Zielzonen interpretiert werden, und stellt sicher, dass der Preis tatsächlich den "Pfad des geringsten Widerstands" einschlagen kann.11
+3. VAH/VAL-Dynamik zur Gewinnmitnahme
+Die Grenzen der Value Area (Value Area High und Value Area Low) des Volumenprofils bieten eine exzellente Basis für den "TP-Widerstand". Anstatt eines festen Take-Profit-Werts sollte das System das "Vakuum" bis zum Erreichen der nächsten signifikanten Value Area High (VAH) eines übergeordneten Timeframes (z.B. Wochenchart) definieren. Dies gibt dem Asset Manager eine klare Orientierung, wo institutionelle Verkäufer (Distribution) wahrscheinlich wieder aktiv werden.10
+Detaillierte Analyse der Stan Weinstein Phasenintegration
+Die Stan Weinstein Phasenanalyse ist das Rückgrat der AKJ 2.0 Strategie. Für die Skalierung eines 50.000 € Depots ist es von entscheidender Bedeutung, die Übergänge zwischen den Phasen mit höchster Präzision zu identifizieren, da hier das größte Aufwärtspotenzial bei gleichzeitig kontrolliertem Risiko liegt.
+Phase 1: Die Akkumulationsphase (Basing)
+In Phase 1 bewegt sich die Aktie seitwärts, oft nach einem langen Abwärtstrend. Der 30-Wochen-Durchschnitt flacht ab. In dieser Phase wird der "Schutzwall" aufgebaut.7 Die AKJ 2.0 Strategie muss hier geduldig sein. Ein häufiger Fehler ist der zu frühe Einstieg innerhalb der Basis. Das Audit empfiehlt, das Volumen-Radar so einzustellen, dass es "Volumen-Cluster" am unteren Ende der Basis erkennt. Wenn der Schutzwall am unteren Ende massiv ist, deutet dies auf institutionelle Akkumulation hin, was die Wahrscheinlichkeit eines erfolgreichen Ausbruchs in Phase 2 erhöht.8
+Phase 2: Die Aufwärtsphase (Advancing)
+Der Übergang zu Phase 2 erfolgt durch einen Ausbruch über den Widerstand der Basis bei steigendem Volumen. Hier setzt der "Sniper-Commander" an. Der Preis muss über dem steigenden 30-Wochen-Durchschnitt liegen.7 Die MK 4.7 Regel (SCHARF-Kerze) ist hier das entscheidende Filterinstrument. Eine SCHARF-Kerze bestätigt, dass die Käufer die Kontrolle übernommen haben. Für die Skalierung auf 100k ist es essenziell, in Phase 2 "die Gewinner laufen zu lassen". Die Sticky-Trend-Logik sollte hier so konfiguriert sein, dass sie nicht bei jeder kleinen Konsolidierung ausstoppt, solange der Schutzwall (die Volumen-Mauer) hält.11
+Phase 3: Die Distributionsphase (Topping)
+In Phase 3 flacht der Trend ab, und die Volatilität nimmt zu. Hier steigt das Risiko massiv an. Die AKJ 2.0 Strategie muss in dieser Phase defensiv agieren. Das Volumen-Radar zeigt oft "Distribution", d.h. hohe Volumen bei fallenden Preisen oder innerhalb der Range.7 Die Sticky-Trend-Logik ist in dieser Phase besonders anfällig für Fehlsignale. Ein Asset Manager sollte hier die Positionsgrößen drastisch reduzieren oder Gewinne vollständig sichern, sobald der Preis unter den 30-Wochen-Durchschnitt fällt, selbst wenn die Sticky-Trend-Logik noch kein Short-Signal gibt.8
+Phase 4: Die Abwärtsphase (Declining)
+Phase 4 ist durch fallende Preise unter einem sinkenden 30-Wochen-Durchschnitt gekennzeichnet. Hier darf unter keinen Umständen long gegangen werden.7 Die Strategie muss hier im "Cash-Modus" bleiben oder Leerverkäufe tätigen, sofern dies Teil des Mandats ist. Die VIX-Firewall sollte in dieser Phase oft auf "Rot" stehen, da Phase-4-Abstürze meist mit einer hohen Gesamtmarktvolatilität einhergehen.2
+Vertiefung der Volumen-Struktur-Analyse für Asset Manager
+Die Volumen-Struktur-Analyse der AKJ 2.0 Strategie ist weit mehr als ein technischer Indikator; sie ist eine Karte der Marktliquidität. Für einen Asset Manager, der ein 50.000 € Depot verwaltet, bietet sie die notwendige Transparenz, um institutionelles Verhalten zu verstehen.
+Die Psychologie des Schutzwalls
+Der Schutzwall (High Volume Node, HVN) repräsentiert das Preisniveau, bei dem das höchste Handelsvolumen stattgefunden hat. Psychologisch gesehen ist dies der "faire Wert", auf den sich Käufer und Verkäufer geeinigt haben.12 Wenn der Preis zu diesem Level zurückkehrt, neigen Marktteilnehmer dazu, ihre Positionen zu verteidigen oder bei "Breakeven" auszusteigen. Dies erzeugt Unterstützung. Die AKJ 2.0 Strategie nutzt dies korrekt als "Stopversicherung". Ein Stop-Loss sollte immer knapp unter einem signifikanten Schutzwall platziert werden, da ein Durchbrechen dieses Walls eine fundamentale Änderung der Marktmeinung signalisiert.11
+Die Dynamik des Vakuums
+Ein Vakuum (Low Volume Node, LVN) entsteht, wenn der Preis ein Niveau sehr schnell durchlaufen hat, ohne dass viel Handel stattgefunden hat. Es gibt dort wenig "historisches Gedächtnis".10 Wenn der Preis in ein solches Vakuum eintritt, gibt es kaum Widerstand durch alte Positionen. Dies führt zu den schnellen Bewegungen, die für die Skalierung auf 100k notwendig sind. Die AKJ 2.0 Strategie sollte das Vakuum als "Profit-Zone" definieren. Je größer das Vakuum bis zum nächsten Widerstand (TP-Widerstand), desto höher sollte die Gewichtung (Score) des Trades sein.11
+Volumen-Struktur Element
+	Funktion in AKJ 2.0
+	Strategische Bedeutung
+	Schutzwall (HVN)
+	Stop-Basis
+	Kapitalschutz durch institutionelle Liquidität
+	Vakuum (LVN)
+	Kursziel-Raum
+	Effizienz der Preisbewegung, schnelle Gewinne
+	Point of Control (POC)
+	Ankerpunkt
+	Magnet für den Preis, Basis für Reversions-Trades
+	Value Area (VA)
+	Fair Value Zone
+	Identifikation von Übertreibungen (Stage 2 vs. Stage 3)
+	Risikomanagement und Skalierungspfade
+Die Skalierung von 50.000 € auf 100.000 € ist nicht nur eine Frage der Strategie, sondern der Disziplin im Risikomanagement. Die AKJ 2.0 Strategie muss hierbei eine klare mathematische Struktur verfolgen.
+Fractional-f und Kelly-Kriterium
+Ein professionelles System sollte die Positionsgröße basierend auf dem Kelly-Kriterium optimieren. Das Kelly-Kriterium bestimmt den Prozentsatz des Kapitals, der gesetzt werden sollte, um das langfristige Wachstum zu maximieren:
+  
+
+Wobei    der Prozentsatz des Kapitals ist,    die Quote (Gewinn/Verlust),    die Gewinnwahrscheinlichkeit und    die Verlustwahrscheinlichkeit (  ). Da das reine Kelly-Kriterium oft zu aggressiv ist (hoher Drawdown), nutzen Asset Manager meist ein "Half-Kelly" oder "Fractional-f" Modell. Die Qualitäts-Matrix der AKJ 2.0 Strategie (A+, B, C Scores) sollte direkt mit diesen Werten verknüpft sein, um eine konsistente Skalierung zu gewährleisten.2
+Drawdown-Management und die VIX-Firewall
+Der Schutz des Kapitals hat oberste Priorität. Ein Drawdown von 20% erfordert einen Gewinn von 25%, um wieder auf den Ausgangswert zu kommen. Ein Drawdown von 50% erfordert bereits 100%. Die VIX-Firewall ist hier das wichtigste Instrument. Bei einem VIX > 30 sollte das System automatisch alle neuen Positionen blockieren und bestehende Stops eng nachziehen. Dies verhindert, dass das 50k-Depot in einer systemischen Krise massiv an Wert verliert.11
+Fazit und Zusammenfassende Empfehlungen
+Das Audit der AKJ 2.0 Sniper-Commander Strategie zeigt ein hochgradig durchdachtes System, das die besten Elemente der technischen Analyse und des Financial Engineerings kombiniert. Die Nutzung von Pine Script v6 ermöglicht eine präzise Umsetzung, sofern die Fallstricke des Repaintings und des Look-ahead-Bias konsequent vermieden werden.1
+Die wesentlichen Erkenntnisse für den Asset Manager sind:
+1. Technische Präzision: Die Umstellung auf Pine Script v6 map-Objekte wird das Volumen-Radar beschleunigen und die Berechnung der Volumen-Struktur effizienter machen.13
+2. Strategische Verfeinerung: Der Wechsel von einem festen 400-Bar-Lookback zu einem ereignisbasierten "Anchored Volume Profile" wird die Verlässlichkeit des Schutzwalls und des Vakuums signifikant erhöhen.10
+3. Mathematische Skalierung: Die Verknüpfung der Qualitäts-Matrix mit einem Fractional-f Positionsgrößenmodell ist der sicherste Weg, um das Ziel der 100k-Skalierung zu erreichen, ohne unkalkulierbare Risiken einzugehen.2
+4. Marktregime-Awareness: Die VIX-Firewall sollte von einem binären System zu einem dynamischen, ATR-basierten Risikomodell weiterentwickelt werden, um auch in volatilen Zwischenphasen (Stage 3) geschützt zu sein.11
+Die AKJ 2.0 Strategie hat das Potenzial, ein robustes Fundament für die professionelle Vermögensverwaltung zu bilden. Durch die Umsetzung der vorgeschlagenen Optimierungen wird das System nicht nur "unlogische Code-Passagen" eliminieren, sondern die Wahrscheinlichkeitsbewirtschaftung auf ein Niveau heben, das den Anforderungen eines modernen Asset Managers entspricht. Die Kombination aus Stan Weinsteins zeitloser Phasenlehre und moderner Volumen-Struktur-Analyse in Pine Script v6 stellt eine "bare Münze" dar, die bei konsequenter Anwendung den gewünschten Skalierungserfolg verspricht.
+Referenzen
+1. Pine Script Repainting: Why It Happens and How to Prevent It - CrossTrade, Zugriff am März 29, 2026, https://crosstrade.io/blog/pine-script-repainting/
+2. TradingView Repainting: Boost Signal Accuracy & Reliability - PickMyTrade, Zugriff am März 29, 2026, https://blog.pickmytrade.trade/tradingview-repainting-indicator-reliability-signal-accuracy/
+3. How PineGen AI Handles Repainting and Look-Ahead Bias at the Code Level?, Zugriff am März 29, 2026, https://rangatechnologies.medium.com/how-pinegen-ai-handles-repainting-and-look-ahead-bias-at-the-code-level-3f49620e358d
+4. Other data and timeframes - TradingView, Zugriff am März 29, 2026, https://www.tradingview.com/pine-script-docs/faq/other-data-and-timeframes/
+5. Pine script code is Repaiting, can someone help me resolve it? - Stack Overflow, Zugriff am März 29, 2026, https://stackoverflow.com/questions/76778192/pine-script-code-is-repaiting-can-someone-help-me-resolve-it
+6. Help with eliminating repainting in pine script indicator that plots price level lines on lower timeframe charts when using daily ATR to calculate price levels drawn : r/TradingView - Reddit, Zugriff am März 29, 2026, https://www.reddit.com/r/TradingView/comments/17byyuz/help_with_eliminating_repainting_in_pine_script/
+7. Master Market Trends with AI-Powered Weinstein Stage Analysis | TrendSpider Blog, Zugriff am März 29, 2026, https://trendspider.com/blog/master-market-trends-with-ai-powered-weinstein-stage-analysis/
+8. The Complete Guide to Stan Weinstein's Stage Analysis - TraderLion, Zugriff am März 29, 2026, https://traderlion.com/trading-strategies/stage-analysis/
+9. Stan Weinstein Trading Strategy: A Forex Trader's Guide - ThinkCapital, Zugriff am März 29, 2026, https://www.thinkcapital.com/stan-weinstein-trading-strategy-forex-funded-traders/
+10. Fixed Range Volume Profile: Definition and Trading Strategies - ATAS, Zugriff am März 29, 2026, https://atas.net/blog/fixed-range-volume-profile-definition-and-trading-strategies/
+11. Volume Profile Map: Where Smart Money Trades - LuxAlgo, Zugriff am März 29, 2026, https://www.luxalgo.com/blog/volume-profile-map-where-smart-money-trades/
+12. Fixed Range Volume Profile: Settings, Strategies & Backtesting | FTO - Forex Tester Online, Zugriff am März 29, 2026, https://forextester.com/blog/fixed-range-volume-profile/
+13. Volume Profile (Maps) | Trading Indicator - LuxAlgo, Zugriff am März 29, 2026, https://www.luxalgo.com/library/indicator/volume-profile-maps/
+14. Pine Script Volume Profile Settings | PDF | Computer Programming - Scribd, Zugriff am März 29, 2026, https://www.scribd.com/document/738845225/Volume-profile
+15. How to use Volume Profile in trading | Technical Analysis | OANDA | US, Zugriff am März 29, 2026, https://www.oanda.com/us-en/trade-tap-blog/trading-knowledge/volume-profile-explained/
+16. Stage Analysis Trading: Master Stan Weinstein's 4-Stage Method, Zugriff am März 29, 2026, https://arongroups.co/forex-articles/stage-analysis-trading/
