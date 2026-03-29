@@ -64,6 +64,6 @@ Dieses trackt die gesamte Historie des Tickers (alle Signale und Phasen), ohne v
 * **FEUER FREI:** Wie oft eine Scharf-Kerze den Trigger in der Lauer-Position zog.
 * **GOLDEN SETUP:** Wie oft zudem das gesamte Volumen-Setup (Schutz-Wall & Vakuum) stimmte.
 
-Wenn bei einem Typen die Win-Rate (Kurs erreicht 1R Ziel, bevor der Initial-Stop-Loss platzt) im **grünen Bereich (>60%)** liegt, hast du in diesem Asset einen systematischen, bewiesenen Edge! Der Ø Profit inkludiert zudem das Risk-Recycling (sichere +0.5R bei Gewinn, -1.0R bei Verlust).
+Wenn bei einem Typen die Win-Rate (Kurs erreicht 1R Ziel, bevor der Initial-Stop-Loss platzt) im **grünen Bereich (>50%)** liegt, hast du in diesem Asset einen systematischen, bewiesenen Edge! Der Ø Profit inkludiert zudem das Risk-Recycling (sichere +0.5R bei Gewinn, -1.0R bei Verlust).
 
-> **Handlungsanweisung:** „Handeln Sie bevorzugt Ticker, deren GOLDEN SETUP Trefferquote historisch über 60% liegt.“
+> **Handlungsanweisung:** „Das Audit zeigt nun die echte historische Trefferquote basierend auf Signal-Ereignissen. Ein Wert über 50% bei 'GOLDEN SETUP' signalisiert einen statistischen Edge.“
