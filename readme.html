@@ -71,6 +71,7 @@
         .badge.green { background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3); }
         .badge.blue { background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.3); }
         .badge.yellow { background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.3); }
+        .badge.orange { background: rgba(255, 153, 0, 0.1); color: #ff9900; border: 1px solid rgba(255, 153, 0, 0.3); }
         .badge.red { background: rgba(255, 0, 85, 0.1); color: #ff0055; border: 1px solid rgba(255, 0, 85, 0.3); }
         .badge.gray { background: rgba(255, 255, 255, 0.1); color: #ccc; border: 1px solid rgba(255, 255, 255, 0.3); }
 
@@ -89,6 +90,11 @@
         .alert-box { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 2rem; display: flex; align-items: flex-start; gap: 1rem; }
         .alert-icon { font-size: 1.5rem; line-height: 1; }
         .alert-content p { margin: 0; color: #fff; }
+
+        .regime-box { padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border-left: 4px solid; background: rgba(20,20,20,0.5); }
+        .regime-alpha { border-left-color: #00ff88; }
+        .regime-delta { border-left-color: #ffcc00; }
+        .regime-omega { border-left-color: #ff0055; }
     </style>
 </head>
 <body>
@@ -101,7 +107,7 @@
         <div class="divider"></div>
 
         <h2 class="section-title">TEIL 1: FACHLICHES DOSSIER (System-Handbuch)</h2>
-        <p>Hier ist die detaillierte, fachliche und technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.5. Das System wurde in v20.5 um ein dynamisches Risikomanagement, Anchored Volume Profile (AVP) und strengere Doji-/Hysterese-Filter erweitert.</p>
+        <p>Hier ist die detaillierte, fachliche und technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.5. Das System wurde in v20.5 Elite um ein adaptives, <strong>asymmetrisches Risikomanagement</strong>, Anchored Volume Profile (AVP) und strengere Doji-/Hysterese-Filter erweitert.</p>
 
         <div class="glass-card">
             <h3>I. Das Interaktive Cockpit (Dashboard)</h3>
@@ -120,7 +126,8 @@
                 <li><strong>Weinstein-Stage:</strong> „Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short).“</li>
                 <li><strong>Wochentrend:</strong> „Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt.“</li>
                 <li><strong>Tagestrend:</strong> „Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern.“</li>
-                <li><strong>Risk-O-Meter:</strong> „Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität (ATR) automatisch an. Basis: 150€.“</li>
+                <li><strong>Risk-O-Meter:</strong> „Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an.“</li>
+                <li><strong>Risk-Mode:</strong> „ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilität.“</li>
                 <li><strong>Anchor-Info:</strong> „Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.“</li>
                 <li><strong>Vacuum Quality:</strong> „Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).“</li>
                 <li><strong>Kerzenregel:</strong> „Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.“</li>
@@ -154,7 +161,8 @@
                         <tr><td class="tooltip-hint" title="Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern."><strong>☀️ Tagestrend</strong></td><td>LONG (Radar/Scharf) / SHORT (Radar/Scharf)</td></tr>
 
                         <tr><td colspan="2" class="sub-header">4. SNIPER-METRIKEN</td></tr>
-                        <tr><td class="tooltip-hint" title="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität (ATR) automatisch an. Basis: 150€."><strong>📊 Risk-O-Meter (1R)</strong></td><td>Zahlenwert in €</td></tr>
+                        <tr><td class="tooltip-hint" title="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an."><strong>📊 Risk-O-Meter (1R)</strong></td><td>Zahlenwert in €</td></tr>
+                        <tr><td class="tooltip-hint" title="ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilität."><strong>🛡️ Risk-Mode</strong></td><td><span class="badge green">ALPHA</span> <span class="badge orange">DELTA</span> <span class="badge red">OMEGA</span></td></tr>
                         <tr><td class="tooltip-hint" title="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt."><strong>⚓ Anchor-Info</strong></td><td>X Bars ago</td></tr>
                         <tr><td class="tooltip-hint" title="Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum)."><strong>📐 Vacuum Quality</strong></td><td>High / Low Quality</td></tr>
 
@@ -165,7 +173,7 @@
 
                         <tr><td colspan="2" class="sub-header">6. ORDER-MATRIX</td></tr>
                         <tr><td><strong>🎯 SP | 🤝 LP</strong></td><td>Zahlenwerte ($)</td></tr>
-                        <tr><td><strong>🔢 Stk (Anzahl)</strong></td><td>Zahlenwert</td></tr>
+                        <tr><td><strong>🔢 Stk (Anzahl)</strong></td><td>Zahlenwert (via Risk-Mode)</td></tr>
                         <tr><td><strong>💸 TP | 🏁 SL</strong></td><td>Zahlenwerte ($)</td></tr>
                     </tbody>
                 </table>
@@ -173,53 +181,45 @@
         </div>
 
         <div class="glass-card">
-            <h3>II. v20.5 Innovationen (Das Kern-Upgrade)</h3>
-            <p>Neben den sichtbaren Tooltips schlägt unter der Haube ein neues mathematisches Herz. Die v20.5 Code-Architektur löst die größten Probleme klassischer Trading-Indikatoren:</p>
+            <h3>II. Asymmetrisches Risiko: Die „Atmende Firewall“</h3>
+            <p>In v20.5 Elite wurde das einfache "VIX an/aus" Flag durch ein hoch-intelligentes 3-Stufen-Modell ersetzt, um in fallenden Märkten Short-Gewinne zu extrahieren, anstatt alles blindlings zu blockieren.</p>
+            
+            <div class="regime-box regime-alpha">
+                <strong>1. Regime ALPHA (VIX < 25):</strong><br>
+                Der Markt ist geordnet. Longs und Shorts werden mit 100% Risiko gehandelt (Basis 150€).
+            </div>
+            <div class="regime-box regime-delta">
+                <strong>2. Regime DELTA (VIX 25 - 35):</strong><br>
+                Es herrscht Unruhe und Abwärtsdruck. Das System nutzt ab hier asymmetrisch die Schwerkraft: Bei <strong>Long-Trades</strong> wird das Risiko zum Kapitalschutz massiv geviertelt (25% R). <strong>Short-Trades</strong> bleiben auf vollen 100% Risiko, um Panikverkäufe für das Depot optimal als Gewinnbeschleuniger zu nutzen.
+            </div>
+            <div class="regime-box regime-omega">
+                <strong>3. Regime OMEGA (VIX > 35):</strong><br>
+                Massive Volatilität / Schwarze Schwäne. Der Markt ist dysfunktional. Beide Seiten werden gnadenlos mit 0% Risiko blockiert, um das Depot vor extremen Gaps und Slippage zu schützen.
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h3>III. v20.5 Innovationen (Das Kern-Upgrade)</h3>
             <ol>
-                <li><strong>Die AVP/RLD-Synergie (Der Gamechanger):</strong> Klassische Profiler messen einfach stumpf feste Tage (z.B. "Volumen der letzten 100 Tage"). Die <strong>v20.5 Anker-Logik</strong> startet den Volumen-Zähler erst zu dem exakten Zeitpunkt, an dem das "Smart Money" die Weinstein-Phase gedreht hat. Verbunden mit dem <strong>RLD-Check</strong> (Relative Liquidity Density) scannen wir nun nicht nach *irgendeinem* TP-Widerstand, sondern wir validieren echtes "High-Speed-Vakuum". Diese Synergie aus Anker und relativer Dichte steigert die Qualität der Signale massiv gegenüber der Vorversion.</li>
-                <li><strong>Repaint Protection (Alarme):</strong> Alarme lösen NUR aus, wenn <code>barstate.isrealtime</code> und <code>barstate.isconfirmed</code> wahr sind. Keine trügerischen Intrabar-Verzerrungen mehr!</li>
-                <li><strong>Sticky Trend Hysterese:</strong> Um Rauschen an den Bollinger Bändern auszufiltern, muss ein Ausbruch nun 0.2 ATR über/unter das Band hinausschießen.</li>
+                <li><strong>Die AVP/RLD-Synergie (Der Gamechanger):</strong> Klassische Profiler messen einfach stumpf feste Tage. Die <strong>v20.5 Anker-Logik</strong> startet den Volumen-Zähler erst zu dem exakten Zeitpunkt, an dem das "Smart Money" die Weinstein-Phase historisch gedreht hat. Verbunden mit dem <strong>RLD-Check</strong> (Relative Liquidity Density) sichern wir unsere Stops über diese Anker-Aufschichtung ab.</li>
+                <li><strong>Repaint Protection (Alarme):</strong> Alarme lösen NUR aus, wenn <code>barstate.isrealtime</code> und <code>barstate.isconfirmed</code> wahr sind. Keine trügerischen Intrabar-Verzerrungen mehr! Alle Alarme sind zudem direkt an den aktuellen Risk-Mode gebunden (z.B. "DELTA Mode - 🎯 SNIPER: Risk-Recycling bereit!").</li>
+                <li><strong>Risk-Recycling:</strong> Im Strategy Backtest bewiesen – Berührt der Preis das Initialrisiko als Gewinn (1:1 CRV), wird gnadenlos die Hälfte (50%) in Cash getauscht und der Rest-Stopp auf den Break-Even-Preis gezogen.</li>
             </ol>
         </div>
 
         <div class="glass-card">
-            <h3>III. Das Alarmsystem (Risk-Recycling & Phase-Shift)</h3>
+            <h3>IV. Backtest-Anleitung (IBKR Abgleich)</h3>
+            <p>Es liegt ein separates <code>akj_sniper_backtest_v20_5.pine</code> Script bei. Dieses simuliert ein exaktes 50.000€ Depot, zieht 2.00€ Kommission ab und rechnet 1 Tick Slippage pro Trade.</p>
             <ul>
-                <li><strong>1. 📡 RADAR:</strong> "AVP Anchor validiert. Lauer-Modus!" (Williams %R erreicht Zone, Anchor läuft).</li>
-                <li><strong>2. 🎯 SNIPER:</strong> "Risk-Recycling bereit! Feuer frei!" (Alle Preis-Action Regeln + ATR-Doji-Filter + Sticky-Hysterese bestanden). TWS öffnen!</li>
-                <li><strong>3. 🏆 GOLDEN SETUP:</strong> "Phase-Shift erkannt!" (Volumenprofil passt, RLD-Vakuum bestätigt). Höchste Validierungsstufe!</li>
-            </ul>
-        </div>
-
-        <div class="divider"></div>
-
-        <h2 class="section-title">TEIL 2: TECHNISCHE DOKUMENTATION FÜR ENTWICKLER (Pine Script v6)</h2>
-
-        <div class="glass-card">
-            <h3>1. Architektur und Ausführungslogik</h3>
-            <p>Das Pine Script ist strikt modular aufgebaut. UI ist in 22-Tabellen-Zeilen gekapselt. Alarme überprüfen zwingend <code>if barstate.isrealtime and barstate.isconfirmed</code>. Die Zell-Definitionen in <code>table.cell()</code> nutzen das <code>tooltip</code> Argument.</p>
-        </div>
-
-        <div class="glass-card">
-            <h3>2. Dynamisches Risiko & ATR Hysterese</h3>
-            <ul>
-                <li><code>atr_buffer = atr_val * 0.2</code> verhindert Fakeouts an den Bollinger Bändern durch einen Noise-Puffer. Dadurch schwankt das System im Radar-Mode signifikant weniger.</li>
-                <li><code>use_dyn_risk</code> schaltet den VIX-Quotienten ein: <code>risk_per_trade * (20.0 / vix_c)</code>. Das schützt in Panikphasen das Kapital durch intelligente Positionsverkleinerung und berechnet <code>shares</code> dynamisch.</li>
-            </ul>
-        </div>
-
-        <div class="glass-card">
-            <h3>3. Lower Timeframe Repaint-Schutz (RLD)</h3>
-            <p>Anstatt nur per Standard-Request zu pushen, fragt v20.5 die Lower TF Daten hart ab: <code>request.security_lower_tf(syminfo.tickerid, "240", volume)</code>.</p>
-            <ul>
-                <li>Die Relative Liquidity Density (RLD) rechnet: <code>(current_bar_lower_vol / avg_anchor_vol) * 100</code>.</li>
-                <li>Ein Volumen-Vakuum bis zum TP (Take Profit) wird nur freigegeben (<code>rld_valid = true</code>), wenn der Pct-Wert unter <code>rld_limit</code> (20.0%) liegt. Das bedeutet echte Beschleunigungs-Leere (Thin Air).</li>
+                <li>Lade das Script im Pine Editor und speichere es im Chart.</li>
+                <li>Nutze den Tab <strong>"Strategietester"</strong> unten in TradingView, um den "Simulated Net Profit" auf Aktien zu prüfen.</li>
+                <li>Wenn du auf <strong>Tagescharts</strong> deiner realen IBKR-Trades gehst (LHA, TEAM, CSCO, PYPL), zeigt das System dir unten rechts tabellarisch eine <em>"IBKR Reality Check Note"</em> an, in der Abweichungen deines Handelns vom Code transparent aufgelistet werden.</li>
             </ul>
         </div>
 
         <div class="quote">
-            <strong>Der AKJ 2.0 v20.5 Leitgedanke:</strong><br>
-            "Der Sniper-Commander v20.5 schließt die mathematische Brücke zwischen Volatilität und Volumen. Er handelt nicht nur, wenn das Setup 'da ist', sondern wenn die Volumen-Textur im Markt den Trade auch effektiv zulässt."
+            <strong>Der AKJ 2.0 v20.5 Elite Leitgedanke:</strong><br>
+            "Der Sniper-Commander v20.5 schließt die mathematische Brücke zwischen Volatilität und Volumen. Er handelt nicht nur, wenn das Setup 'da ist', sondern er passt asymmetrisch sein Risiko an die Richtung der Schwerkraft an."
         </div>
 
     </div>

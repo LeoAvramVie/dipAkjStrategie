@@ -8,7 +8,7 @@ group_rm         = "Risikomanagement"
 risk_per_trade   = input.float(150.0, "Basis Risiko pro Trade (€)", group=group_rm)
 limit_offset_pct = input.float(0.2, "Limit-Offset (%)", group=group_rm)
 puffer_ticks     = input.int(2, "Puffer in Ticks", group=group_rm)
-use_dyn_risk     = input.bool(true, "Dynamisches Risk (VIX/ATR)", group=group_rm)
+use_dyn_risk     = input.bool(true, "Adaptives Risk (Alpha/Delta/Omega)", group=group_rm)
 
 group_strat      = "MK-Strategie Parameter"
 bb_len           = input.int(10, "Bollinger Länge", group=group_strat)
@@ -27,12 +27,26 @@ use_auto_etf     = input.bool(true, "Auto-Detect Sektor", group=group_rs)
 user_etf         = input.symbol("SPY", "Manueller Sektor-ETF", group=group_rs)
 
 // ==========================================
-// --- ATR & Dynamisches Risiko ---
+// --- ATR & Atmendes Risiko-Regime (Asymmetrisch) ---
 // ==========================================
 atr_val = ta.atr(atr_len)
-// Abkürzung der VIX-Abfrage für Dynamisches Risk
 vix_c = request.security("CBOE:VIX", "1D", close, lookahead=barmerge.lookahead_off)
-float dyn_risk = use_dyn_risk and not na(vix_c) ? math.min(risk_per_trade, risk_per_trade * (20.0 / vix_c)) : risk_per_trade
+
+// Risk Multiplier Logik
+float risk_mult_l = vix_c < 25.0 ? 1.0 : (vix_c <= 35.0 ? 0.25 : 0.0)
+float risk_mult_s = vix_c < 25.0 ? 1.0 : (vix_c <= 35.0 ? 1.0  : 0.0)
+
+float active_risk_l = use_dyn_risk ? risk_per_trade * risk_mult_l : risk_per_trade
+float active_risk_s = use_dyn_risk ? risk_per_trade * risk_mult_s : risk_per_trade
+
+bool firewall_l = use_dyn_risk and risk_mult_l == 0.0
+bool firewall_s = use_dyn_risk and risk_mult_s == 0.0
+
+string risk_mode_txt = vix_c < 25.0 ? "ALPHA (Full)" : (vix_c <= 35.0 ? "DELTA (Short-Bias)" : "OMEGA (Lock)")
+color  risk_mode_bg  = vix_c < 25.0 ? color.rgb(10, 60, 10) : (vix_c <= 35.0 ? color.rgb(200, 100, 0) : color.rgb(100, 10, 10))
+string rm_tooltip    = "ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilität."
+
+string mode_prefix = vix_c < 25.0 ? "ALPHA Mode" : (vix_c <= 35.0 ? "DELTA Mode" : "OMEGA Mode")
 
 // Williams %R (Absolute Skala 0-100)
 d_wpr = math.abs(ta.wpr(wpr_len))
@@ -102,12 +116,24 @@ bool is_in_radar_short = close[1] < d_lo[1] or setup_strict_short
 // --- 4. PREIS-BERECHNUNG ---
 // ==========================================
 puffer = syminfo.mintick * puffer_ticks
-float sp_price = w_trend == -1 ? low - puffer : high + puffer
-float sl_price = w_trend == -1 ? high + puffer : low - puffer
-float risk_val = math.abs(sp_price - sl_price)
-int   shares   = risk_val > 0 ? math.floor(dyn_risk / risk_val) : 0
+
+float sp_long  = high + puffer
+float sl_long  = low - puffer
+float r_l = math.abs(sp_long - sl_long)
+int shares_l = r_l > 0 ? math.floor(active_risk_l / r_l) : 0
+
+float sp_short = low - puffer
+float sl_short = high + puffer
+float r_s = math.abs(sp_short - sl_short)
+int shares_s = r_s > 0 ? math.floor(active_risk_s / r_s) : 0
+
+float sp_price = w_trend == -1 ? sp_short : sp_long
+float sl_price = w_trend == -1 ? sl_short : sl_long
+int   shares   = w_trend == -1 ? shares_s : shares_l
+float risk_val = w_trend == -1 ? r_s : r_l
 float lp_price = w_trend == -1 ? sp_price * (1 - limit_offset_pct / 100) : sp_price * (1 + limit_offset_pct / 100)
 float tp_price = w_trend == -1 ? sp_price - risk_val : sp_price + risk_val
+float active_risk_display = w_trend == -1 ? active_risk_s : active_risk_l
 
 // ==========================================
 // --- 5. VOLUMEN-STRUKTUR (Anchored & Repaint Prot.) ---
@@ -142,13 +168,11 @@ f_calc_tf_vol_anchored(sp, sl, tp, do_calc, lookback) =>
 bool needs_vol_calc = is_in_radar_long or is_in_radar_short or barstate.islast
 [stop_density, tp_density, avg_anchor_vol] = request.security(syminfo.tickerid, vol_timeframe, f_calc_tf_vol_anchored(sp_price, sl_price, tp_price, needs_vol_calc, anchor_bars))
 
-// Repaint-Protection v20.5: request.security_lower_tf()
 lower_tf_vol_arr = request.security_lower_tf(syminfo.tickerid, vol_timeframe, volume)
 float current_bar_lower_vol = 0.0
 if array.size(lower_tf_vol_arr) > 0
     current_bar_lower_vol := array.sum(lower_tf_vol_arr)
 
-// Relative Liquidity Density (RLD) Validation
 float rld_pct = avg_anchor_vol > 0 ? (current_bar_lower_vol / avg_anchor_vol) * 100 : 0
 bool rld_valid = rld_pct < rld_limit
 string vacuum_qual = rld_valid ? "High" : "Low (" + str.tostring(rld_pct, "#.#") + "%)"
@@ -170,12 +194,13 @@ bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger
 bool rld_approved_tp = tp_density <= max_tp_density and rld_valid
 bool vol_condition  = stop_density >= min_stop_density and rld_approved_tp
 
-bool is_golden_long  = is_sniper_long  and vol_condition
-bool is_golden_short = is_sniper_short and vol_condition
+// Firewall berücksichtigt Asymmetrie
+bool is_golden_long  = is_sniper_long  and vol_condition and not firewall_l
+bool is_golden_short = is_sniper_short and vol_condition and not firewall_s
 
 // Radar (Lauer-Zone)
-bool is_lauern_long   = w_trend == 1  and is_in_radar_long  and d_wpr >= 70 and not is_sniper_long
-bool is_lauern_short  = w_trend == -1 and is_in_radar_short and d_wpr <= 30 and not is_sniper_short
+bool is_lauern_long   = w_trend == 1  and is_in_radar_long  and d_wpr >= 70 and not is_sniper_long and not firewall_l
+bool is_lauern_short  = w_trend == -1 and is_in_radar_short and d_wpr <= 30 and not is_sniper_short and not firewall_s
 
 // ==========================================
 // --- 7. SEKTOR & RELATIVE STÄRKE ---
@@ -223,7 +248,6 @@ f_get_auto_sector() =>
     [etf, sname]
 
 [sector_ticker, sector_name] = f_get_auto_sector()
-
 [etf_c, etf_sma, etf_c20] = request.security(sector_ticker, "1D", [close, ta.sma(close, 10), close[20]], lookahead=barmerge.lookahead_off)
 
 bool sector_long = etf_c > etf_sma
@@ -236,7 +260,6 @@ float perf_diff  = stock_perf - etf_perf
 
 string rs_txt = perf_diff > 2.0 ? "STARK" : perf_diff < -2.0 ? "SCHWACH" : "MITTEL"
 color  rs_bg  = perf_diff > 2.0 ? color.blue : perf_diff < -2.0 ? color.red : color.rgb(30, 30, 30)
-
 
 // ==========================================
 // --- 8. UI LOGIK & FARBEN ---
@@ -271,7 +294,7 @@ if is_any_action
 // ==========================================
 // --- 9. COCKPIT UI (v20.5 Architektur) ---
 // ==========================================
-var table cp = table.new(position.top_right, 2, 22, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
+var table cp = table.new(position.top_right, 2, 23, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
 f_p(val) => na(val) ? "-" : str.tostring(val, "#.##")
 
 if barstate.islast
@@ -309,48 +332,51 @@ if barstate.islast
     table.cell(cp, 0, 8, "--- SNIPER METRIKEN ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 8, 1, 8)
 
-    table.cell(cp, 0, 9, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität (ATR) automatisch an. Basis: 150€.")
-    table.cell(cp, 1, 9, str.tostring(dyn_risk, "#.##") + " €", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+    table.cell(cp, 0, 9, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an.")
+    table.cell(cp, 1, 9, str.tostring(active_risk_display, "#.##") + " €", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
 
-    table.cell(cp, 0, 10, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.")
-    table.cell(cp, 1, 10, str.tostring(anchor_bars) + " Bars ago", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+    table.cell(cp, 0, 10, "🛡️ Risk-Mode (Adaptiv)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip=rm_tooltip)
+    table.cell(cp, 1, 10, risk_mode_txt, bgcolor=risk_mode_bg, text_color=color.white)
 
-    table.cell(cp, 0, 11, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).")
-    table.cell(cp, 1, 11, vacuum_qual, bgcolor=rld_valid ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10), text_color=color.white)
+    table.cell(cp, 0, 11, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.")
+    table.cell(cp, 1, 11, str.tostring(anchor_bars) + " Bars ago", bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+
+    table.cell(cp, 0, 12, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).")
+    table.cell(cp, 1, 12, vacuum_qual, bgcolor=rld_valid ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10), text_color=color.white)
 
     // SIGNAL-VALIDIERUNG
-    table.cell(cp, 0, 12, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 12, 1, 12)
+    table.cell(cp, 0, 13, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    table.merge_cells(cp, 0, 13, 1, 13)
 
-    table.cell(cp, 0, 13, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.")
-    table.cell(cp, 1, 13, c_txt, bgcolor=c_bg, text_color=color.white)
+    table.cell(cp, 0, 14, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.")
+    table.cell(cp, 1, 14, c_txt, bgcolor=c_bg, text_color=color.white)
 
     color s_v_bg = stop_density >= min_stop_density ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 14, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position.")
-    table.cell(cp, 1, 14, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white)
+    table.cell(cp, 0, 15, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position.")
+    table.cell(cp, 1, 15, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white)
     
     color t_v_bg = rld_approved_tp ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 15, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.")
-    table.cell(cp, 1, 15, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white)
+    table.cell(cp, 0, 16, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.")
+    table.cell(cp, 1, 16, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white)
 
     // ORDER-MATRIX
-    table.cell(cp, 0, 16, "--- ORDER-MATRIX ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 16, 1, 16)
+    table.cell(cp, 0, 17, "--- ORDER-MATRIX ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    table.merge_cells(cp, 0, 17, 1, 17)
 
-    table.cell(cp, 0, 17, "🎯 Stoppreis (SP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
-    table.cell(cp, 1, 17, f_p(sp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
+    table.cell(cp, 0, 18, "🎯 Stoppreis (SP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
+    table.cell(cp, 1, 18, f_p(sp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
 
-    table.cell(cp, 0, 18, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
-    table.cell(cp, 1, 18, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
+    table.cell(cp, 0, 19, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow)
+    table.cell(cp, 1, 19, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
 
-    table.cell(cp, 0, 19, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50, 50, 50), text_color=color.white)
-    table.cell(cp, 1, 19, str.tostring(shares), bgcolor=color.rgb(30, 30, 30), text_color=color.white)
+    table.cell(cp, 0, 20, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50, 50, 50), text_color=color.white)
+    table.cell(cp, 1, 20, str.tostring(shares), bgcolor=color.rgb(30, 30, 30), text_color=color.white)
 
-    table.cell(cp, 0, 20, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime)
-    table.cell(cp, 1, 20, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime)
+    table.cell(cp, 0, 21, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime)
+    table.cell(cp, 1, 21, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime)
 
-    table.cell(cp, 0, 21, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange)
-    table.cell(cp, 1, 21, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange)
+    table.cell(cp, 0, 22, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange)
+    table.cell(cp, 1, 22, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange)
 
 // ==========================================
 // --- 10. VISUALS & ALARME ---
@@ -362,15 +388,14 @@ if barstate.islast and w_trend != 0
     l_sp := line.new(bar_index, sp_price, bar_index + 5, sp_price, color=color.yellow, width=1, style=line.style_dashed)
     l_sl := line.new(bar_index, sl_price, bar_index + 5, sl_price, color=color.red, width=1)
     l_tp := line.new(bar_index, tp_price, bar_index + 5, tp_price, color=color.lime, width=1)
-    lbl_sp := label.new(bar_index + 5, sp_price, "🎯 Buy", color=color.yellow, textcolor=color.black, style=label.style_label_left, size=size.small)
+    lbl_sp := label.new(bar_index + 5, sp_price, "🎯 Entry", color=color.yellow, textcolor=color.black, style=label.style_label_left, size=size.small)
     lbl_sl := label.new(bar_index + 5, sl_price, "🏁 Stop", color=color.red, textcolor=color.white, style=label.style_label_left, size=size.small)
     lbl_tp := label.new(bar_index + 5, tp_price, "💸 1:1 TP", color=color.lime, textcolor=color.black, style=label.style_label_left, size=size.small)
 
-// Strict Repaint Protection: Ensure alarms ONLY trigger on confirmed bars to avoid intrabar fakeouts
 if barstate.isrealtime and barstate.isconfirmed
     if is_golden_long or is_golden_short
-        alert("🏆 GOLDEN SETUP " + syminfo.ticker + ": Phase-Shift erkannt! In: " + f_p(sp_price) + " | Qty: " + str.tostring(shares) + " | TP(1:1): " + f_p(tp_price), alert.freq_once_per_bar)
+        alert(mode_prefix + " - 🏆 GOLDEN SETUP " + syminfo.ticker + ": Phase-Shift erkannt! In: " + f_p(sp_price) + " | Qty: " + str.tostring(shares) + " | TP(1:1): " + f_p(tp_price), alert.freq_once_per_bar)
     else if is_sniper_long or is_sniper_short
-        alert("🎯 SNIPER " + syminfo.ticker + ": Risk-Recycling bereit! In: " + f_p(sp_price), alert.freq_once_per_bar)
+        alert(mode_prefix + " - 🎯 SNIPER " + syminfo.ticker + ": Risk-Recycling bereit! In: " + f_p(sp_price), alert.freq_once_per_bar)
     else if is_lauern_long or is_lauern_short
-        alert("📡 RADAR " + syminfo.ticker + ": AVP Anchor validiert. Lauer-Modus!", alert.freq_once_per_bar)
+        alert(mode_prefix + " - 📡 RADAR " + syminfo.ticker + ": Lauer-Modus!", alert.freq_once_per_bar)
