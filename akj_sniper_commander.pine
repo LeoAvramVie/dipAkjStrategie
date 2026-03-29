@@ -289,20 +289,20 @@ if barstate.islast
     table.cell(cp, 0, 2, "🌍 Sektor", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
     table.cell(cp, 1, 2, sec_txt, bgcolor=sec_bg, text_color=color.white)
 
-    table.cell(cp, 0, 3, "💪 Rel. Stärke", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 3, "💪 Rel. Stärke", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance und erhöht die Wahrscheinlichkeit für einen erfolgreichen Trade.")
     table.cell(cp, 1, 3, rs_txt, bgcolor=rs_bg, text_color=color.white)
 
-    table.cell(cp, 0, 4, "📈 Weinstein Stage", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 4, "📈 Weinstein Stage", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short).")
     table.cell(cp, 1, 4, ws_txt, bgcolor=ws_bg, text_color=color.white)
 
     // TREND-ANALYSE
     table.cell(cp, 0, 5, "--- TREND-ANALYSE (v20.5) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 5, 1, 5)
 
-    table.cell(cp, 0, 6, "📅 Wochentrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 6, "📅 Wochentrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt.")
     table.cell(cp, 1, 6, wt_txt, bgcolor=wt_bg, text_color=color.white)
 
-    table.cell(cp, 0, 7, "☀️ Tagestrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver)
+    table.cell(cp, 0, 7, "☀️ Tagestrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern.")
     table.cell(cp, 1, 7, dt_txt, bgcolor=dt_bg, text_color=(dt_bg == color.yellow) ? color.black : color.white)
 
     // SNIPER-METRIKEN
@@ -322,15 +322,15 @@ if barstate.islast
     table.cell(cp, 0, 12, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 12, 1, 12)
 
-    table.cell(cp, 0, 13, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle.")
+    table.cell(cp, 0, 13, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.")
     table.cell(cp, 1, 13, c_txt, bgcolor=c_bg, text_color=color.white)
 
     color s_v_bg = stop_density >= min_stop_density ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 14, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer unter deinem Stop. Erfordert >10% Volumen-Konzentration zum Schutz deiner Position.")
+    table.cell(cp, 0, 14, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position.")
     table.cell(cp, 1, 14, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white)
     
     color t_v_bg = rld_approved_tp ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    table.cell(cp, 0, 15, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis bis zum Ziel. Ein Wert <8% signalisiert freien Lauf bis zum Take-Profit.")
+    table.cell(cp, 0, 15, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.")
     table.cell(cp, 1, 15, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white)
 
     // ORDER-MATRIX

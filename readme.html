@@ -81,8 +81,14 @@
         ol li { margin-bottom: 0.8rem; }
 
         .quote { border-left: 4px solid var(--accent-secondary); padding-left: 1.5rem; font-style: italic; color: #fff; margin: 2rem 0; background: linear-gradient(90deg, rgba(255,0,85,0.05), transparent); padding: 1.5rem; border-radius: 0 8px 8px 0; }
+        .quote.warning { border-left-color: #ffcc00; background: linear-gradient(90deg, rgba(255,204,0,0.05), transparent); color: #ffcc00; font-weight: 500;}
         
         .sub-header { background: rgba(0, 240, 255, 0.05); color: var(--accent-glow) !important; font-size: 0.8em; text-transform: uppercase; letter-spacing: 2px; text-align: center !important; }
+        
+        .tooltip-hint { text-decoration: underline dotted rgba(255,255,255,0.3); cursor: help; }
+        .alert-box { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 2rem; display: flex; align-items: flex-start; gap: 1rem; }
+        .alert-icon { font-size: 1.5rem; line-height: 1; }
+        .alert-content p { margin: 0; color: #fff; }
     </style>
 </head>
 <body>
@@ -98,132 +104,91 @@
         <p>Hier ist die detaillierte, fachliche und technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.5. Das System wurde in v20.5 um ein dynamisches Risikomanagement, Anchored Volume Profile (AVP) und strengere Doji-/Hysterese-Filter erweitert.</p>
 
         <div class="glass-card">
-            <h3>I. Das Cockpit (Dashboard) – Die neue v20.5 Architektur</h3>
+            <h3>I. Das Interaktive Cockpit (Dashboard)</h3>
             <p>Das HUD wurde logisch gruppiert, um dir während des Tradings den perfekten Überblick über Kontext, Metriken und Exekution zu geben.</p>
-            
-            <div style="overflow-x: auto;">
+
+            <div class="alert-box">
+                <div class="alert-icon">💡</div>
+                <div class="alert-content">
+                    <p><strong>NEU IN v20.5 (Nutzer-Guide):</strong> Die komplexen Werte im Cockpit besitzen ab sofort <strong>interaktive Tooltips</strong> in TradingView. Wenn du mit der Maus über die Parameter im Chart fährst, liefert das System dir sofortige strategische Erklärungen!</p>
+                </div>
+            </div>
+
+            <p><strong>Folgende Tooltips sind im Chart aktiv:</strong></p>
+            <ul>
+                <li><strong>Rel. Stärke:</strong> „Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance und erhöht die Wahrscheinlichkeit für einen erfolgreichen Trade.“</li>
+                <li><strong>Weinstein-Stage:</strong> „Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short).“</li>
+                <li><strong>Wochentrend:</strong> „Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt.“</li>
+                <li><strong>Tagestrend:</strong> „Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern.“</li>
+                <li><strong>Risk-O-Meter:</strong> „Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität (ATR) automatisch an. Basis: 150€.“</li>
+                <li><strong>Anchor-Info:</strong> „Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.“</li>
+                <li><strong>Vacuum Quality:</strong> „Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).“</li>
+                <li><strong>Kerzenregel:</strong> „Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.“</li>
+                <li><strong>Stopversicherung:</strong> „Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position.“</li>
+                <li><strong>TP Widerstand:</strong> „Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.“</li>
+            </ul>
+
+            <div class="quote warning">
+                ⚠️ <strong>NUTZER-HINWEIS:</strong> Dieses Cockpit dient als Navigationshilfe zur Skalierung eines 50k Depots. Handeln Sie nur, wenn die Signal-Validierung grün leuchtet.
+            </div>
+
+            <div style="overflow-x: auto; margin-top: 2rem;">
                 <table>
                     <thead>
                         <tr>
                             <th>Kategorie</th>
                             <th>Metrik / Wert</th>
-                            <th>Erklärung & v20.5 Update</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- STATUS -->
-                        <tr><td colspan="3" class="sub-header">1. STATUS-ZEILE</td></tr>
-                        <tr>
-                            <td><strong>Status</strong></td>
-                            <td><span class="badge green">!! GOLDEN !!</span> <span class="badge blue">! FEUER FREI !</span> <span class="badge yellow">LAUERN</span> <span class="badge gray">STAY</span></td>
-                            <td>Gibt den finalen Exekutions-Status vor, inkl. Richtung (LONG/SHORT).</td>
-                        </tr>
+                        <tr><td colspan="2" class="sub-header">1. STATUS-ZEILE</td></tr>
+                        <tr><td><strong>Status</strong></td><td><span class="badge green">!! GOLDEN !!</span> <span class="badge blue">! FEUER FREI !</span> <span class="badge yellow">LAUERN</span> <span class="badge gray">STAY</span></td></tr>
                         
-                        <!-- MARKT-KONTEXT -->
-                        <tr><td colspan="3" class="sub-header">2. MARKT-KONTEXT</td></tr>
-                        <tr>
-                            <td><strong>🌍 Sektor</strong></td>
-                            <td>Sektor ETF (z.B. SMH)</td>
-                            <td>Dynamisches Mapping via <code>syminfo.sector</code>.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>💪 Rel. Stärke</strong></td>
-                            <td>STARK, MITTEL, SCHWACH</td>
-                            <td>Vergleicht die 20-Tage-Performance der Aktie mit dem Sektor-ETF.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>📈 Weinstein Stage</strong></td>
-                            <td>STAGE 2 Long / STAGE 4 Short / SEITWÄRTS</td>
-                            <td>Regimewechsel via Wochen-SMA 30. Verankert das Volumenprofil (AVP).</td>
-                        </tr>
+                        <tr><td colspan="2" class="sub-header">2. MARKT-KONTEXT</td></tr>
+                        <tr><td><strong>🌍 Sektor</strong></td><td>Sektor ETF (z.B. SMH)</td></tr>
+                        <tr><td class="tooltip-hint" title="Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance..."><strong>💪 Rel. Stärke</strong></td><td>STARK, MITTEL, SCHWACH</td></tr>
+                        <tr><td class="tooltip-hint" title="Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short)."><strong>📈 Weinstein Stage</strong></td><td>STAGE 2 Long / STAGE 4 Short / SEITWÄRTS</td></tr>
 
-                        <!-- TREND-ANALYSE -->
-                        <tr><td colspan="3" class="sub-header">3. TREND-ANALYSE (v20.5)</td></tr>
-                        <tr>
-                            <td><strong>📅 Wochentrend</strong></td>
-                            <td>BULLISCH ⬆️ / BÄRISCH ⬇️ / NEUTRAL ↔️</td>
-                            <td><strong>Sticky-Logik:</strong> Wir erfordern zwingend zwei Wochenschlüsse (2-Closes-Regel) außerhalb der Bollinger Bänder. Das macht das System enorm resistent ("sticky") gegen kurzfristige Fakes. Es springt nicht nervös herum.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>☀️ Tagestrend</strong></td>
-                            <td>LONG (Radar/Scharf) / SHORT (Radar/Scharf)</td>
-                            <td><strong>NEU v20.5 ATR-Hysterese:</strong> Ein Ausbruch gilt nur noch, wenn er die Bänder um <code>0.2 * ATR</code> durchbricht. Mikro-Berührungen (Rauschen) generieren keine falschen Alarme mehr.</td>
-                        </tr>
+                        <tr><td colspan="2" class="sub-header">3. TREND-ANALYSE (v20.5)</td></tr>
+                        <tr><td class="tooltip-hint" title="Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt."><strong>📅 Wochentrend</strong></td><td>BULLISCH ⬆️ / BÄRISCH ⬇️ / NEUTRAL ↔️</td></tr>
+                        <tr><td class="tooltip-hint" title="Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern."><strong>☀️ Tagestrend</strong></td><td>LONG (Radar/Scharf) / SHORT (Radar/Scharf)</td></tr>
 
-                        <!-- SNIPER-METRIKEN -->
-                        <tr><td colspan="3" class="sub-header">4. SNIPER-METRIKEN (Die v20.5 Engine)</td></tr>
-                        <tr>
-                            <td><strong>📊 Risk-O-Meter (1R)</strong></td>
-                            <td>Zahlenwert in €</td>
-                            <td><strong>NEU v20.5:</strong> Dynamisches 1R basierend auf dem VIX. An volatilen Tagen wird das Basis-Risiko von z.B. 150€ automatisch reduziert (VIX/ATR-Ratio).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>⚓ Anchor-Info</strong></td>
-                            <td>X Bars ago</td>
-                            <td><strong>NEU v20.5 AVP:</strong> v20.5 ist die exakteste Version für die <strong>100k-Skalierung</strong>, da das AVP an echte strukturelle Ursprungspunkte (Weinstein-Stage-Wechsel) gebunden wird, anstatt blind "die letzten 100 Tage" zu berechnen.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>📐 Vacuum Quality</strong></td>
-                            <td>High / Low Quality</td>
-                            <td><strong>NEU v20.5:</strong> Relative Liquidity Density (RLD). Ein TP-Widerstand ist nur valide, wenn die Dichte < 20% des Durchschnittsvolumens im Anker-Zeitraum liegt.</td>
-                        </tr>
+                        <tr><td colspan="2" class="sub-header">4. SNIPER-METRIKEN</td></tr>
+                        <tr><td class="tooltip-hint" title="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität (ATR) automatisch an. Basis: 150€."><strong>📊 Risk-O-Meter (1R)</strong></td><td>Zahlenwert in €</td></tr>
+                        <tr><td class="tooltip-hint" title="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt."><strong>⚓ Anchor-Info</strong></td><td>X Bars ago</td></tr>
+                        <tr><td class="tooltip-hint" title="Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum)."><strong>📐 Vacuum Quality</strong></td><td>High / Low Quality</td></tr>
 
-                        <!-- MK-VALIDIERUNG -->
-                        <tr><td colspan="3" class="sub-header">5. MK-VALIDIERUNG</td></tr>
-                        <tr>
-                            <td><strong>🕯️ Kerzenregel</strong></td>
-                            <td>OK ✅ / WAIT ⏳</td>
-                            <td>Wir kaufen den Dip! <strong>NEU v20.5:</strong> Ein ATR-Doji-Filter (Körper > 10% der ATR) verhindert falsche Signale an Pivot-Zonen.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>🛡️ Stopversicherung</strong></td>
-                            <td>Prozentwert (%)</td>
-                            <td>Volumen zwischen SP und SL. Ziel: > 10%.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>🚧 TP Widerstand</strong></td>
-                            <td>Prozentwert (%)</td>
-                            <td>Volumen zwischen SP und TP. Ziel: < 8% UND bestandener RLD-Check.</td>
-                        </tr>
+                        <tr><td colspan="2" class="sub-header">5. SIGNAL-VALIDIERUNG</td></tr>
+                        <tr><td class="tooltip-hint" title="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen."><strong>🕯️ Kerzenregel</strong></td><td>OK ✅ / WAIT ⏳</td></tr>
+                        <tr><td class="tooltip-hint" title="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >10% zur Absicherung der Position."><strong>🛡️ Stopversicherung</strong></td><td>Prozentwert (%)</td></tr>
+                        <tr><td class="tooltip-hint" title="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit."><strong>🚧 TP Widerstand</strong></td><td>Prozentwert (%)</td></tr>
 
-                        <!-- ORDER-MATRIX -->
-                        <tr><td colspan="3" class="sub-header">6. ORDER-MATRIX</td></tr>
-                        <tr>
-                            <td><strong>🎯 SP | 🤝 LP</strong></td>
-                            <td>Zahlenwerte ($)</td>
-                            <td>Stoppreis (SP) als Trigger und LimitPreis (LP) als absolute Schmerzgrenze für Slippage.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>🔢 Stk (Anzahl)</strong></td>
-                            <td>Zahlenwert</td>
-                            <td>Berechnete Stückzahl basierend auf dem neuen dynamischen Risk-O-Meter.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>💸 TP | 🏁 SL</strong></td>
-                            <td>Zahlenwerte ($)</td>
-                            <td>Take Profit (1:1 Ziel, Teilverkauf) und Stop-Loss (Feuerschutz-Level).</td>
-                        </tr>
+                        <tr><td colspan="2" class="sub-header">6. ORDER-MATRIX</td></tr>
+                        <tr><td><strong>🎯 SP | 🤝 LP</strong></td><td>Zahlenwerte ($)</td></tr>
+                        <tr><td><strong>🔢 Stk (Anzahl)</strong></td><td>Zahlenwert</td></tr>
+                        <tr><td><strong>💸 TP | 🏁 SL</strong></td><td>Zahlenwerte ($)</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div class="glass-card">
-            <h3>II. Das Alarmsystem (Risk-Recycling & Phase-Shift)</h3>
+            <h3>II. v20.5 Innovationen (Das Kern-Upgrade)</h3>
+            <p>Neben den sichtbaren Tooltips schlägt unter der Haube ein neues mathematisches Herz. Die v20.5 Code-Architektur löst die größten Probleme klassischer Trading-Indikatoren:</p>
+            <ol>
+                <li><strong>Die AVP/RLD-Synergie (Der Gamechanger):</strong> Klassische Profiler messen einfach stumpf feste Tage (z.B. "Volumen der letzten 100 Tage"). Die <strong>v20.5 Anker-Logik</strong> startet den Volumen-Zähler erst zu dem exakten Zeitpunkt, an dem das "Smart Money" die Weinstein-Phase gedreht hat. Verbunden mit dem <strong>RLD-Check</strong> (Relative Liquidity Density) scannen wir nun nicht nach *irgendeinem* TP-Widerstand, sondern wir validieren echtes "High-Speed-Vakuum". Diese Synergie aus Anker und relativer Dichte steigert die Qualität der Signale massiv gegenüber der Vorversion.</li>
+                <li><strong>Repaint Protection (Alarme):</strong> Alarme lösen NUR aus, wenn <code>barstate.isrealtime</code> und <code>barstate.isconfirmed</code> wahr sind. Keine trügerischen Intrabar-Verzerrungen mehr!</li>
+                <li><strong>Sticky Trend Hysterese:</strong> Um Rauschen an den Bollinger Bändern auszufiltern, muss ein Ausbruch nun 0.2 ATR über/unter das Band hinausschießen.</li>
+            </ol>
+        </div>
+
+        <div class="glass-card">
+            <h3>III. Das Alarmsystem (Risk-Recycling & Phase-Shift)</h3>
             <ul>
                 <li><strong>1. 📡 RADAR:</strong> "AVP Anchor validiert. Lauer-Modus!" (Williams %R erreicht Zone, Anchor läuft).</li>
                 <li><strong>2. 🎯 SNIPER:</strong> "Risk-Recycling bereit! Feuer frei!" (Alle Preis-Action Regeln + ATR-Doji-Filter + Sticky-Hysterese bestanden). TWS öffnen!</li>
                 <li><strong>3. 🏆 GOLDEN SETUP:</strong> "Phase-Shift erkannt!" (Volumenprofil passt, RLD-Vakuum bestätigt). Höchste Validierungsstufe!</li>
             </ul>
-        </div>
-
-        <div class="glass-card">
-            <h3>III. v20.5 Core Logik-Upgrades</h3>
-            <ol>
-                <li><strong>Repaint Protection (Alarme):</strong> Alarme und Sniper-Signale lösen NUR aus, wenn <code>barstate.isrealtime</code> und <code>barstate.isconfirmed</code> wahr sind. Keine trügerischen Intrabar-Verzerrungen mehr!</li>
-                <li><strong>Anchored Volume Profile (AVP):</strong> Das System scannt nicht mehr stumpf feste Zeitfenster, sondern verankert den Beginn der Volumenmessung kompromisslos am Punkt des letzten signifikanten Regimewechsels (Weinstein Stage-Shift). <strong>Die 100k-Skalierung erfordert exakt diese Präzision, denn nur das Volumen des Smart Money *nach* einem Regimewechsel hat statistische Hebelwirkung.</strong></li>
-                <li><strong>Sticky Trend Hysterese:</strong> Um Rauschen an den Bollinger Bändern auszufiltern, muss ein Trendausbruch nun 0.2 ATR über/unter das Band hinausschießen, um den Tagestrend-Setup-Zustand auszulösen.</li>
-            </ol>
         </div>
 
         <div class="divider"></div>
@@ -232,7 +197,7 @@
 
         <div class="glass-card">
             <h3>1. Architektur und Ausführungslogik</h3>
-            <p>Das Pine Script ist strikt modular aufgebaut. UI ist in Tabellen (nun 22 Zeilen) gekapselt und Alarme reagieren <code>freq_once_per_bar</code> bei harten Bestätigungen (<code>barstate.isconfirmed</code>). Das neue v20.5 HUD greift nahtlos auf diese Logic-Engine zu.</p>
+            <p>Das Pine Script ist strikt modular aufgebaut. UI ist in 22-Tabellen-Zeilen gekapselt. Alarme überprüfen zwingend <code>if barstate.isrealtime and barstate.isconfirmed</code>. Die Zell-Definitionen in <code>table.cell()</code> nutzen das <code>tooltip</code> Argument.</p>
         </div>
 
         <div class="glass-card">
@@ -250,11 +215,6 @@
                 <li>Die Relative Liquidity Density (RLD) rechnet: <code>(current_bar_lower_vol / avg_anchor_vol) * 100</code>.</li>
                 <li>Ein Volumen-Vakuum bis zum TP (Take Profit) wird nur freigegeben (<code>rld_valid = true</code>), wenn der Pct-Wert unter <code>rld_limit</code> (20.0%) liegt. Das bedeutet echte Beschleunigungs-Leere (Thin Air).</li>
             </ul>
-        </div>
-
-        <div class="glass-card">
-            <h3>4. Anchored Iterator</h3>
-            <p>Die eigene MTF Volumen-Funktion <code>f_calc_tf_vol_anchored</code> bekommt einen dynamischen Lookback in <code>anchor_bars</code> übergeben. Dadurch wird die Density-Ratio nicht durch irrelevante alte Historie der Aktie oder simple Moving Averages vor dem letzten Trendbruch verzerrt. Es fängt genau dort an, wo das institutionelle Geld den Wechsel eingeleitet hat.</p>
         </div>
 
         <div class="quote">
