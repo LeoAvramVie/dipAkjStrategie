@@ -7,7 +7,7 @@ strategy("AKJ 2.0 Backtest-Engine v20.5", overlay=true, initial_capital=50000, d
 group_rm         = "Risikomanagement"
 risk_per_trade   = input.float(150.0, "Basis Risiko pro Trade (€)", group=group_rm)
 limit_offset_pct = input.float(0.2, "Limit-Offset (%)", group=group_rm)
-use_dyn_risk     = input.bool(true, "Adaptives Risk (Alpha/Delta/Omega)", group=group_rm)
+use_dyn_risk     = input.bool(true, "Asymmetrisches Risk (Alpha/Delta/Omega)", group=group_rm)
 
 group_strat      = "MK-Strategie Parameter"
 bb_len           = input.int(10, "Bollinger Länge", group=group_strat)
@@ -16,7 +16,7 @@ wpr_len          = input.int(4, "Williams %R Länge", group=group_strat)
 atr_len          = input.int(14, "ATR Länge (Filter)", group=group_strat)
 ema_exit         = input.int(21, "Trailing Stop EMA", group=group_strat)
 
-group_vol_filter = "Volumen Filter (v20.5) & Deep-Backtest"
+group_vol_filter = "Volumen Filter (v20.5)"
 vol_timeframe    = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
 use_flex         = input.bool(true, "Backtest Flex-Mode (Signaldichte erhöhen)", group=group_vol_filter)
 min_stop_density = input.float(10.0, "Min. Stop-Versicherung (%)", group=group_vol_filter)
@@ -33,7 +33,7 @@ opt_rld      = use_flex ? 30.0 : rld_limit
 atr_val = ta.atr(atr_len)
 vix_c = request.security("CBOE:VIX", "1D", close, lookahead=barmerge.lookahead_off)
 
-// Risk Multiplikator 
+// Risk Multiplikator (100% vs 25% vs 0%)
 float risk_mult_l = vix_c < 25.0 ? 1.0 : (vix_c <= 35.0 ? 0.25 : 0.0)
 float risk_mult_s = vix_c < 25.0 ? 1.0 : (vix_c <= 35.0 ? 1.0  : 0.0)
 
@@ -225,7 +225,9 @@ else
 // --- 6. IBKR OVERLAY & MISS-ANALYSE ---
 // ==========================================
 var int missed_goldens_vix = 0
-if (w_trend == 1 and setup_strict_long and vol_cond_long and firewall_l) or (w_trend == -1 and setup_strict_short and vol_cond_short and firewall_s)
+if (w_trend == 1 and setup_strict_long and vol_cond_long and firewall_l)
+    missed_goldens_vix += 1
+if (w_trend == -1 and setup_strict_short and vol_cond_short and firewall_s)
     missed_goldens_vix += 1
 
 string ibkr_report = "--- IBKR REALITY CHECK ---\n"
@@ -233,13 +235,13 @@ if syminfo.ticker == "LHA" or syminfo.ticker == "TEAM" or syminfo.ticker == "PYP
     ibkr_report += "Tick: " + syminfo.ticker + "\n"
     if syminfo.ticker == "CSCO"
         ibkr_report += "Hinweis: CSCO Long (Entry~80.10) " 
-        ibkr_report += firewall_l ? "wurde durch OMEGA Mode blockiert.\n" : "wurde durch VIX zugelassen.\n"
+        ibkr_report += firewall_l ? "wurde durch OMEGA Mode blockiert.\n" : "wurde durch ALPHA/DELTA zugelassen.\n"
 
 var table rep_tab = table.new(position.bottom_right, 2, 8, border_width=1)
 if barstate.islast
     table.cell(rep_tab, 0, 0, "AKJ v20.5 Backtest Metriken", bgcolor=color.black, text_color=color.white)
     table.merge_cells(rep_tab, 0, 0, 1, 0)
-    table.cell(rep_tab, 0, 1, "OMEGA/DELTA Blocks (Opportunity Cost)", text_color=color.white, bgcolor=color.rgb(30,30,30))
+    table.cell(rep_tab, 0, 1, "OMEGA Blocks (Opportunity Cost)", text_color=color.white, bgcolor=color.rgb(30,30,30))
     table.cell(rep_tab, 1, 1, str.tostring(missed_goldens_vix) + " Trades", text_color=color.yellow, bgcolor=color.rgb(30,30,30))
     table.cell(rep_tab, 0, 2, "Net Profit (Simulated)", text_color=color.white, bgcolor=color.rgb(30,30,30))
     table.cell(rep_tab, 1, 2, str.tostring(strategy.netprofit, "#.##") + " €", text_color=strategy.netprofit > 0 ? color.lime : color.red, bgcolor=color.rgb(30,30,30))
@@ -249,3 +251,22 @@ if barstate.islast
     // Ausgabe der Realdaten IBKR
     table.cell(rep_tab, 0, 4, "IBKR Sync Note", text_color=color.white, bgcolor=color.blue)
     table.cell(rep_tab, 1, 4, (syminfo.ticker == "CSCO" or syminfo.ticker == "TEAM" or syminfo.ticker == "PYPL" or syminfo.ticker == "LHA") ? ibkr_report : "N/A", text_color=color.white, bgcolor=color.rgb(20,20,20))
+
+    string debug_str = "Clear (Setup Ready)"
+    if firewall_l and firewall_s
+        debug_str := "Blocked: VIX OMEGA"
+    else if stop_density_l < opt_min_stop and w_trend == 1
+        debug_str := "Blocked (Long): Wall < 10%"
+    else if stop_density_s < opt_min_stop and w_trend == -1
+        debug_str := "Blocked (Short): Wall < 10%"
+    else if tp_density_l > opt_max_tp and w_trend == 1
+        debug_str := "Blocked (Long): TP > 8%"
+    else if tp_density_s > opt_max_tp and w_trend == -1
+        debug_str := "Blocked (Short): TP > 8%"
+    else if rld_pct_l > opt_rld and w_trend == 1
+        debug_str := "Blocked (Long): RLD Vakuum"
+    else if rld_pct_s > opt_rld and w_trend == -1
+        debug_str := "Blocked (Short): RLD Vakuum"
+        
+    table.cell(rep_tab, 0, 5, "Debug Status", text_color=color.white, bgcolor=color.rgb(40,40,40))
+    table.cell(rep_tab, 1, 5, debug_str, text_color=color.orange, bgcolor=color.rgb(20,20,20))

@@ -31,7 +31,7 @@ Das HUD wurde logisch in Blöcken gruppiert, um dir während des Tradings den pe
 ### II. Asymmetrisches Risiko: Die „Atmende Firewall“
 In v20.5 Elite wurde das einfache "VIX an/aus" Flag (Firewall) durch ein hoch-intelligentes 3-Stufen-Modell ersetzt, um in fallenden Märkten Short-Gewinne zu extrahieren, anstatt einfach das Trading komplett einzustellen.
 *   **1. Regime ALPHA (VIX < 25):** Der Markt ist geordnet. Longs und Shorts werden mit 100% Risiko (Basis 150€) gehandelt.
-*   **2. Regime DELTA (VIX 25 - 35):** Es herrscht Unruhe und Abwärtsdruck. Das System nutzt ab hier die Schwerkraft: Bei Long-Trades wird das Risiko zum Kapitalschutz geviertelt (25% R). Short-Trades bleiben auf **100% Risiko**, um Panikverkäufe für das Depot optimal als Beschleuniger zu nutzen.
+*   **2. Regime DELTA (VIX 25 - 35):** Es herrscht Unruhe und Abwärtsdruck. Hier wird die Strategie zu einem absoluten "Short-Spezialisten", um die Gewinnwahrscheinlichkeiten bei hoher Markt-Angst zu optimieren. Bei Long-Trades wird das Risiko zum reinen Kapitalschutz geviertelt (25% R). Short-Trades bleiben auf **100% Risiko**, um Panikverkäufe als Gewinnbeschleuniger zu nutzen.
 *   **3. Regime OMEGA (VIX > 35):** Massive Volatilität / Schwarze Schwäne. Der Markt ist dysfunktional, Gaps und Slippage zerstören CRVs. Beide Seiten werden gnadenlos mit 0% Risiko blockiert.
 
 ---

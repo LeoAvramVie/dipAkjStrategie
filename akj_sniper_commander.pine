@@ -8,7 +8,7 @@ group_rm         = "Risikomanagement"
 risk_per_trade   = input.float(150.0, "Basis Risiko pro Trade (€)", group=group_rm)
 limit_offset_pct = input.float(0.2, "Limit-Offset (%)", group=group_rm)
 puffer_ticks     = input.int(2, "Puffer in Ticks", group=group_rm)
-use_dyn_risk     = input.bool(true, "Adaptives Risk (Alpha/Delta/Omega)", group=group_rm)
+use_dyn_risk     = input.bool(true, "Asymmetrisches Risk (Alpha/Delta/Omega)", group=group_rm)
 
 group_strat      = "MK-Strategie Parameter"
 bb_len           = input.int(10, "Bollinger Länge", group=group_strat)
@@ -32,7 +32,7 @@ user_etf         = input.symbol("SPY", "Manueller Sektor-ETF", group=group_rs)
 atr_val = ta.atr(atr_len)
 vix_c = request.security("CBOE:VIX", "1D", close, lookahead=barmerge.lookahead_off)
 
-// Risk Multiplier Logik
+// Asymmetrische Risk Multiplier Logik
 float risk_mult_l = vix_c < 25.0 ? 1.0 : (vix_c <= 35.0 ? 0.25 : 0.0)
 float risk_mult_s = vix_c < 25.0 ? 1.0 : (vix_c <= 35.0 ? 1.0  : 0.0)
 
@@ -48,7 +48,6 @@ string rm_tooltip    = "ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Sho
 
 string mode_prefix = vix_c < 25.0 ? "ALPHA Mode" : (vix_c <= 35.0 ? "DELTA Mode" : "OMEGA Mode")
 
-// Williams %R (Absolute Skala 0-100)
 d_wpr = math.abs(ta.wpr(wpr_len))
 
 // ==========================================
@@ -67,7 +66,6 @@ if w_cl_1 > w_up_1 and w_cl_2 > w_up_2
 else if w_cl_1 < w_lo_1 and w_cl_2 < w_lo_2
     w_trend := -1
 
-// Weinstein Stage Logic (SMA 30)
 int weinstein_stage = 0
 if w_cl_1 > w_sma30_1 and w_sma30_1 > w_sma30_2
     weinstein_stage := 2
@@ -90,20 +88,16 @@ if anchor_bars > 300
 // --- 3. TAGES-LOGIK (Sticky Trend Hysterese v20.5) ---
 // ==========================================
 [d_basis, d_up, d_lo] = ta.bb(close, bb_len, bb_mult)
-
-// Hysterese Puffer
 atr_buffer = atr_val * 0.2
 
 var bool setup_strict_long  = false
 var bool setup_strict_short = false
 
-// Entstehung (2 Tage außerhalb mit Hysterese/Puffer)
 if close[1] > d_up[1] + atr_buffer and close[2] > d_up[2] + atr_buffer
     setup_strict_long := true
 if close[1] < d_lo[1] - atr_buffer and close[2] < d_lo[2] - atr_buffer
     setup_strict_short := true
 
-// Invalidierung (2 Tage Gegenseite)
 if close[1] < d_lo[1] and close[2] < d_lo[2]
     setup_strict_long := false
 if close[1] > d_up[1] and close[2] > d_up[2]
@@ -136,7 +130,7 @@ float tp_price = w_trend == -1 ? sp_price - risk_val : sp_price + risk_val
 float active_risk_display = w_trend == -1 ? active_risk_s : active_risk_l
 
 // ==========================================
-// --- 5. VOLUMEN-STRUKTUR (Anchored & Repaint Prot.) ---
+// --- 5. VOLUMEN-STRUKTUR ---
 // ==========================================
 f_calc_tf_vol_anchored(sp, sl, tp, do_calc, lookback) =>
     float s_dens = 0.0
@@ -180,7 +174,7 @@ string vacuum_qual = rld_valid ? "High" : "Low (" + str.tostring(rld_pct, "#.#")
 // ==========================================
 // --- 6. SIGNAL-IDENTIFIKATION ---
 // ==========================================
-bool is_doji = math.abs(close - open) < (atr_val * 0.1) // ATR-Doji-Filter
+bool is_doji = math.abs(close - open) < (atr_val * 0.1)
 
 // Long-Signal
 bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_lo
@@ -190,15 +184,14 @@ bool is_sniper_long  = w_trend == 1  and setup_strict_long  and long_trigger
 bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
 bool is_sniper_short = w_trend == -1 and setup_strict_short and short_trigger
 
-// Golden Setup includes RLD
+// Golden Setup 
 bool rld_approved_tp = tp_density <= max_tp_density and rld_valid
 bool vol_condition  = stop_density >= min_stop_density and rld_approved_tp
 
-// Firewall berücksichtigt Asymmetrie
+// Firewall blockt je nach Regime
 bool is_golden_long  = is_sniper_long  and vol_condition and not firewall_l
 bool is_golden_short = is_sniper_short and vol_condition and not firewall_s
 
-// Radar (Lauer-Zone)
 bool is_lauern_long   = w_trend == 1  and is_in_radar_long  and d_wpr >= 70 and not is_sniper_long and not firewall_l
 bool is_lauern_short  = w_trend == -1 and is_in_radar_short and d_wpr <= 30 and not is_sniper_short and not firewall_s
 
@@ -292,20 +285,49 @@ if is_any_action
     ws_bg := action_color, c_bg := action_color, wt_bg := action_color, dt_bg := action_color
 
 // ==========================================
-// --- 9. COCKPIT UI (v20.5 Architektur) ---
+// --- 9. COCKPIT UI ---
 // ==========================================
 var table cp = table.new(position.top_right, 2, 23, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
 f_p(val) => na(val) ? "-" : str.tostring(val, "#.##")
 
 if barstate.islast
-    // STATUS-ZEILE
-    string tac_txt = is_golden_long ? "!! GOLDEN LONG !!" : is_golden_short ? "!! GOLDEN SHORT !!" : is_sniper_long ? "! FEUER FREI LONG !" : is_sniper_short ? "! FEUER FREI SHORT !" : is_lauern_long ? "LAUERN LONG" : is_lauern_short ? "LAUERN SHORT" : "STAY"
-    color tac_bg = is_golden_long or is_golden_short ? color_gold : is_any_action ? action_color : (is_lauern_long or is_lauern_short) ? color.yellow : color.rgb(20, 20, 20)
+    string tac_txt = "STAY"
+    color tac_bg = color.rgb(20, 20, 20)
+    
+    bool is_omega = vix_c > 35.0
+    bool is_delta = vix_c > 25.0 and vix_c <= 35.0
+
+    if is_omega
+        tac_txt := "!!! FIREWALL LOCK !!!"
+        tac_bg  := color.red
+    else if is_delta and (is_golden_long or is_sniper_long)
+        tac_txt := "LAUERN LONG (VIX HIGH)"
+        tac_bg  := color.yellow
+    else if is_delta and (is_golden_short or is_sniper_short)
+        tac_txt := "!!! FEUER FREI SHORT !!!"
+        tac_bg  := color.red
+    else if is_golden_long
+        tac_txt := "!! GOLDEN LONG !!"
+        tac_bg  := color_gold
+    else if is_golden_short
+        tac_txt := "!! GOLDEN SHORT !!"
+        tac_bg  := color_gold
+    else if is_sniper_long
+        tac_txt := "! FEUER FREI LONG !"
+        tac_bg  := color.blue
+    else if is_sniper_short
+        tac_txt := "! FEUER FREI SHORT !"
+        tac_bg  := color.red
+    else if is_lauern_long
+        tac_txt := "LAUERN LONG"
+        tac_bg  := color.yellow
+    else if is_lauern_short
+        tac_txt := "LAUERN SHORT"
+        tac_bg  := color.yellow
     
     table.cell(cp, 0, 0, " STATUS ", bgcolor=color.black, text_color=color.white, text_size=size.normal)
     table.cell(cp, 1, 0, tac_txt, bgcolor=tac_bg, text_color=(tac_bg == color.yellow or tac_bg == color_gold) ? color.black : color.white, text_size=size.normal)
 
-    // MARKT-KONTEXT
     table.cell(cp, 0, 1, "--- MARKT-KONTEXT ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 1, 1, 1)
     
@@ -318,7 +340,6 @@ if barstate.islast
     table.cell(cp, 0, 4, "📈 Weinstein Stage", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short).")
     table.cell(cp, 1, 4, ws_txt, bgcolor=ws_bg, text_color=color.white)
 
-    // TREND-ANALYSE
     table.cell(cp, 0, 5, "--- TREND-ANALYSE (v20.5) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 5, 1, 5)
 
@@ -328,7 +349,6 @@ if barstate.islast
     table.cell(cp, 0, 7, "☀️ Tagestrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern.")
     table.cell(cp, 1, 7, dt_txt, bgcolor=dt_bg, text_color=(dt_bg == color.yellow) ? color.black : color.white)
 
-    // SNIPER-METRIKEN
     table.cell(cp, 0, 8, "--- SNIPER METRIKEN ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 8, 1, 8)
 
@@ -344,7 +364,6 @@ if barstate.islast
     table.cell(cp, 0, 12, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Liquiditätsdichte (RLD). High Quality bedeutet, dass der Preis kaum auf Widerstand stoßen wird (Vakuum).")
     table.cell(cp, 1, 12, vacuum_qual, bgcolor=rld_valid ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10), text_color=color.white)
 
-    // SIGNAL-VALIDIERUNG
     table.cell(cp, 0, 13, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 13, 1, 13)
 
@@ -359,7 +378,6 @@ if barstate.islast
     table.cell(cp, 0, 16, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.")
     table.cell(cp, 1, 16, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white)
 
-    // ORDER-MATRIX
     table.cell(cp, 0, 17, "--- ORDER-MATRIX ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 17, 1, 17)
 
@@ -390,12 +408,24 @@ if barstate.islast and w_trend != 0
     l_tp := line.new(bar_index, tp_price, bar_index + 5, tp_price, color=color.lime, width=1)
     lbl_sp := label.new(bar_index + 5, sp_price, "🎯 Entry", color=color.yellow, textcolor=color.black, style=label.style_label_left, size=size.small)
     lbl_sl := label.new(bar_index + 5, sl_price, "🏁 Stop", color=color.red, textcolor=color.white, style=label.style_label_left, size=size.small)
-    lbl_tp := label.new(bar_index + 5, tp_price, "💸 1:1 TP", color=color.lime, textcolor=color.black, style=label.style_label_left, size=size.small)
+    lbl_tp := label.new(bar_index + 5, tp_price, "💸 TP", color=color.lime, textcolor=color.black, style=label.style_label_left, size=size.small)
 
 if barstate.isrealtime and barstate.isconfirmed
-    if is_golden_long or is_golden_short
-        alert(mode_prefix + " - 🏆 GOLDEN SETUP " + syminfo.ticker + ": Phase-Shift erkannt! In: " + f_p(sp_price) + " | Qty: " + str.tostring(shares) + " | TP(1:1): " + f_p(tp_price), alert.freq_once_per_bar)
+    bool is_omega = vix_c > 35.0
+    bool is_delta = vix_c > 25.0 and vix_c <= 35.0
+
+    if is_omega
+        // Im OMEGA-Regime feuern wir keine Entry-Alarme. Pine Script kennt kein 'pass'.
+        int _dummy = 0 
+    else if is_delta and (is_golden_long or is_sniper_long)
+        // Reduziertes Risiko für Longs im High VIX Environment (DELTA)
+        alert(mode_prefix + " - 📡 INFO/LAUERN LONG " + syminfo.ticker + ": Reduziertes Risiko (" + str.tostring(active_risk_l, "#.##") + "€). In: " + f_p(sp_price), alert.freq_once_per_bar)
+    else if is_golden_long or is_golden_short
+        float r_val = w_trend == 1 ? active_risk_l : active_risk_s
+        alert(mode_prefix + " - 🏆 GOLDEN SETUP " + syminfo.ticker + ": Risiko " + str.tostring(r_val, "#.##") + "€. In: " + f_p(sp_price) + " | TP(1:1): " + f_p(tp_price), alert.freq_once_per_bar)
     else if is_sniper_long or is_sniper_short
-        alert(mode_prefix + " - 🎯 SNIPER " + syminfo.ticker + ": Risk-Recycling bereit! In: " + f_p(sp_price), alert.freq_once_per_bar)
+        float r_val = w_trend == 1 ? active_risk_l : active_risk_s
+        // DELTA Shorts landen hier, weil is_sniper_short greift
+        alert(mode_prefix + " - 🎯 ACTION/FEUER FREI " + syminfo.ticker + ": Risiko " + str.tostring(r_val, "#.##") + "€. In: " + f_p(sp_price), alert.freq_once_per_bar)
     else if is_lauern_long or is_lauern_short
         alert(mode_prefix + " - 📡 RADAR " + syminfo.ticker + ": Lauer-Modus!", alert.freq_once_per_bar)
