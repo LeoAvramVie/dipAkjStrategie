@@ -20,8 +20,8 @@ Das Cockpit ist deine einzige Quelle der Wahrheit. Es verarbeitet hunderte Daten
 | **3** | **📈 Weinstein Stage** | STAGE 2 OK Long ✅<br>STAGE 4 OK Short ✅<br>SEITWÄRTS | Regimewechsel: Wochenkurs > SMA 30 + SMA steigend. Seitwärts = Todeszone. |
 | **4** | **Wochentrend** | LONG, SHORT, --- | Sticky Trend: 2 Wochenschlüsse außerhalb BB (10/1). |
 | **5** | **Tagstrend** | LONG, SHORT, LAUERN, --- | Taktischer Trigger: 2 Tage außerhalb BB (Scharf). 1 Tag (Radar). |
-| **6** | **⚡ Williams %R** | 0.0 bis 100.0 | Gummiband-Skala. >80 = Überverkauft (Dip), <20 = Überkauft. |
-| **7** | **🕯️ Kerzenregel** | OK ✅, WAIT ⏳ | Bestätigungs-Filter: Close > Open (Long) / Close < Open (Short). Dojis verboten! |
+| **6** | **⚡ Williams %R** | Absolute Skala | Schnelle 4er-Periode (wpr_len=4) für harte Ausschläge. >80 = Überverkauft (Panik/Dip). |
+| **7** | **🕯️ Kerzenregel** | OK ✅, WAIT ⏳ | Bestätigungs-Filter (Wir kaufen den Dip!): Close < Open (Rote Kerze) bei Long. Close > Open (Grün) bei Short. Dojis verboten! |
 | **8** | **Stoppreis (SP)** | Zahlenwert | Trigger: 2 Ticks über High / unter Low der Signalkerze. |
 | **9** | **LimitPreis (LP)** | Zahlenwert | Sicherheit: SP +/- Limit-Offset. Maximale Schmerzgrenze für Slippage. |
 | **10**| **Anzahl** | Zahlenwert | Risiko-Kalkulator: Berechnet Stücke für exakt z.B. 150€ (1R) Risiko. |
@@ -69,21 +69,21 @@ Das System nutzt `var` Deklarationen, um Zustände algorithmisch über mehrere B
     *   **Werte:** `1` (Long), `-1` (Short), `0` (Neutral).
     *   **Berechnung:** Abgeleitet von Bollinger Band-Verschiebungen (z.B. Funktion `f_bb_d()`). Schließt eine Kerze über dem oberen Band (`close > d_up`), springt der Trend-State auf 1. Er bleibt zwingend auf 1, bis der Preis das gegenüberliegende untere Band berührt (`low < d_lo`). Das Modul fungiert als asymmetrischer Noise-Filter.
 
-#### 2.2 Oszillator & Trigger-Logiken
-*   **Williams %R (`d_wpr`):** Klassischer Indikator, berechnet über `ta.wpr(14)`. Die Skala reicht nominell von 0 bis -100, wird vom Skript aber auf 0 bis +100 normalisiert (`(ta.wpr(14) + 50) * 2`).
-*   **`long_lunte` / `short_lunte` (Die "brennende Lunte"):**
-    Prüft via `ta.highest(d_wpr, setup_len_d) >= 80`. Ist der Oszillator innerhalb der definierten Lookback-Periode einmalig über +80 gesprungen, ist das System für ein Signal "scharfgestellt", auch wenn sich der Oszillator intra-bar wieder abkühlt.
+#### 2.2 Oszillator & Trigger-Logik
+*   **Williams %R (`d_wpr`):** Nutzt eine schnelle Lookback-Periode von `wpr_len = 4` für harte, gnadenlose Reaktionen. Die absolute Skala wird genutzt, um Extremzonen abzugreifen (>=80 für Panik/Dip im Long, <=20 für Short). Die Standardperiode 14 wäre für dieses Edge-System viel zu träge.
 
 #### 2.3 Die MK-Regeln (Strikte Einstiegs-Prüfung)
 *   **MK 4.7 / 5.6 Bollinger-Bruch (`setup_strict_long` / `setup_strict_short`):**
-    Überprüft zwingend, dass sich die Signal-Kerze nach einem Extremwert wieder in der relativen Normalisierung befindet: `close < d_up` (für Long). Verhindert den Einstieg in massive Band-Überdehnungen (False Breakouts).
+    State-Machine Tracking für den Tagestrend. Ist der Preis nach 2 Kerzen immer noch intakt, wird das Setup für den Radar scharfgestellt (`true`). Ein Close auf der falschen Seite des Bandes de-eskaliert das Setup sofort (`false`). Verhindert den Einstieg in extreme Überdehnungen, weil das Signal-Buy explizit verlangt, dass die Kerze wieder in das Innere des Bandes schließt (`close > d_lo`).
 *   **Kerzenregel (`long_trigger` / `short_trigger`):**
-    Überprüft die finale Bestätigung der Kerzenrichtung am aktuellen Bar. Ein Long-Trigger feuert nur, wenn `close > open`.
+    Der finale Filter – wir kaufen in die Panik:
+    *   **Long-Trigger:** `close < open` (Rote Kerze, Dip). Dojis (`close == open`) sind hart verboten.
+    *   **Short-Trigger:** `close > open` (Grüne Kerze, Relief-Rallye). Dojis verboten.
 
 ### 3. Signal-Klassen (Die Pyramiden-Logik)
 Die booleschen Variablen für Trading-Signale sind streng disjunkt und hierarchisch abgekapselt:
-1.  **Radar (`is_lauern_long` / `short`):** Abstimmung der Basistrends (`w_trend == 1 and d_trend == 1`).
-2.  **Sniper (`is_sniper_long` / `short`):** Aktives Lauern + `long_lunte` + `setup_strict_long` + `long_trigger`. Dies ist das unbestätigte, pure Price-Action-Signal.
+1.  **Radar (`is_lauern_long` / `short`):** Bestätigung, dass die Price-Action auf Tagesbasis scharf ist (Trend intakt, Preissetup formiert sich).
+2.  **Sniper (`is_sniper_long` / `short`):** Wochentrend intakt + Tages-Setup scharf + Williams %R im Extrembereich (>= 80) + Kerzenbestätigung (Rote Kerze) + Inner-Bollinger Close (`close > d_lo`). Das pure Price-Action-Signal.
 3.  **Golden (`is_golden_long` / `short`):** `is_sniper` + `vol_condition` (Quantitative Volumen-Verifizierung).
 
 ### 4. Multi-Timeframe (MTF) Support & Volumenprofiling
