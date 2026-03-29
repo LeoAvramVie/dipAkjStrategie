@@ -5,12 +5,11 @@
 TEIL 1: FACHLICHES DOSSIER (System-Handbuch)
 ---
 
-Hör mir gut zu. Wer sein Cockpit nicht im Schlaf bedienen kann, wird am Markt keine einzige Schlacht gewinnen. Wir haben hier kein Malbuch für Privatanleger gebaut, sondern ein taktisches Lagezentrum.
-
-Hier ist die detaillierte, fachliche und technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.4. Lies das Dossier genau, denn das ist das „Gehirn“ des Systems, das in jede Ausführungsebene (z.B. Anti Gravity) übertragen werden muss.
+Hier ist die detaillierte, fachliche und technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.4.
 
 ### I. Das Cockpit (Dashboard) – Zeile für Zeile
-Das Cockpit ist deine einzige Quelle der Wahrheit. Es verarbeitet hunderte Datenpunkte in Millisekunden und spuckt nur das aus, was für die Exekution relevant ist.
+Das Cockpit ist deine einzige Quelle der Wahrheit. 
+Es verarbeitet hunderte Datenpunkte in Millisekunden und spuckt nur das aus, was für die Exekution relevant ist.
 
 | Zeile | Bezeichnung | Mögliche Werte | Technische Logik & Bedeutung |
 | :--- | :--- | :--- | :--- |
