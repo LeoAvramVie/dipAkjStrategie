@@ -356,3 +356,29 @@ if barstate.islast
     // Metrik Omega
     table.cell(audit_cockpit, 0, 5, "VIX Efficiency (Blocked by OMEGA): " + str.tostring(total_missed_omega), bgcolor=color.rgb(10,10,10), text_color=color.orange, text_size=size.small)
     table.merge_cells(audit_cockpit, 0, 5, 3, 5)
+
+// ==========================================
+// --- 7. STRATEGY EXEKUTION (Real Backtest) ---
+// ==========================================
+// PFLICHT: Ein Strategy-Script benötigt entry()-Calls zum Kompilieren. Wir feuern hier das Golden Setup ab!
+if evt_golden_l and not firewall_l and strategy.position_size == 0
+    strategy.entry("Long", strategy.long, qty=dyn_shares_l(sp_long, sl_long), stop=sp_long)
+    strategy.exit("TP1_L", "Long", qty_percent=50, stop=sl_long, limit=tp_long)
+
+if strategy.position_size > 0
+    float be_stop = strategy.opentrades.entry_price(0)
+    if close < ema21 or w_trend == -1
+        strategy.close("Long", comment="Runner Out")
+    else
+        strategy.exit("Trail_L", "Long", stop=math.max(sl_long, be_stop))
+
+if evt_golden_s and not firewall_s and strategy.position_size == 0
+    strategy.entry("Short", strategy.short, qty=dyn_shares_s(sp_short, sl_short), stop=sp_short)
+    strategy.exit("TP1_S", "Short", qty_percent=50, stop=sl_short, limit=tp_short)
+
+if strategy.position_size < 0
+    float be_stop = strategy.opentrades.entry_price(0)
+    if close > ema21 or w_trend == 1
+        strategy.close("Short", comment="Runner Out")
+    else
+        strategy.exit("Trail_S", "Short", stop=math.min(sl_short, be_stop))
