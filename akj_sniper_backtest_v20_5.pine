@@ -253,7 +253,7 @@ if base_lauern_s
 // ==========================================
 // --- 6. AUDIT-COCKPIT UI ---
 // ==========================================
-var table audit_tab = table.new(position.top_left, 4, 6, border_width=1, border_color=color.rgb(40,40,40))
+var table audit_tab = table.new(position.top_center, 4, 6, border_width=1, border_color=color.rgb(40,40,40))
 
 if barstate.islast
     int c_lauern = l_lauern + w_lauern
