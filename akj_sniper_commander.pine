@@ -7,7 +7,7 @@ indicator("AKJ 2.0 Sniper-Commander v20.5", overlay=true, max_labels_count=500)
 group_rm         = "Risikomanagement"
 risk_per_trade   = input.float(150.0, "Basis Risiko pro Trade (€)", group=group_rm)
 limit_offset_pct = input.float(0.2, "Limit-Offset (%)", group=group_rm)
-atr_stop_mult    = input.float(1.5, "ATR Stop Multiplikator", group=group_rm)
+atr_stop_mult    = input.float(1.0, "ATR Stop Multiplikator (v20.6)", group=group_rm, step=0.1) // Reduziert auf 1.0 für mehr Sensitivität
 use_dyn_risk     = input.bool(true, "Asymmetrisches Risk (Alpha/Delta/Omega)", group=group_rm)
 
 group_strat      = "MK-Strategie Parameter"
@@ -15,8 +15,6 @@ bb_len           = input.int(10, "Bollinger Länge", group=group_strat)
 bb_mult          = input.float(1.0, "Bollinger Multiplikator", group=group_strat)
 wpr_len          = input.int(4, "Williams %R Länge", group=group_strat)
 atr_len          = input.int(14, "ATR Länge (Filter/Radar)", group=group_strat)
-atr_stop_mult    = input.float(1.0, "ATR Stop Multiplikator", group=group_strat, step=0.1) // Reduziert auf 1.0 für mehr Sensitivität
-
 group_vol_filter = "Volumen Filter (v20.6)"
 vol_timeframe    = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
 min_stop_density = input.float(1.5, "Min. Stop-Versicherung (%) (FEUER)", group=group_vol_filter)
@@ -288,6 +286,21 @@ if raw_feuer_long or raw_feuer_short or is_golden_long or is_golden_short
     wt_bg := c_bg
     dt_bg := c_bg
 
+string header_txt = "STATUS: NO SIGNAL"
+color header_bg = color.black
+if is_golden_long or is_golden_short
+    header_txt := "STATUS: 🌟 GOLDEN SETUP (" + mode_prefix + ")"
+    header_bg := color.lime
+else if is_sniper_long or is_sniper_short
+    header_txt := "STATUS: 🎯 FEUER FREI (" + mode_prefix + ")"
+    header_bg := color.blue
+else if raw_feuer_long or raw_feuer_short
+    header_txt := "STATUS: ⚠️ TRIGGER OHNE SETUP-VOL (" + mode_prefix + ")"
+    header_bg := color.rgb(100,0,0) // Rot für geblockt
+else if is_lauern_long or is_lauern_short
+    header_txt := "STATUS: 📡 LAUERN (" + mode_prefix + ")"
+    header_bg := color.rgb(150, 150, 0) // Gelb für Radar
+
 // ==========================================
 // --- 9. COCKPIT UI ---
 // ==========================================
@@ -344,7 +357,7 @@ if barstate.islast
     table.cell(cp, 0, 15, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >3% zur Absicherung der Position.")
     table.cell(cp, 1, 15, str.tostring(stop_density, "#.#") + "%", bgcolor=s_v_bg, text_color=color.white)
     
-    color t_v_bg = rld_approved_tp ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
+    color t_v_bg = vacuum_ok ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
     table.cell(cp, 0, 16, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.")
     table.cell(cp, 1, 16, str.tostring(tp_density, "#.#") + "%", bgcolor=t_v_bg, text_color=color.white)
 
