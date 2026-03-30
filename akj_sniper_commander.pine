@@ -307,7 +307,7 @@ else if is_lauern_long or is_lauern_short
 // ==========================================
 // --- 9. COCKPIT UI ---
 // ==========================================
-var table cp = table.new(position.top_right, 2, 24, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
+var table cp = table.new(position.top_right, 2, 25, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
 f_p(val) => na(val) ? "-" : str.tostring(val, "#.##")
 
 if barstate.islast
