@@ -436,16 +436,12 @@ if raw_feuer_l or raw_feuer_s or trigger_golden_l or trigger_golden_s
     wt_bg := c_bg
     dt_bg := c_bg
 
-// Cooldown Logic & State Tracker (v20.6.8)
+// Cooldown Logic & State Tracker (v20.7 Alpha)
 var string last_tac_txt = ""
-var int alert_counter = 0
-var int window_start_time = timenow
+var string last_alert_status = ""
+var int last_alert_time = 0
 
-if (timenow - window_start_time) > 180000
-    alert_counter := 0
-    window_start_time := timenow
-
-bool is_limit_reached = alert_counter >= 14
+bool is_time_locked = (timenow - nz(last_alert_time)) <= 30000
 
 string header_txt = "STATUS: NO SIGNAL"
 color header_bg = color.black
@@ -463,8 +459,8 @@ else if trigger_lauern_l or trigger_lauern_s
     header_txt := "STATUS: 📡 LAUERN (" + mode_prefix + ")"
     header_bg := color.rgb(150, 150, 0) // Gelb für Radar
 
-if is_limit_reached and header_txt != "STATUS: NO SIGNAL"
-    header_txt := header_txt + " ⚠️ ALARM LIMIT REACHED"
+if is_time_locked and header_txt != "STATUS: NO SIGNAL"
+    header_txt := header_txt + " ⏳"
 
 // ==========================================
 // --- 9. COCKPIT UI ---
@@ -606,9 +602,9 @@ bool is_upgrade_l = (last_tac_txt == "FEUER_LONG" or last_tac_txt == "LAUERN_LON
 bool is_upgrade_s = (last_tac_txt == "FEUER_SHORT" or last_tac_txt == "LAUERN_SHORT") and (tac_txt == "GOLDEN_SHORT")
 bool is_upgrade = is_upgrade_l or is_upgrade_s
 
-bool state_changed = tac_txt != last_tac_txt and tac_txt != "STATUS: NO SIGNAL" and tac_txt != "STAY"
+bool state_changed = tac_txt != last_alert_status and tac_txt != "STATUS: NO SIGNAL" and tac_txt != "STAY"
 
-bool can_alert = state_changed and not is_limit_reached
+bool can_alert = barstate.isrealtime and state_changed and not is_time_locked
 
 string wpr_s = str.tostring(nz(d_wpr), "#.#")
 string shares_l_str = nz(shares_l) > 0 ? str.tostring(nz(shares_l)) : "0 [HINWEIS] Risiko für 1 Stück aktuell > Budget. Manueller Check nötig."
@@ -625,8 +621,8 @@ string star_p_f = eur_feuer > 0 ? "🔥 [STAR-TICKER] " : ""
 string star_p_g = eur_golden > 0 ? "🔥 [STAR-TICKER] " : ""
 
 if can_alert
-    last_tac_txt := tac_txt
-    alert_counter += 1
+    last_alert_status := tac_txt
+    last_alert_time := timenow
 
     if tac_txt == "GOLDEN_LONG"
         if is_upgrade_l
@@ -650,6 +646,10 @@ if can_alert
         alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI SHORT⚠️ !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_all)
     // LAUERN (Radar) wird im State-Memory getrackt, triggert aber keinen eigenen Alarm mehr (nur Feuer Frei & Golden)
 
+if tac_txt != "STATUS: NO SIGNAL"
+    last_tac_txt := tac_txt
+
 // Keep logic clean: if it goes back to NO SIGNAL, we allow re-arming of the alarms
 if tac_txt == "STATUS: NO SIGNAL"
+    last_alert_status := ""
     last_tac_txt := "STATUS: NO SIGNAL"
