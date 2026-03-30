@@ -5,7 +5,7 @@ indicator("AKJ 2.0 Sniper-Commander v20.5", overlay=true, max_labels_count=500)
 // --- 1. INPUTS ---
 // ==========================================
 group_rm         = "Risikomanagement"
-risk_per_trade   = input.float(150.0, "Basis Risiko pro Trade (€)", group=group_rm)
+risk_per_trade   = input.float(100.0, "Basis Risiko pro Trade (€)", group=group_rm)
 limit_offset_pct = input.float(0.2, "Limit-Offset (%)", group=group_rm)
 atr_stop_mult    = input.float(1.0, "ATR Stop Multiplikator (v20.6)", group=group_rm, step=0.1) // Reduziert auf 1.0 für mehr Sensitivität
 use_dyn_risk     = input.bool(true, "Asymmetrisches Risk (Alpha/Delta/Omega)", group=group_rm)
@@ -574,14 +574,34 @@ if barstate.islast and w_trend != 0
 // --- 11. ALARMSYSTEM (Zero-Latency Sync) ---
 // ==========================================
 
-bool alert_lauern_l = trigger_lauern_l and not trigger_lauern_l[1]
-bool alert_lauern_s = trigger_lauern_s and not trigger_lauern_s[1]
+var string last_tac_txt = ""
+var int last_alert_time = 0
+var float last_alert_price = 0.0
 
-bool alert_feuer_l  = trigger_feuer_l and not trigger_feuer_l[1]
-bool alert_feuer_s  = trigger_feuer_s and not trigger_feuer_s[1]
+string tac_txt = "STATUS: NO SIGNAL"
+if trigger_golden_l
+    tac_txt := "GOLDEN_LONG"
+else if trigger_golden_s
+    tac_txt := "GOLDEN_SHORT"
+else if trigger_feuer_l
+    tac_txt := "FEUER_LONG"
+else if trigger_feuer_s
+    tac_txt := "FEUER_SHORT"
+else if trigger_lauern_l
+    tac_txt := "LAUERN_LONG"
+else if trigger_lauern_s
+    tac_txt := "LAUERN_SHORT"
 
-bool alert_golden_l = trigger_golden_l and not trigger_golden_l[1]
-bool alert_golden_s = trigger_golden_s and not trigger_golden_s[1]
+bool is_upgrade_l = (last_tac_txt == "FEUER_LONG" or last_tac_txt == "LAUERN_LONG") and (tac_txt == "GOLDEN_LONG")
+bool is_upgrade_s = (last_tac_txt == "FEUER_SHORT" or last_tac_txt == "LAUERN_SHORT") and (tac_txt == "GOLDEN_SHORT")
+bool is_upgrade = is_upgrade_l or is_upgrade_s
+
+bool state_changed = tac_txt != last_tac_txt and tac_txt != "STATUS: NO SIGNAL" and tac_txt != "STAY"
+
+bool time_passed = (timenow - nz(last_alert_time)) >= 5000
+bool price_changed = math.abs(close - nz(last_alert_price)) > (atr_val * 0.1)
+
+bool can_alert = state_changed and (time_passed or price_changed or is_upgrade)
 
 string wpr_s = str.tostring(nz(d_wpr), "#.#")
 string shares_l_str = nz(shares_l) > 0 ? str.tostring(nz(shares_l)) : "0 [HINWEIS] Risiko für 1 Stück aktuell > Budget. Manueller Check nötig."
@@ -597,24 +617,36 @@ string star_p_l = eur_lauern > 0 ? "🔥 [STAR-TICKER] " : ""
 string star_p_f = eur_feuer > 0 ? "🔥 [STAR-TICKER] " : ""
 string star_p_g = eur_golden > 0 ? "🔥 [STAR-TICKER] " : ""
 
-if alert_lauern_l
-    alert(rt_prefix + " " + star_p_l + "[RADAR] " + syminfo.ticker + " LONG | WPR: " + wpr_s + " | Status: Lauern (70er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
-if alert_lauern_s
-    alert(rt_prefix + " " + star_p_l + "[RADAR] " + syminfo.ticker + " SHORT | WPR: " + wpr_s + " | Status: Lauern (30er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
+if can_alert
+    last_tac_txt := tac_txt
+    last_alert_time := timenow
+    last_alert_price := close
 
-if alert_feuer_l
-    float r_val = nz(active_risk_l)
-    string wall_txt = str.tostring(nz(stop_density), "#.#")
-    string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-    alert(rt_prefix + " " + star_p_f + "!!! FEUER FREI LONG !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_l_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
+    if tac_txt == "GOLDEN_LONG"
+        if is_upgrade_l
+            alert(rt_prefix + " " + star_p_g + "[UPGRADE] " + syminfo.ticker + " ist jetzt ein GOLDEN SETUP! Wall: " + str.tostring(nz(stop_density), "#.#") + "% | Vacuum: " + (vacuum_ok ? "High" : "Low") + ".", alert.freq_all)
+        else
+            alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_all)
+    else if tac_txt == "GOLDEN_SHORT"
+        if is_upgrade_s
+            alert(rt_prefix + " " + star_p_g + "[UPGRADE] " + syminfo.ticker + " ist jetzt ein GOLDEN SETUP! Wall: " + str.tostring(nz(stop_density), "#.#") + "% | Vacuum: " + (vacuum_ok ? "High" : "Low") + ".", alert.freq_all)
+        else
+            alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_all)
+    else if tac_txt == "FEUER_LONG"
+        float r_val = nz(active_risk_l)
+        string wall_txt = str.tostring(nz(stop_density), "#.#")
+        string rld_txt = vacuum_ok ? "Valid" : "Blocked"
+        alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI LONG ⚠️!!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_l_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_all)
+    else if tac_txt == "FEUER_SHORT"
+        float r_val = nz(active_risk_s)
+        string wall_txt = str.tostring(nz(stop_density), "#.#")
+        string rld_txt = vacuum_ok ? "Valid" : "Blocked"
+        alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI SHORT⚠️ !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_all)
+    else if tac_txt == "LAUERN_LONG"
+        alert(rt_prefix + " " + star_p_l + "[RADAR] " + syminfo.ticker + " LONG | WPR: " + wpr_s + " | Status: Lauern (70er Trigger erreicht). Mode: " + mode_prefix, alert.freq_all)
+    else if tac_txt == "LAUERN_SHORT"
+        alert(rt_prefix + " " + star_p_l + "[RADAR] " + syminfo.ticker + " SHORT | WPR: " + wpr_s + " | Status: Lauern (30er Trigger erreicht). Mode: " + mode_prefix, alert.freq_all)
 
-if alert_feuer_s
-    float r_val = nz(active_risk_s)
-    string wall_txt = str.tostring(nz(stop_density), "#.#")
-    string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-    alert(rt_prefix + " " + star_p_f + "!!! FEUER FREI SHORT !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
-
-if alert_golden_l
-    alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
-if alert_golden_s
-    alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
+// Keep logic clean: if it goes back to NO SIGNAL, we allow re-arming of the alarms
+if tac_txt == "STATUS: NO SIGNAL"
+    last_tac_txt := "STATUS: NO SIGNAL"
