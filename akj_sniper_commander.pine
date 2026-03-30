@@ -171,34 +171,38 @@ bool vacuum_ok = tp_density <= max_tp_density
 string vacuum_qual = vacuum_ok ? ("High (TP " + str.tostring(tp_density, "#.#") + "%)") : ("Low (TP " + str.tostring(tp_density, "#.#") + "%)")
 
 // ==========================================
-// --- 6. SIGNAL-IDENTIFIKATION ---
+// --- 6. SIGNAL-IDENTIFIKATION (Zero-Latency Sync) ---
 // ==========================================
-// LAUERN (Radar an, Scharf 1/2 + WPR 70er Kaskade)
+
+// Radar (Hysterese + Sticky State)
 bool is_radar_l = high >= d_up + (atr_val * 0.2)
 bool radar_state_l = weinstein_stage == 2 and (is_radar_l or setup_strict_long)
-bool is_lauern_long   = radar_state_l and d_wpr >= 70 and not firewall_l
 
 bool is_radar_s = low <= d_lo - (atr_val * 0.2)
 bool radar_state_s = weinstein_stage == 4 and (is_radar_s or setup_strict_short)
-bool is_lauern_short  = radar_state_s and d_wpr <= 30 and not firewall_s
 
-// FEUER FREI (Trigger Raw - WPR 80/20 + Kerzenregel)
+// Raw Triggers (WPR + Kerzenregel)
 bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_lo
 bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
 
-bool raw_feuer_long  = radar_state_l and setup_strict_long and long_trigger and not firewall_l
-bool raw_feuer_short = radar_state_s and setup_strict_short and short_trigger and not firewall_s
+// Volumen (Wall & Vakuum)
+bool vol_feuer_l = stop_density >= min_stop_density and tp_density <= max_tp_density
+bool vol_feuer_s = stop_density >= min_stop_density and tp_density <= max_tp_density
+bool vol_golden_l = stop_density >= golden_stop_density and tp_density <= golden_tp_density
+bool vol_golden_s = stop_density >= golden_stop_density and tp_density <= golden_tp_density
 
-// VALIDATED FEUER
-bool feuer_vol_l = stop_density >= min_stop_density and tp_density <= max_tp_density
-bool feuer_vol_s = stop_density >= min_stop_density and tp_density <= max_tp_density
-bool is_sniper_long  = raw_feuer_long and feuer_vol_l
-bool is_sniper_short = raw_feuer_short and feuer_vol_s
+// --- SYNCHRONIZED TRIGGER BOOLS ---
+bool trigger_lauern_l = radar_state_l and d_wpr >= 70 and not firewall_l
+bool trigger_lauern_s = radar_state_s and d_wpr <= 30 and not firewall_s
 
-// GOLDEN
-bool golden_vol = stop_density >= golden_stop_density and tp_density <= golden_tp_density
-bool is_golden_long  = raw_feuer_long and golden_vol
-bool is_golden_short = raw_feuer_short and golden_vol
+bool raw_feuer_l = radar_state_l and setup_strict_long and long_trigger and not firewall_l
+bool raw_feuer_s = radar_state_s and setup_strict_short and short_trigger and not firewall_s
+
+bool trigger_feuer_l = raw_feuer_l and vol_feuer_l
+bool trigger_feuer_s = raw_feuer_s and vol_feuer_s
+
+bool trigger_golden_l = raw_feuer_l and vol_golden_l
+bool trigger_golden_s = raw_feuer_s and vol_golden_s
 
 // ==========================================
 // --- 7. SEKTOR & RELATIVE STÄRKE ---
@@ -287,23 +291,24 @@ else if w_trend == -1
     c_bg  := (close > open and not is_doji) ? color.red : color.rgb(30, 30, 30)
 
 // Highlight overrides
-if raw_feuer_long or raw_feuer_short or is_golden_long or is_golden_short
-    c_bg := (raw_feuer_long or is_golden_long) ? color.blue : color.red
+if raw_feuer_l or raw_feuer_s or trigger_golden_l or trigger_golden_s
+    c_bg := (raw_feuer_l or trigger_golden_l) ? color.blue : color.red
     wt_bg := c_bg
     dt_bg := c_bg
 
 string header_txt = "STATUS: NO SIGNAL"
 color header_bg = color.black
-if is_golden_long or is_golden_short
+// Cockpit UI-Sync
+if trigger_golden_l or trigger_golden_s
     header_txt := "STATUS: 🌟 GOLDEN SETUP (" + mode_prefix + ")"
     header_bg := color.lime
-else if is_sniper_long or is_sniper_short
-    header_txt := "STATUS: 🎯 FEUER FREI (" + mode_prefix + ")"
-    header_bg := color.blue
-else if raw_feuer_long or raw_feuer_short
+else if trigger_feuer_l or trigger_feuer_s
+    header_txt := "STATUS: 🟢 FEUER FREI (" + mode_prefix + ")"
+    header_bg := color.rgb(0, 100, 0) // Grün für Feuer Frei
+else if raw_feuer_l or raw_feuer_s
     header_txt := "STATUS: ⚠️ TRIGGER OHNE SETUP-VOL (" + mode_prefix + ")"
     header_bg := color.rgb(100,0,0) // Rot für geblockt
-else if is_lauern_long or is_lauern_short
+else if trigger_lauern_l or trigger_lauern_s
     header_txt := "STATUS: 📡 LAUERN (" + mode_prefix + ")"
     header_bg := color.rgb(150, 150, 0) // Gelb für Radar
 
@@ -426,38 +431,41 @@ if barstate.islast and w_trend != 0
     lbl_tp := label.new(bar_index + 5, tp_price, "💸 TP", color=color.lime, textcolor=color.black, style=label.style_label_left, size=size.small)
 
 // ==========================================
-// --- 11. ALARMSYSTEM (Cascade v20.6) ---
+// --- 11. ALARMSYSTEM (Zero-Latency Sync) ---
 // ==========================================
 
-bool alert_lauern_l = is_lauern_long and not is_lauern_long[1] and barstate.isconfirmed
-bool alert_lauern_s = is_lauern_short and not is_lauern_short[1] and barstate.isconfirmed
+bool alert_lauern_l = trigger_lauern_l and not trigger_lauern_l[1]
+bool alert_lauern_s = trigger_lauern_s and not trigger_lauern_s[1]
 
-bool alert_feuer_l  = raw_feuer_long and not raw_feuer_long[1] and barstate.isconfirmed
-bool alert_feuer_s  = raw_feuer_short and not raw_feuer_short[1] and barstate.isconfirmed
+bool alert_feuer_l  = trigger_feuer_l and not trigger_feuer_l[1]
+bool alert_feuer_s  = trigger_feuer_s and not trigger_feuer_s[1]
 
-bool alert_golden_l = is_golden_long and not is_golden_long[1] and barstate.isconfirmed
-bool alert_golden_s = is_golden_short and not is_golden_short[1] and barstate.isconfirmed
+bool alert_golden_l = trigger_golden_l and not trigger_golden_l[1]
+bool alert_golden_s = trigger_golden_s and not trigger_golden_s[1]
 
 string wpr_s = str.tostring(nz(d_wpr), "#.#")
+string shares_l_str = str.tostring(nz(shares_l))
+string shares_s_str = str.tostring(nz(shares_s))
+string rt_prefix = barstate.isconfirmed ? "[EOD]" : "[REALTIME]"
 
 if alert_lauern_l
-    alert("[RADAR] " + syminfo.ticker + " LONG | WPR: " + wpr_s + " | Status: Lauern (70er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
+    alert(rt_prefix + " [RADAR] " + syminfo.ticker + " LONG | WPR: " + wpr_s + " | Status: Lauern (70er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
 if alert_lauern_s
-    alert("[RADAR] " + syminfo.ticker + " SHORT | WPR: " + wpr_s + " | Status: Lauern (30er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
+    alert(rt_prefix + " [RADAR] " + syminfo.ticker + " SHORT | WPR: " + wpr_s + " | Status: Lauern (30er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
 
 if alert_feuer_l
     float r_val = nz(active_risk_l)
     string wall_txt = str.tostring(nz(stop_density), "#.#")
     string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-    alert("!!! FEUER FREI LONG !!! " + syminfo.ticker + " | Risk: " + str.tostring(r_val, "#.##") + "€ | WPR: " + wpr_s + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
+    alert(rt_prefix + " !!! FEUER FREI LONG !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_l_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
 
 if alert_feuer_s
     float r_val = nz(active_risk_s)
     string wall_txt = str.tostring(nz(stop_density), "#.#")
     string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-    alert("!!! FEUER FREI SHORT !!! " + syminfo.ticker + " | Risk: " + str.tostring(r_val, "#.##") + "€ | WPR: " + wpr_s + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
+    alert(rt_prefix + " !!! FEUER FREI SHORT !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
 
 if alert_golden_l
-    alert("🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
+    alert(rt_prefix + " 🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
 if alert_golden_s
-    alert("🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
+    alert(rt_prefix + " 🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
