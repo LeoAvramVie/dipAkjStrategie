@@ -66,6 +66,8 @@ Das Alarmsystem ist als Kaskade aufgebaut, bei der der Williams %R (4) Momentum-
 
 3. **🌟 GOLDEN SETUP (Premium):** Der absolute High-Grade Trade. Nur Setups, die neben dem Trigger auch noch eine exzellente Volumen-Struktur (>3% Stop-Mauer, <8% Vakuum-Widerstand) ins Orderbuch legen, erreichen diesen Status.
 
+4. **🔒 ANTI-SPAM SCHUTZ (v20.6.7):** v20.6.7 verfügt über einen integrierten Anti-Spam-Schutz. Nach jedem Alarm wird der Ticker für 60 Sekunden für weitere Alarme gesperrt, um die Deaktivierung durch TradingView zu verhindern.
+
 Risk-Recycling: **Sobald das feste CRV (Risiko) 1:1 erreicht ist, werden 50% der Position aus dem Markt genommen und der Stop-Loss läuft sofort auf Break-Even nach.**
 ### V. Backtest-Anleitung (IBKR Abgleich)
 Es liegt ein separates `akj_sniper_backtest_v20_5.pine` Script bei. Dieses simuliert ein exaktes 50.000€ Depot, zieht 2.00€ Kommission ab und rechnet 1 Tick Slippage pro Trade.
