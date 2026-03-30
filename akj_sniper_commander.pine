@@ -175,16 +175,19 @@ string vacuum_qual = vacuum_ok ? ("High (TP " + str.tostring(tp_density, "#.#") 
 // ==========================================
 // LAUERN (Radar an, Scharf 1/2 + WPR 70er Kaskade)
 bool is_radar_l = high >= d_up + (atr_val * 0.2)
-bool is_lauern_long   = weinstein_stage == 2 and is_radar_l and d_wpr >= 70 and not firewall_l
+bool radar_state_l = weinstein_stage == 2 and (is_radar_l or setup_strict_long)
+bool is_lauern_long   = radar_state_l and d_wpr >= 70 and not firewall_l
 
 bool is_radar_s = low <= d_lo - (atr_val * 0.2)
-bool is_lauern_short  = weinstein_stage == 4 and is_radar_s and d_wpr <= 30 and not firewall_s
+bool radar_state_s = weinstein_stage == 4 and (is_radar_s or setup_strict_short)
+bool is_lauern_short  = radar_state_s and d_wpr <= 30 and not firewall_s
 
 // FEUER FREI (Trigger Raw - WPR 80/20 + Kerzenregel)
 bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_lo
 bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
-bool raw_feuer_long  = is_lauern_long and setup_strict_long and long_trigger
-bool raw_feuer_short = is_lauern_short and setup_strict_short and short_trigger
+
+bool raw_feuer_long  = radar_state_l and setup_strict_long and long_trigger and not firewall_l
+bool raw_feuer_short = radar_state_s and setup_strict_short and short_trigger and not firewall_s
 
 // VALIDATED FEUER
 bool feuer_vol_l = stop_density >= min_stop_density and tp_density <= max_tp_density
