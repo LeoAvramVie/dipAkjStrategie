@@ -296,25 +296,21 @@ bool evt_feuer_s  = trigger_feuer_s  and not trigger_feuer_s[1]
 bool evt_golden_s = trigger_golden_s and not trigger_golden_s[1]
 
 // Neue Setups ins Audit einspeisen (LONG Event-Based)
-if evt_lauern_l and not firewall_l and not f_is_active(1, 1)
+if evt_lauern_l and not f_is_active(1, 1)
     array.push(virtual_trades, VirtualTrade.new(1, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
-if evt_feuer_l and not firewall_l and not f_is_active(2, 1)
+if evt_feuer_l and not f_is_active(2, 1)
     array.push(virtual_trades, VirtualTrade.new(2, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
 if evt_golden_l
-    if firewall_l
-        total_missed_omega += 1
-    else if not f_is_active(3, 1)
+    if not f_is_active(3, 1)
         array.push(virtual_trades, VirtualTrade.new(3, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
 
 // Neue Setups ins Audit einspeisen (SHORT Event-Based)
-if evt_lauern_s and not firewall_s and not f_is_active(1, -1)
+if evt_lauern_s and not f_is_active(1, -1)
     array.push(virtual_trades, VirtualTrade.new(1, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
-if evt_feuer_s and not firewall_s and not f_is_active(2, -1)
+if evt_feuer_s and not f_is_active(2, -1)
     array.push(virtual_trades, VirtualTrade.new(2, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
 if evt_golden_s
-    if firewall_s
-        total_missed_omega += 1
-    else if not f_is_active(3, -1)
+    if not f_is_active(3, -1)
         array.push(virtual_trades, VirtualTrade.new(3, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
 
 // ==========================================

@@ -114,11 +114,13 @@ float atr_stop_dist = atr_val * atr_stop_mult
 float sp_long  = high
 float sl_long  = low - atr_stop_dist
 float r_l = math.max(math.abs(sp_long - sl_long) * syminfo.pointvalue, syminfo.mintick)
+float tp_long = sp_long + (sp_long - sl_long)
 int shares_l = int(math.floor(active_risk_l / r_l))
 
 float sp_short = low
 float sl_short = high + atr_stop_dist
 float r_s = math.max(math.abs(sp_short - sl_short) * syminfo.pointvalue, syminfo.mintick)
+float tp_short = sp_short - (sl_short - sp_short)
 int shares_s = int(math.floor(active_risk_s / r_s))
 
 float sp_price = w_trend == -1 ? sp_short : sp_long
@@ -192,17 +194,155 @@ bool vol_golden_l = stop_density >= golden_stop_density and tp_density <= golden
 bool vol_golden_s = stop_density >= golden_stop_density and tp_density <= golden_tp_density
 
 // --- SYNCHRONIZED TRIGGER BOOLS ---
-bool trigger_lauern_l = radar_state_l and d_wpr >= 70 and not firewall_l
-bool trigger_lauern_s = radar_state_s and d_wpr <= 30 and not firewall_s
+bool trigger_lauern_l = radar_state_l and d_wpr >= 70
+bool trigger_lauern_s = radar_state_s and d_wpr <= 30
 
-bool raw_feuer_l = radar_state_l and setup_strict_long and long_trigger and not firewall_l
-bool raw_feuer_s = radar_state_s and setup_strict_short and short_trigger and not firewall_s
+bool raw_feuer_l = radar_state_l and setup_strict_long and long_trigger
+bool raw_feuer_s = radar_state_s and setup_strict_short and short_trigger
 
 bool trigger_feuer_l = raw_feuer_l and vol_feuer_l
 bool trigger_feuer_s = raw_feuer_s and vol_feuer_s
 
 bool trigger_golden_l = raw_feuer_l and vol_golden_l
 bool trigger_golden_s = raw_feuer_s and vol_golden_s
+
+type VirtualTrade
+    int   t_class // 1 = Lauern, 2 = Feuer Frei, 3 = Golden
+    int   dir     // 1 = Long, -1 = Short
+    float ep
+    float sl
+    float tp
+    float r_dist
+    bool  tp1_hit
+
+var virtual_trades = array.new<VirtualTrade>()
+
+// Stat-Counter (Closed Trades: Win vs Loss)
+var int w_lauern = 0
+var int w_feuer = 0
+var int w_golden = 0
+
+var int l_lauern = 0
+var int l_feuer = 0
+var int l_golden = 0
+
+var float p_lauern = 0.0
+var float p_feuer = 0.0
+var float p_golden = 0.0
+
+var int total_missed_omega = 0
+
+
+
+// Evaluierung offener virtueller Trades
+if array.size(virtual_trades) > 0
+    for i = array.size(virtual_trades) - 1 to 0
+        VirtualTrade vt = array.get(virtual_trades, i)
+        
+        bool sl_hit = false
+        bool tp_hit = false
+        bool runner_exit = false
+        
+        if vt.dir == 1
+            if low <= vt.sl
+                sl_hit := true
+            if not vt.tp1_hit and high >= vt.tp
+                tp_hit := true
+            if vt.tp1_hit and (close < ema21 or w_trend == -1) // Runner Exit
+                runner_exit := true
+        else
+            if high >= vt.sl
+                sl_hit := true
+            if not vt.tp1_hit and low <= vt.tp
+                tp_hit := true
+            if vt.tp1_hit and (close > ema21 or w_trend == 1) // Runner Exit
+                runner_exit := true
+                
+        // Pessimistischer Ansatz
+        if sl_hit and tp_hit
+            tp_hit := false
+            
+        if not vt.tp1_hit
+            // Erster Teil: SL vs TP1
+            if sl_hit
+                if vt.t_class == 1
+                    l_lauern += 1
+                    p_lauern -= 1.0
+                else if vt.t_class == 2
+                    l_feuer += 1
+                    p_feuer -= 1.0
+                else
+                    l_golden += 1
+                    p_golden -= 1.0
+                array.remove(virtual_trades, i)
+            else if tp_hit
+                // 1:1 erreicht! 50% TP, Rest auf Break-Even
+                if vt.t_class == 1
+                    w_lauern += 1
+                else if vt.t_class == 2
+                    w_feuer += 1
+                else
+                    w_golden += 1
+                
+                vt.tp1_hit := true
+                vt.sl := vt.ep
+        else
+            // Zweiter Teil: Runner Trailing Start
+            if sl_hit or runner_exit
+                float exit_r = 0.0
+                if not sl_hit
+                    float act_exit_p = close // Exit am aktuellen Kerzenschluss nach Crossing
+                    exit_r := vt.dir == 1 ? (act_exit_p - vt.ep) / vt.r_dist : (vt.ep - act_exit_p) / vt.r_dist
+                
+                // Gesamtes R = 50% initial (1.0 R) + 50% runner (exit_r)
+                float total_r = (0.5 * 1.0) + (0.5 * exit_r)
+                
+                if vt.t_class == 1
+                    p_lauern += total_r
+                else if vt.t_class == 2
+                    p_feuer += total_r
+                else
+                    p_golden += total_r
+                    
+                array.remove(virtual_trades, i)
+
+// Hilfsfunktion: Prüft, ob ein virtueller Trade mit gleicher Klasse & Richtung schon aktiv ist (Lock-Check)
+f_is_active(int t_class, int dir) =>
+    bool active = false
+    if array.size(virtual_trades) > 0
+        for i = 0 to array.size(virtual_trades) - 1
+            VirtualTrade vt = array.get(virtual_trades, i)
+            if vt.t_class == t_class and vt.dir == dir
+                active := true
+                break
+    active
+
+// Event-Zähler (Nur ansteuern, wenn Zustand NEU oder nach Lock-Freigabe wieder möglich ist)
+bool evt_lauern_l = trigger_lauern_l and not trigger_lauern_l[1]
+bool evt_feuer_l  = trigger_feuer_l  and not trigger_feuer_l[1]
+bool evt_golden_l = trigger_golden_l and not trigger_golden_l[1]
+
+bool evt_lauern_s = trigger_lauern_s and not trigger_lauern_s[1]
+bool evt_feuer_s  = trigger_feuer_s  and not trigger_feuer_s[1]
+bool evt_golden_s = trigger_golden_s and not trigger_golden_s[1]
+
+// Neue Setups ins Audit einspeisen (LONG Event-Based)
+if evt_lauern_l and not f_is_active(1, 1)
+    array.push(virtual_trades, VirtualTrade.new(1, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
+if evt_feuer_l and not f_is_active(2, 1)
+    array.push(virtual_trades, VirtualTrade.new(2, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
+if evt_golden_l
+    if not f_is_active(3, 1)
+        array.push(virtual_trades, VirtualTrade.new(3, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
+
+// Neue Setups ins Audit einspeisen (SHORT Event-Based)
+if evt_lauern_s and not f_is_active(1, -1)
+    array.push(virtual_trades, VirtualTrade.new(1, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
+if evt_feuer_s and not f_is_active(2, -1)
+    array.push(virtual_trades, VirtualTrade.new(2, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
+if evt_golden_s
+    if not f_is_active(3, -1)
+        array.push(virtual_trades, VirtualTrade.new(3, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
 
 // ==========================================
 // --- 7. SEKTOR & RELATIVE STÄRKE ---
@@ -340,7 +480,7 @@ if barstate.islast
     color t_v_bg = vacuum_ok ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
     string tp_str = str.tostring(nz(tp_density), "#.#") + "%"
     
-    string shares_display = nz(shares) > 0 ? str.tostring(nz(shares)) : "- (VIX too high)"
+    string shares_display = nz(shares) > 0 ? str.tostring(nz(shares)) : "Min: 1 (Risk > Budget)"
     color ema_col = w_trend == 1 ? color.blue : (w_trend == -1 ? color.red : color.rgb(80, 80, 80))
     string ema_str = "EMA 21: " + f_p(ema21)
 
@@ -444,28 +584,37 @@ bool alert_golden_l = trigger_golden_l and not trigger_golden_l[1]
 bool alert_golden_s = trigger_golden_s and not trigger_golden_s[1]
 
 string wpr_s = str.tostring(nz(d_wpr), "#.#")
-string shares_l_str = str.tostring(nz(shares_l))
-string shares_s_str = str.tostring(nz(shares_s))
+string shares_l_str = nz(shares_l) > 0 ? str.tostring(nz(shares_l)) : "0 [HINWEIS] Risiko für 1 Stück aktuell > Budget. Manueller Check nötig."
+string shares_s_str = nz(shares_s) > 0 ? str.tostring(nz(shares_s)) : "0 [HINWEIS] Risiko für 1 Stück aktuell > Budget. Manueller Check nötig."
 string rt_prefix = barstate.isconfirmed ? "[EOD]" : "[REALTIME]"
 
+// Star Ticker Logic
+float eur_lauern = (w_lauern + l_lauern) > 0 ? (p_lauern / (w_lauern + l_lauern)) * active_risk_display : 0.0
+float eur_feuer = (w_feuer + l_feuer) > 0 ? (p_feuer / (w_feuer + l_feuer)) * active_risk_display : 0.0
+float eur_golden = (w_golden + l_golden) > 0 ? (p_golden / (w_golden + l_golden)) * active_risk_display : 0.0
+
+string star_p_l = eur_lauern > 0 ? "🔥 [STAR-TICKER] " : ""
+string star_p_f = eur_feuer > 0 ? "🔥 [STAR-TICKER] " : ""
+string star_p_g = eur_golden > 0 ? "🔥 [STAR-TICKER] " : ""
+
 if alert_lauern_l
-    alert(rt_prefix + " [RADAR] " + syminfo.ticker + " LONG | WPR: " + wpr_s + " | Status: Lauern (70er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
+    alert(rt_prefix + " " + star_p_l + "[RADAR] " + syminfo.ticker + " LONG | WPR: " + wpr_s + " | Status: Lauern (70er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
 if alert_lauern_s
-    alert(rt_prefix + " [RADAR] " + syminfo.ticker + " SHORT | WPR: " + wpr_s + " | Status: Lauern (30er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
+    alert(rt_prefix + " " + star_p_l + "[RADAR] " + syminfo.ticker + " SHORT | WPR: " + wpr_s + " | Status: Lauern (30er Trigger erreicht). Mode: " + mode_prefix, alert.freq_once_per_bar)
 
 if alert_feuer_l
     float r_val = nz(active_risk_l)
     string wall_txt = str.tostring(nz(stop_density), "#.#")
     string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-    alert(rt_prefix + " !!! FEUER FREI LONG !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_l_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
+    alert(rt_prefix + " " + star_p_f + "!!! FEUER FREI LONG !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_l_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
 
 if alert_feuer_s
     float r_val = nz(active_risk_s)
     string wall_txt = str.tostring(nz(stop_density), "#.#")
     string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-    alert(rt_prefix + " !!! FEUER FREI SHORT !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
+    alert(rt_prefix + " " + star_p_f + "!!! FEUER FREI SHORT !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
 
 if alert_golden_l
-    alert(rt_prefix + " 🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
+    alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
 if alert_golden_s
-    alert(rt_prefix + " 🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
+    alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
