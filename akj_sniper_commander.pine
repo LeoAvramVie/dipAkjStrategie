@@ -436,12 +436,16 @@ if raw_feuer_l or raw_feuer_s or trigger_golden_l or trigger_golden_s
     wt_bg := c_bg
     dt_bg := c_bg
 
-// Cooldown Logic & State Tracker (v20.6.7)
+// Cooldown Logic & State Tracker (v20.6.8)
 var string last_tac_txt = ""
-var int last_alert_timestamp = 0
-var float last_alert_price = 0.0
+var int alert_counter = 0
+var int window_start_time = timenow
 
-bool is_cooldown_active = (timenow - nz(last_alert_timestamp)) < 60000
+if (timenow - window_start_time) > 180000
+    alert_counter := 0
+    window_start_time := timenow
+
+bool is_limit_reached = alert_counter >= 14
 
 string header_txt = "STATUS: NO SIGNAL"
 color header_bg = color.black
@@ -459,8 +463,8 @@ else if trigger_lauern_l or trigger_lauern_s
     header_txt := "STATUS: 📡 LAUERN (" + mode_prefix + ")"
     header_bg := color.rgb(150, 150, 0) // Gelb für Radar
 
-if is_cooldown_active and header_txt != "STATUS: NO SIGNAL"
-    header_txt := header_txt + " 🔒"
+if is_limit_reached and header_txt != "STATUS: NO SIGNAL"
+    header_txt := header_txt + " ⚠️ ALARM LIMIT REACHED"
 
 // ==========================================
 // --- 9. COCKPIT UI ---
@@ -604,9 +608,7 @@ bool is_upgrade = is_upgrade_l or is_upgrade_s
 
 bool state_changed = tac_txt != last_tac_txt and tac_txt != "STATUS: NO SIGNAL" and tac_txt != "STAY"
 
-bool time_passed = (timenow - nz(last_alert_timestamp)) >= 60000
-
-bool can_alert = state_changed and time_passed
+bool can_alert = state_changed and not is_limit_reached
 
 string wpr_s = str.tostring(nz(d_wpr), "#.#")
 string shares_l_str = nz(shares_l) > 0 ? str.tostring(nz(shares_l)) : "0 [HINWEIS] Risiko für 1 Stück aktuell > Budget. Manueller Check nötig."
@@ -624,8 +626,7 @@ string star_p_g = eur_golden > 0 ? "🔥 [STAR-TICKER] " : ""
 
 if can_alert
     last_tac_txt := tac_txt
-    last_alert_timestamp := timenow
-    last_alert_price := close
+    alert_counter += 1
 
     if tac_txt == "GOLDEN_LONG"
         if is_upgrade_l

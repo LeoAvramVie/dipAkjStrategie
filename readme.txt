@@ -66,7 +66,7 @@ Das Alarmsystem ist als Kaskade aufgebaut, bei der der Williams %R (4) Momentum-
 
 3. **🌟 GOLDEN SETUP (Premium):** Der absolute High-Grade Trade. Nur Setups, die neben dem Trigger auch noch eine exzellente Volumen-Struktur (>3% Stop-Mauer, <8% Vakuum-Widerstand) ins Orderbuch legen, erreichen diesen Status.
 
-4. **🔒 ANTI-SPAM SCHUTZ (v20.6.7):** v20.6.7 verfügt über einen integrierten Anti-Spam-Schutz. Nach jedem Alarm wird der Ticker für 60 Sekunden für weitere Alarme gesperrt, um die Deaktivierung durch TradingView zu verhindern.
+4. **🔒 ANTI-SPAM SCHUTZ (v20.6.8):** v20.6.8 verfügt über ein Hard-Limit Alarmsystem. Pro Ticker werden maximal 14 Alarme innerhalb von 3 Minuten zugelassen, um die TradingView-Sperre zu umgehen. Der Zähler resettet sich alle 3 Minuten automatisch.
 
 Risk-Recycling: **Sobald das feste CRV (Risiko) 1:1 erreicht ist, werden 50% der Position aus dem Markt genommen und der Stop-Loss läuft sofort auf Break-Even nach.**
 ### V. Backtest-Anleitung (IBKR Abgleich)
