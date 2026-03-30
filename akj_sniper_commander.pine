@@ -436,12 +436,13 @@ if raw_feuer_l or raw_feuer_s or trigger_golden_l or trigger_golden_s
     wt_bg := c_bg
     dt_bg := c_bg
 
-// Cooldown Logic & State Tracker (v20.7.1 Iron Vault)
-var int last_confirmed_alert_time = 0
-var string last_notified_status = ""
+// Cooldown Logic & State Tracker (v20.7.2 Atomic Gate)
+var int last_fired_time = 0
+var string last_fired_status = ""
 var string last_tac_txt = ""
 
-bool cooldown_over = (timenow - nz(last_confirmed_alert_time)) > 60000
+int remaining_locked_ms = 180000 - (timenow - nz(last_fired_time))
+bool cooldown_over = remaining_locked_ms <= 0
 
 string header_txt = "STATUS: NO SIGNAL"
 color header_bg = color.black
@@ -459,7 +460,8 @@ else if trigger_lauern_l or trigger_lauern_s
     header_txt := "STATUS: 📡 LAUERN (" + mode_prefix + ")"
     header_bg := color.rgb(150, 150, 0) // Gelb für Radar
 
-// (Risk Mode handles Lock Symbol in UI)
+if not cooldown_over and header_txt != "STATUS: NO SIGNAL"
+    header_txt := header_txt + " [Sperre: " + str.tostring(math.round(remaining_locked_ms / 1000)) + "s]"
 
 // ==========================================
 // --- 9. COCKPIT UI ---
@@ -521,7 +523,7 @@ if barstate.islast
     table.cell(cp, 0, 9, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an.")
     table.cell(cp, 1, 9, rom_str, bgcolor=color.rgb(30, 30, 30), text_color=color.white)
     table.cell(cp, 0, 10, "🛡️ Risk-Mode (Adaptiv)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip=rm_tooltip)
-    table.cell(cp, 1, 10, risk_mode_txt + (not cooldown_over ? " 🔒" : ""), bgcolor=risk_mode_bg, text_color=color.white)
+    table.cell(cp, 1, 10, risk_mode_txt, bgcolor=risk_mode_bg, text_color=color.white)
     table.cell(cp, 0, 11, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.")
     table.cell(cp, 1, 11, anc_str, bgcolor=color.rgb(30, 30, 30), text_color=color.white)
     table.cell(cp, 0, 12, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft den historischen Ziel-Widerstand (TP < 8%). Der RLD-Current-Volumen Check blockiert Trades nicht mehr fälschlicherweise bei Breakouts.")
@@ -602,7 +604,7 @@ bool is_upgrade_s = (last_tac_txt == "FEUER_SHORT" or last_tac_txt == "LAUERN_SH
 bool is_upgrade = is_upgrade_l or is_upgrade_s
 
 bool is_action_status = (tac_txt == "FEUER_LONG" or tac_txt == "FEUER_SHORT" or tac_txt == "GOLDEN_LONG" or tac_txt == "GOLDEN_SHORT")
-bool status_is_new = (tac_txt != last_notified_status)
+bool status_is_new = (tac_txt != last_fired_status)
 
 bool can_alert = barstate.isrealtime and cooldown_over and is_action_status and status_is_new
 
@@ -621,29 +623,29 @@ string star_p_f = eur_feuer > 0 ? "🔥 [STAR-TICKER] " : ""
 string star_p_g = eur_golden > 0 ? "🔥 [STAR-TICKER] " : ""
 
 if can_alert
-    last_notified_status := tac_txt
-    last_confirmed_alert_time := timenow
+    last_fired_status := tac_txt
+    last_fired_time := timenow
 
     if tac_txt == "GOLDEN_LONG"
         if is_upgrade_l
-            alert(rt_prefix + " " + star_p_g + "[UPGRADE] " + syminfo.ticker + " ist jetzt ein GOLDEN SETUP! Wall: " + str.tostring(nz(stop_density), "#.#") + "% | Vacuum: " + (vacuum_ok ? "High" : "Low") + ".", alert.freq_all)
+            alert(rt_prefix + " " + star_p_g + "[UPGRADE] " + syminfo.ticker + " ist jetzt ein GOLDEN SETUP! Wall: " + str.tostring(nz(stop_density), "#.#") + "% | Vacuum: " + (vacuum_ok ? "High" : "Low") + ".", alert.freq_once_per_bar)
         else
-            alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_all)
+            alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
     else if tac_txt == "GOLDEN_SHORT"
         if is_upgrade_s
-            alert(rt_prefix + " " + star_p_g + "[UPGRADE] " + syminfo.ticker + " ist jetzt ein GOLDEN SETUP! Wall: " + str.tostring(nz(stop_density), "#.#") + "% | Vacuum: " + (vacuum_ok ? "High" : "Low") + ".", alert.freq_all)
+            alert(rt_prefix + " " + star_p_g + "[UPGRADE] " + syminfo.ticker + " ist jetzt ein GOLDEN SETUP! Wall: " + str.tostring(nz(stop_density), "#.#") + "% | Vacuum: " + (vacuum_ok ? "High" : "Low") + ".", alert.freq_once_per_bar)
         else
-            alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_all)
+            alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
     else if tac_txt == "FEUER_LONG"
         float r_val = nz(active_risk_l)
         string wall_txt = str.tostring(nz(stop_density), "#.#")
         string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-        alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI LONG ⚠️!!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_l_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_all)
+        alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI LONG ⚠️!!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_l_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
     else if tac_txt == "FEUER_SHORT"
         float r_val = nz(active_risk_s)
         string wall_txt = str.tostring(nz(stop_density), "#.#")
         string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-        alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI SHORT⚠️ !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_all)
+        alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI SHORT⚠️ !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
     // LAUERN (Radar) wird im State-Memory getrackt, triggert aber keinen eigenen Alarm mehr (nur Feuer Frei & Golden)
 
 if tac_txt != "STATUS: NO SIGNAL"
@@ -651,5 +653,5 @@ if tac_txt != "STATUS: NO SIGNAL"
 
 // Keep logic clean: if it goes back to NO SIGNAL, we allow re-arming of the alarms
 if tac_txt == "STATUS: NO SIGNAL"
-    last_notified_status := ""
+    last_fired_status := ""
     last_tac_txt := "STATUS: NO SIGNAL"

@@ -66,7 +66,7 @@ Das Alarmsystem ist als Kaskade aufgebaut, bei der der Williams %R (4) Momentum-
 
 3. **🌟 GOLDEN SETUP (Premium):** Der absolute High-Grade Trade. Nur Setups, die neben dem Trigger auch noch eine exzellente Volumen-Struktur (>3% Stop-Mauer, <8% Vakuum-Widerstand) ins Orderbuch legen, erreichen diesen Status.
 
-4. **🔒 ANTI-SPAM SCHUTZ (v20.7.1 Iron Vault):** v20.7.1 verfügt über einen Double-Gate Filter. Nach jedem bestätigten Alarm wird der Ticker zwingend für 60 Sekunden gesperrt. Alarme werden nur an TradingView geschickt, wenn die 60s vorüber sind UND ein echter Action-Statuswechsel vorliegt. Dies sichert das TV-Limit mathematisch (max. 12/15 pro 180s) ab.
+4. **🔒 ANTI-SPAM SCHUTZ (v20.7.2):** v20.7.2 nutzt den Atomic-Gate-Schutz. Ein Ticker kann nur alle 3 Minuten einen Alarm senden. Dies ist die einzige Methode, um die automatische Sperrung durch TradingView bei VIX 30+ zu verhindern.
 
 Risk-Recycling: **Sobald das feste CRV (Risiko) 1:1 erreicht ist, werden 50% der Position aus dem Markt genommen und der Stop-Loss läuft sofort auf Break-Even nach.**
 ### V. Backtest-Anleitung (IBKR Abgleich)
