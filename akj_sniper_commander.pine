@@ -642,10 +642,7 @@ if can_alert
         string wall_txt = str.tostring(nz(stop_density), "#.#")
         string rld_txt = vacuum_ok ? "Valid" : "Blocked"
         alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI SHORT⚠️ !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_all)
-    else if tac_txt == "LAUERN_LONG"
-        alert(rt_prefix + " " + star_p_l + "[RADAR] " + syminfo.ticker + " LONG | WPR: " + wpr_s + " | Status: Lauern (70er Trigger erreicht). Mode: " + mode_prefix, alert.freq_all)
-    else if tac_txt == "LAUERN_SHORT"
-        alert(rt_prefix + " " + star_p_l + "[RADAR] " + syminfo.ticker + " SHORT | WPR: " + wpr_s + " | Status: Lauern (30er Trigger erreicht). Mode: " + mode_prefix, alert.freq_all)
+    // LAUERN (Radar) wird im State-Memory getrackt, triggert aber keinen eigenen Alarm mehr (nur Feuer Frei & Golden)
 
 // Keep logic clean: if it goes back to NO SIGNAL, we allow re-arming of the alarms
 if tac_txt == "STATUS: NO SIGNAL"
