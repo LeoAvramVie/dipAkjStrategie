@@ -464,6 +464,25 @@ if not cooldown_over and header_txt != "STATUS: NO SIGNAL"
     header_txt := header_txt + " [Sperre: " + str.tostring(math.round(remaining_locked_ms / 1000)) + "s]"
 
 // ==========================================
+// --- 8b. BOLLINGER CHECK (Display Only) ---
+// ==========================================
+bc_basis = ta.sma(close, 10)
+bc_dev = ta.stdev(close, 10) * 1.0
+bc_ub = bc_basis + bc_dev
+bc_lb = bc_basis - bc_dev
+bc_unit = (bc_ub - bc_lb) / 12
+
+string bc_txt = "NEUTRAL"
+color bc_bg = color.new(color.gray, 50)
+
+if close < bc_lb + (4 * bc_unit)
+    bc_txt := "SHORT ZONE"
+    bc_bg := color.new(color.red, 20)
+else if close > bc_lb + (8 * bc_unit)
+    bc_txt := "LONG ZONE"
+    bc_bg := color.new(color.blue, 20)
+
+// ==========================================
 // --- 9. COCKPIT UI ---
 // ==========================================
 var table cp = table.new(position.top_right, 2, 35, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
@@ -566,6 +585,13 @@ if barstate.islast
 
     table.cell(cp, 0, 24, "🏃 Runner-Target", bgcolor=color.rgb(50, 50, 50), text_color=ema_col, tooltip="Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.")
     table.cell(cp, 1, 24, ema_str, bgcolor=color.rgb(30, 30, 30), text_color=ema_col)
+
+    // 25-26: Bollinger Check
+    table.cell(cp, 0, 25, "--- ZUSATZ-INFO ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    table.merge_cells(cp, 0, 25, 1, 25)
+
+    table.cell(cp, 0, 26, "🔭 Bollinger Check", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="14-Punkte-System für Bollinger Bänder (10, 1).")
+    table.cell(cp, 1, 26, bc_txt, bgcolor=bc_bg, text_color=color.white)
 
 // ==========================================
 // --- 10. VISUALS & ALARME ---
