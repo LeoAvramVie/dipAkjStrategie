@@ -173,15 +173,46 @@ bool vacuum_ok = tp_density <= max_tp_density
 string vacuum_qual = vacuum_ok ? ("High (TP " + str.tostring(tp_density, "#.#") + "%)") : ("Low (TP " + str.tostring(tp_density, "#.#") + "%)")
 
 // ==========================================
+// --- 5b. BOLLINGER CHECK & ZONEN ---
+// ==========================================
+bc_basis = ta.sma(close, 10)
+bc_dev = ta.stdev(close, 10) * 1.0
+bc_ub = bc_basis + bc_dev
+bc_lb = bc_basis - bc_dev
+bc_unit = (bc_ub - bc_lb) / 12
+
+string bc_txt = "NEUTRAL"
+color bc_bg = color.new(color.gray, 50)
+
+if close > bc_ub
+    bc_txt := "SHORT (EXTREME)"
+    bc_bg := color.new(color.maroon, 10)
+else if close >= bc_lb + (8 * bc_unit)
+    bc_txt := "SHORT ZONE"
+    bc_bg := color.new(color.red, 20)
+else if close >= bc_lb + (4 * bc_unit)
+    bc_txt := "NEUTRAL"
+    bc_bg := color.new(color.gray, 50)
+else if close >= bc_lb
+    bc_txt := "LONG ZONE"
+    bc_bg := color.new(color.blue, 20)
+else
+    bc_txt := "LONG (EXTREME)"
+    bc_bg := color.new(color.navy, 10)
+
+bool is_momentum_l = setup_strict_long
+bool is_momentum_s = setup_strict_short
+
+bool is_correct_zone_l = (bc_txt == "LONG ZONE" or bc_txt == "LONG (EXTREME)") or is_momentum_l
+bool is_correct_zone_s = (bc_txt == "SHORT ZONE" or bc_txt == "SHORT (EXTREME)") or is_momentum_s
+
+// ==========================================
 // --- 6. SIGNAL-IDENTIFIKATION (Zero-Latency Sync) ---
 // ==========================================
 
 // Radar (Hysterese + Sticky State)
-bool is_radar_l = high >= d_up + (atr_val * 0.2)
-bool radar_state_l = weinstein_stage == 2 and (is_radar_l or setup_strict_long)
-
-bool is_radar_s = low <= d_lo - (atr_val * 0.2)
-bool radar_state_s = weinstein_stage == 4 and (is_radar_s or setup_strict_short)
+bool radar_state_l = weinstein_stage == 2 and is_correct_zone_l
+bool radar_state_s = weinstein_stage == 4 and is_correct_zone_s
 
 // Raw Triggers (WPR + Kerzenregel)
 bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_lo
@@ -194,11 +225,11 @@ bool vol_golden_l = stop_density >= golden_stop_density and tp_density <= golden
 bool vol_golden_s = stop_density >= golden_stop_density and tp_density <= golden_tp_density
 
 // --- SYNCHRONIZED TRIGGER BOOLS ---
-bool trigger_lauern_l = radar_state_l and d_wpr >= 70
-bool trigger_lauern_s = radar_state_s and d_wpr <= 30
+bool trigger_lauern_l = radar_state_l and d_wpr < 80
+bool trigger_lauern_s = radar_state_s and d_wpr > 20
 
-bool raw_feuer_l = radar_state_l and setup_strict_long and long_trigger
-bool raw_feuer_s = radar_state_s and setup_strict_short and short_trigger
+bool raw_feuer_l = radar_state_l and long_trigger
+bool raw_feuer_s = radar_state_s and short_trigger
 
 bool trigger_feuer_l = raw_feuer_l and vol_feuer_l
 bool trigger_feuer_s = raw_feuer_s and vol_feuer_s
@@ -446,41 +477,31 @@ bool cooldown_over = remaining_locked_ms <= 0
 
 string header_txt = "STATUS: NO SIGNAL"
 color header_bg = color.black
-// Cockpit UI-Sync
+// Cockpit UI-Sync (WPR Gatekeeper)
+bool is_wpr_trig_l = d_wpr >= 80
+bool is_wpr_trig_s = d_wpr <= 20
+
+bool is_lauern_l = weinstein_stage == 2 and is_correct_zone_l and not is_wpr_trig_l
+bool is_lauern_s = weinstein_stage == 4 and is_correct_zone_s and not is_wpr_trig_s
+
+string t_mode_l = is_momentum_l ? " (MOMENTUM)" : ""
+string t_mode_s = is_momentum_s ? " (MOMENTUM)" : ""
+
 if trigger_golden_l or trigger_golden_s
-    header_txt := "STATUS: 🌟 GOLDEN SETUP (" + mode_prefix + ")"
+    header_txt := "STATUS: 🌟 GOLDEN SETUP (" + mode_prefix + ")" + (trigger_golden_l ? t_mode_l : t_mode_s)
     header_bg := color.lime
 else if trigger_feuer_l or trigger_feuer_s
-    header_txt := "STATUS: 🟢 FEUER FREI (" + mode_prefix + ")"
-    header_bg := color.rgb(0, 100, 0) // Grün für Feuer Frei
+    header_txt := "STATUS: 🟢 FEUER FREI (" + mode_prefix + ")" + (trigger_feuer_l ? t_mode_l : t_mode_s)
+    header_bg := color.rgb(0, 100, 0)
 else if raw_feuer_l or raw_feuer_s
-    header_txt := "STATUS: ⚠️ TRIGGER OHNE SETUP-VOL (" + mode_prefix + ")"
-    header_bg := color.rgb(100,0,0) // Rot für geblockt
-else if trigger_lauern_l or trigger_lauern_s
-    header_txt := "STATUS: 📡 LAUERN (" + mode_prefix + ")"
-    header_bg := color.rgb(150, 150, 0) // Gelb für Radar
+    header_txt := "STATUS: ⚠️ TRIGGER OHNE SETUP-VOL (" + mode_prefix + ")" + (raw_feuer_l ? t_mode_l : t_mode_s)
+    header_bg := color.rgb(100,0,0)
+else if is_lauern_l or is_lauern_s
+    header_txt := "STATUS: 📡 LAUERN (" + mode_prefix + ")" + (is_lauern_l ? t_mode_l : t_mode_s)
+    header_bg := color.rgb(150, 150, 0)
 
 if not cooldown_over and header_txt != "STATUS: NO SIGNAL"
     header_txt := header_txt + " [Sperre: " + str.tostring(math.round(remaining_locked_ms / 1000)) + "s]"
-
-// ==========================================
-// --- 8b. BOLLINGER CHECK (Display Only) ---
-// ==========================================
-bc_basis = ta.sma(close, 10)
-bc_dev = ta.stdev(close, 10) * 1.0
-bc_ub = bc_basis + bc_dev
-bc_lb = bc_basis - bc_dev
-bc_unit = (bc_ub - bc_lb) / 12
-
-string bc_txt = "NEUTRAL"
-color bc_bg = color.new(color.gray, 50)
-
-if close < bc_lb + (4 * bc_unit)
-    bc_txt := "SHORT ZONE"
-    bc_bg := color.new(color.red, 20)
-else if close > bc_lb + (8 * bc_unit)
-    bc_txt := "LONG ZONE"
-    bc_bg := color.new(color.blue, 20)
 
 // ==========================================
 // --- 9. COCKPIT UI ---
@@ -652,27 +673,34 @@ if can_alert
     last_fired_status := tac_txt
     last_fired_time := timenow
 
+    string shares_str = (tac_txt == "GOLDEN_LONG" or tac_txt == "FEUER_LONG" or tac_txt == "LAUERN_LONG") ? shares_l_str : shares_s_str
+    string active_modus = (tac_txt == "GOLDEN_LONG" or tac_txt == "FEUER_LONG" or tac_txt == "LAUERN_LONG") ? (is_momentum_l ? "MOMENTUM" : "REBOUND") : (is_momentum_s ? "MOMENTUM" : "REBOUND")
+    
+    string alert_msg = "[ALARM ZEITPUNKT]: " + str.format_time(timenow, "yyyy-MM-dd HH:mm:ss", "UTC") + "\n" +
+      "[MODUS]: " + active_modus + "\n" +
+      "[TICKER]: " + syminfo.ticker + " | [STATUS]: " + tac_txt + "\n\n" +
+      "--- MARKT-KONTEXT ---\n" +
+      "Weinstein Stage: " + str.tostring(weinstein_stage) + "\n" +
+      "Wochentrend: " + (w_trend == 1 ? "BULLISCH" : w_trend == -1 ? "BÄRISCH" : "NEUTRAL") + " | Tagestrend: " + dt_txt + "\n" +
+      "Sektor: " + sec_txt + "\n\n" +
+      "--- SNIPER METRIKEN ---\n" +
+      "Williams %R (4): " + wpr_s + "\n" +
+      "Bollinger Check: " + bc_txt + "\n" +
+      "Stopversicherung (Wall): " + str.tostring(nz(stop_density), "#.#") + "%\n" +
+      "TP-Widerstand (Vacuum): " + str.tostring(nz(tp_density), "#.#") + "%\n\n" +
+      "--- ORDER MATRIX ---\n" +
+      "Stoppreis (SP): " + f_p(sp_price) + " | Limitpreis (LP): " + f_p(lp_price) + "\n" +
+      "Stop-Loss (SL): " + f_p(sl_price) + " | TP (Teilverkauf): " + f_p(tp_price) + "\n" +
+      "Anzahl (Stk): " + shares_str
+
     if tac_txt == "GOLDEN_LONG"
-        if is_upgrade_l
-            alert(rt_prefix + " " + star_p_g + "[UPGRADE] " + syminfo.ticker + " ist jetzt ein GOLDEN SETUP! Wall: " + str.tostring(nz(stop_density), "#.#") + "% | Vacuum: " + (vacuum_ok ? "High" : "Low") + ".", alert.freq_once_per_bar)
-        else
-            alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
+        alert(star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
     else if tac_txt == "GOLDEN_SHORT"
-        if is_upgrade_s
-            alert(rt_prefix + " " + star_p_g + "[UPGRADE] " + syminfo.ticker + " ist jetzt ein GOLDEN SETUP! Wall: " + str.tostring(nz(stop_density), "#.#") + "% | Vacuum: " + (vacuum_ok ? "High" : "Low") + ".", alert.freq_once_per_bar)
-        else
-            alert(rt_prefix + " " + star_p_g + "🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + " Premium Volumen bestätigt!", alert.freq_once_per_bar)
+        alert(star_p_g + "🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
     else if tac_txt == "FEUER_LONG"
-        float r_val = nz(active_risk_l)
-        string wall_txt = str.tostring(nz(stop_density), "#.#")
-        string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-        alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI LONG ⚠️!!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_l_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
+        alert(star_p_f + "🟢 FEUER FREI LONG 🟢 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
     else if tac_txt == "FEUER_SHORT"
-        float r_val = nz(active_risk_s)
-        string wall_txt = str.tostring(nz(stop_density), "#.#")
-        string rld_txt = vacuum_ok ? "Valid" : "Blocked"
-        alert(rt_prefix + " " + star_p_f + "!!! ⚠️FEUER FREI SHORT⚠️ !!! " + syminfo.ticker + " | WPR: " + wpr_s + " | Risk: " + str.tostring(r_val, "#.##") + "€ | Stk: " + shares_s_str + " | Wall: " + wall_txt + "% | Vacuum: " + rld_txt + ". Mode: " + mode_prefix, alert.freq_once_per_bar)
-    // LAUERN (Radar) wird im State-Memory getrackt, triggert aber keinen eigenen Alarm mehr (nur Feuer Frei & Golden)
+        alert(star_p_f + "🟢 FEUER FREI SHORT 🟢 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
 
 if tac_txt != "STATUS: NO SIGNAL"
     last_tac_txt := tac_txt
