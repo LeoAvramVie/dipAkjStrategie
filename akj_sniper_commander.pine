@@ -674,24 +674,40 @@ if can_alert
     last_fired_time := timenow
 
     string shares_str = (tac_txt == "GOLDEN_LONG" or tac_txt == "FEUER_LONG" or tac_txt == "LAUERN_LONG") ? shares_l_str : shares_s_str
-    string active_modus = (tac_txt == "GOLDEN_LONG" or tac_txt == "FEUER_LONG" or tac_txt == "LAUERN_LONG") ? (is_momentum_l ? "MOMENTUM" : "REBOUND") : (is_momentum_s ? "MOMENTUM" : "REBOUND")
     
-    string alert_msg = "[ALARM ZEITPUNKT]: " + str.format_time(timenow, "yyyy-MM-dd HH:mm:ss", "UTC") + "\n" +
-      "[MODUS]: " + active_modus + "\n" +
-      "[TICKER]: " + syminfo.ticker + " | [STATUS]: " + tac_txt + "\n\n" +
+    string rom_str = str.tostring(nz(active_risk_display), "#.##") + " €"
+    string anc_str = str.tostring(nz(anchor_bars)) + " Bars ago"
+    string ema_str = "EMA 21: " + f_p(ema21)
+
+    string alert_msg = "=== AKJ 2.0 SNIPER AUDIT-PROTOKOLL ===\n" +
+      "ZEITPUNKT: " + str.format_time(timenow, "yyyy-MM-dd HH:mm:ss", "UTC") + "\n" +
+      "TICKER: " + syminfo.ticker + "\n" +
+      header_txt + "\n\n" +
       "--- MARKT-KONTEXT ---\n" +
-      "Weinstein Stage: " + str.tostring(weinstein_stage) + "\n" +
-      "Wochentrend: " + (w_trend == 1 ? "BULLISCH" : w_trend == -1 ? "BÄRISCH" : "NEUTRAL") + " | Tagestrend: " + dt_txt + "\n" +
-      "Sektor: " + sec_txt + "\n\n" +
+      "Sektor: " + sec_txt + "\n" +
+      "Rel. Stärke: " + rs_txt + "\n" +
+      "Weinstein Stage: " + ws_txt + "\n\n" +
+      "--- TREND-ANALYSE (v20.5) ---\n" +
+      "Wochentrend: " + wt_txt + "\n" +
+      "Tagestrend: " + dt_txt + "\n\n" +
       "--- SNIPER METRIKEN ---\n" +
-      "Williams %R (4): " + wpr_s + "\n" +
-      "Bollinger Check: " + bc_txt + "\n" +
-      "Stopversicherung (Wall): " + str.tostring(nz(stop_density), "#.#") + "%\n" +
-      "TP-Widerstand (Vacuum): " + str.tostring(nz(tp_density), "#.#") + "%\n\n" +
-      "--- ORDER MATRIX ---\n" +
-      "Stoppreis (SP): " + f_p(sp_price) + " | Limitpreis (LP): " + f_p(lp_price) + "\n" +
-      "Stop-Loss (SL): " + f_p(sl_price) + " | TP (Teilverkauf): " + f_p(tp_price) + "\n" +
-      "Anzahl (Stk): " + shares_str
+      "Risk-O-Meter (1R): " + rom_str + "\n" +
+      "Risk-Mode (Adaptiv): " + risk_mode_txt + "\n" +
+      "Anchor-Info: " + anc_str + "\n" +
+      "Vacuum Quality: " + vacuum_qual + "\n" +
+      "Momentum (WPR): " + wpr_s + "\n" +
+      "Kerzenregel: " + c_txt + "\n" +
+      "Stopversicherung: " + str.tostring(nz(stop_density), "#.#") + "%\n" +
+      "TP Widerstand: " + str.tostring(nz(tp_density), "#.#") + "%\n\n" +
+      "--- ORDER-MATRIX ---\n" +
+      "Stoppreis (SP): " + f_p(sp_price) + "\n" +
+      "Limitpreis (LP): " + f_p(lp_price) + "\n" +
+      "Anzahl (Stk): " + shares_str + "\n" +
+      "TP (Teilverkauf): " + f_p(tp_price) + "\n" +
+      "Stopp-Loss (SL): " + f_p(sl_price) + "\n" +
+      "Runner-Target: " + ema_str + "\n\n" +
+      "--- ZUSATZ-INFO ---\n" +
+      "Bollinger Check: " + bc_txt
 
     if tac_txt == "GOLDEN_LONG"
         alert(star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
