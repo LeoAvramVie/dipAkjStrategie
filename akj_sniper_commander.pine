@@ -707,7 +707,14 @@ if can_alert
     string anc_str = str.tostring(nz(anchor_bars)) + " Bars ago"
     string ema_str = "EMA 21: " + f_p(ema21)
 
-    string alert_msg = "= ALARM-PROTOKOLL =\n" +
+    string triggerReason = ""
+    if (tac_txt == "AKJ_ELITE_LONG" or tac_txt == "GOLDEN_LONG" or tac_txt == "FEUER_LONG" or tac_txt == "LAUERN_LONG")
+        triggerReason := "GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit " + wpr_s + " einen statistisch günstigen Rücksetzer (Dip) signalisiert."
+    else if (tac_txt == "AKJ_ELITE_SHORT" or tac_txt == "GOLDEN_SHORT" or tac_txt == "FEUER_SHORT" or tac_txt == "LAUERN_SHORT")
+        triggerReason := "GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit " + wpr_s + " eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt."
+
+    string alert_msg = triggerReason + "\n" +
+      "--- COCKPIT DATEN ---\n" +
       "ZEITPUNKT: " + str.format_time(timenow, "yyyy-MM-dd HH:mm:ss", "UTC") + "\n" +
       "TICKER: " + syminfo.ticker + "\n" +
       header_txt + "\n\n" +
