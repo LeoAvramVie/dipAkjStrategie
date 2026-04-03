@@ -134,7 +134,7 @@ float active_risk_display = w_trend == -1 ? active_risk_s : active_risk_l
 // ==========================================
 // --- 5. VOLUMEN-STRUKTUR ---
 // ==========================================
-f_calc_tf_vol_anchored(sp, sl, tp, lookback) =>
+f_calc_tf_vol_anchored(sp, sl, tp, lookback, do_calc) =>
     float s_dens = 0.0
     float t_dens = 0.0
     float avg_v = 0.0
@@ -144,7 +144,7 @@ f_calc_tf_vol_anchored(sp, sl, tp, lookback) =>
     float upper_s = math.max(sp, sl), float lower_s = math.min(sp, sl)
     float upper_t = math.max(sp, tp), float lower_t = math.min(sp, tp)
     int lb = math.min(lookback, 300)
-    if lb > 0
+    if lb > 0 and do_calc
         for i = 0 to lb - 1
             float bar_h = high[i], float bar_l = low[i], float bar_vol = volume[i]
             total_v += bar_vol
@@ -160,15 +160,12 @@ f_calc_tf_vol_anchored(sp, sl, tp, lookback) =>
             t_dens := (zone_vol_t / total_v) * 100
     [s_dens, t_dens, avg_v]
 
-[stop_density, tp_density, avg_anchor_vol] = request.security(syminfo.tickerid, vol_timeframe, f_calc_tf_vol_anchored(sp_price, sl_price, tp_price, anchor_bars))
+// Performance-Gate: Nur extrem rechenintensive Loops zulassen für Live-Zustand oder aktuelle Alarmlogik
+bool lazy_gate = barstate.islast or (bar_index >= last_bar_index - 1000)
 
-lower_tf_vol_arr = request.security_lower_tf(syminfo.tickerid, vol_timeframe, volume)
-float current_bar_lower_vol = 0.0
-if array.size(lower_tf_vol_arr) > 0
-    current_bar_lower_vol := array.sum(lower_tf_vol_arr)
+[stop_density, tp_density, avg_anchor_vol] = request.security(syminfo.tickerid, vol_timeframe, f_calc_tf_vol_anchored(sp_price, sl_price, tp_price, anchor_bars, lazy_gate))
 
-float rld_pct = avg_anchor_vol > 0 ? (current_bar_lower_vol / avg_anchor_vol) * 100 : 0
-bool rld_valid = rld_pct < 20.0 
+// lower_tf_vol_arr & rld_pct were removed to save performance (unused in v20.7)
 bool vacuum_ok = tp_density <= max_tp_density
 string vacuum_qual = vacuum_ok ? ("High (TP " + str.tostring(tp_density, "#.#") + "%)") : ("Low (TP " + str.tostring(tp_density, "#.#") + "%)")
 
@@ -760,3 +757,32 @@ if tac_txt != "STATUS: NO SIGNAL"
 if tac_txt == "STATUS: NO SIGNAL"
     last_fired_status := ""
     last_tac_txt := "STATUS: NO SIGNAL"
+
+// ==========================================
+// --- 12. PINE SCREENER EXPORTS ---
+// ==========================================
+// Diese Werte lesen wir als Liste für Watchlisten mit 1000+ Aktien aus!
+int screener_code = 0
+if tac_txt == "AKJ_ELITE_LONG"
+    screener_code := 4
+else if tac_txt == "GOLDEN_LONG"
+    screener_code := 3
+else if tac_txt == "FEUER_LONG"
+    screener_code := 2
+else if tac_txt == "LAUERN_LONG"
+    screener_code := 1
+else if tac_txt == "LAUERN_SHORT"
+    screener_code := -1
+else if tac_txt == "FEUER_SHORT"
+    screener_code := -2
+else if tac_txt == "GOLDEN_SHORT"
+    screener_code := -3
+else if tac_txt == "AKJ_ELITE_SHORT"
+    screener_code := -4
+
+// "Sniper Status" (Zeigt die Stärke & Richtung an: +4 bis -4)
+plot(screener_code, title="Sniper Status (+4=Elite L, -4=Elite S)", color=color.new(color.white, 100), display=display.data_window)
+
+// Optionale Zusatzfilter für den Pine Screener (0 = Nein, 1 = Ja)
+plot(isAKJSignal_l or isAKJSignal_s ? 1 : 0, title="Ist Elite", color=color.new(color.white, 100), display=display.none)
+plot(trigger_feuer_l or trigger_feuer_s or trigger_golden_l or trigger_golden_s ? 1 : 0, title="Ist Feuer Frei", color=color.new(color.white, 100), display=display.none)
