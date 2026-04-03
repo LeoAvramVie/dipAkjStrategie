@@ -211,8 +211,11 @@ bool is_correct_zone_s = (bc_txt == "SHORT ZONE" or bc_txt == "SHORT (EXTREME)")
 // ==========================================
 
 // Radar (Hysterese + Sticky State)
-bool radar_state_l = weinstein_stage == 2 and is_correct_zone_l
-bool radar_state_s = weinstein_stage == 4 and is_correct_zone_s
+bool is_radar_l = high >= d_up + (atr_val * 0.2)
+bool radar_state_l = weinstein_stage == 2 and (is_radar_l or setup_strict_long)
+
+bool is_radar_s = low <= d_lo - (atr_val * 0.2)
+bool radar_state_s = weinstein_stage == 4 and (is_radar_s or setup_strict_short)
 
 // Raw Triggers (WPR + Kerzenregel)
 bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_lo
@@ -250,6 +253,7 @@ type VirtualTrade
     float tp
     float r_dist
     bool  tp1_hit
+    int   entry_bar
 
 var virtual_trades = array.new<VirtualTrade>()
 
@@ -278,20 +282,21 @@ if array.size(virtual_trades) > 0
         bool sl_hit = false
         bool tp_hit = false
         bool runner_exit = false
+        bool time_exit = (bar_index - vt.entry_bar) >= 5
         
         if vt.dir == 1
             if low <= vt.sl
                 sl_hit := true
             if not vt.tp1_hit and high >= vt.tp
                 tp_hit := true
-            if vt.tp1_hit and (close < ema21 or w_trend == -1) // Runner Exit
+            if vt.tp1_hit and (close < ema21 or w_trend == -1 or time_exit) // Runner Exit
                 runner_exit := true
         else
             if high >= vt.sl
                 sl_hit := true
             if not vt.tp1_hit and low <= vt.tp
                 tp_hit := true
-            if vt.tp1_hit and (close > ema21 or w_trend == 1) // Runner Exit
+            if vt.tp1_hit and (close > ema21 or w_trend == 1 or time_exit) // Runner Exit
                 runner_exit := true
                 
         // Pessimistischer Ansatz
@@ -300,16 +305,29 @@ if array.size(virtual_trades) > 0
             
         if not vt.tp1_hit
             // Erster Teil: SL vs TP1
-            if sl_hit
+            if sl_hit or (time_exit and not tp_hit)
+                float exit_r = -1.0
+                if not sl_hit
+                    exit_r := vt.dir == 1 ? (close - vt.ep) / vt.r_dist : (vt.ep - close) / vt.r_dist
+                
                 if vt.t_class == 1
-                    l_lauern += 1
-                    p_lauern -= 1.0
+                    if exit_r > 0
+                        w_lauern += 1
+                    else
+                        l_lauern += 1
+                    p_lauern += exit_r
                 else if vt.t_class == 2
-                    l_feuer += 1
-                    p_feuer -= 1.0
+                    if exit_r > 0
+                        w_feuer += 1
+                    else
+                        l_feuer += 1
+                    p_feuer += exit_r
                 else
-                    l_golden += 1
-                    p_golden -= 1.0
+                    if exit_r > 0
+                        w_golden += 1
+                    else
+                        l_golden += 1
+                    p_golden += exit_r
                 array.remove(virtual_trades, i)
             else if tp_hit
                 // 1:1 erreicht! 50% TP, Rest auf Break-Even
@@ -364,21 +382,21 @@ bool evt_golden_s = trigger_golden_s and not trigger_golden_s[1]
 
 // Neue Setups ins Audit einspeisen (LONG Event-Based)
 if evt_lauern_l and not f_is_active(1, 1)
-    array.push(virtual_trades, VirtualTrade.new(1, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
+    array.push(virtual_trades, VirtualTrade.new(1, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false, bar_index))
 if evt_feuer_l and not f_is_active(2, 1)
-    array.push(virtual_trades, VirtualTrade.new(2, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
+    array.push(virtual_trades, VirtualTrade.new(2, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false, bar_index))
 if evt_golden_l
     if not f_is_active(3, 1)
-        array.push(virtual_trades, VirtualTrade.new(3, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
+        array.push(virtual_trades, VirtualTrade.new(3, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false, bar_index))
 
 // Neue Setups ins Audit einspeisen (SHORT Event-Based)
 if evt_lauern_s and not f_is_active(1, -1)
-    array.push(virtual_trades, VirtualTrade.new(1, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
+    array.push(virtual_trades, VirtualTrade.new(1, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false, bar_index))
 if evt_feuer_s and not f_is_active(2, -1)
-    array.push(virtual_trades, VirtualTrade.new(2, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
+    array.push(virtual_trades, VirtualTrade.new(2, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false, bar_index))
 if evt_golden_s
     if not f_is_active(3, -1)
-        array.push(virtual_trades, VirtualTrade.new(3, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
+        array.push(virtual_trades, VirtualTrade.new(3, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false, bar_index))
 
 // ==========================================
 // --- 7. SEKTOR & RELATIVE STÄRKE ---
@@ -480,36 +498,37 @@ var string last_tac_txt = ""
 int remaining_locked_ms = 180000 - (timenow - nz(last_fired_time))
 bool cooldown_over = remaining_locked_ms <= 0
 
-string header_txt = "STATUS: NO SIGNAL"
+string header_txt = "NO SIGNAL"
 color header_bg = color.black
 // Cockpit UI-Sync (WPR Gatekeeper)
 bool is_wpr_trig_l = d_wpr >= 80
 bool is_wpr_trig_s = d_wpr <= 20
 
-bool is_lauern_l = weinstein_stage == 2 and is_correct_zone_l and not is_wpr_trig_l
-bool is_lauern_s = weinstein_stage == 4 and is_correct_zone_s and not is_wpr_trig_s
+bool is_lauern_l = radar_state_l and not is_wpr_trig_l
+bool is_lauern_s = radar_state_s and not is_wpr_trig_s
 
-string t_mode_l = is_momentum_l ? " (MOMENTUM)" : ""
-string t_mode_s = is_momentum_s ? " (MOMENTUM)" : ""
+string t_mode_l = is_momentum_l ? " (MOM)" : ""
+string t_mode_s = is_momentum_s ? " (MOM)" : ""
+string short_mode = vix_c < 25.0 ? "ALPHA" : (vix_c <= 35.0 ? "DELTA" : "OMEGA")
 
 if isAKJSignal_l or isAKJSignal_s
-    header_txt := "STATUS: 💎 AKJ ELITE SETUP (" + mode_prefix + ")" + (isAKJSignal_l ? t_mode_l : t_mode_s)
+    header_txt := "💎 AKJ ELITE (" + short_mode + ")" + (isAKJSignal_l ? t_mode_l : t_mode_s)
     header_bg := color.fuchsia
 else if trigger_golden_l or trigger_golden_s
-    header_txt := "STATUS: 🌟 GOLDEN SETUP (" + mode_prefix + ")" + (trigger_golden_l ? t_mode_l : t_mode_s)
+    header_txt := "🌟 GOLDEN (" + short_mode + ")" + (trigger_golden_l ? t_mode_l : t_mode_s)
     header_bg := color.lime
 else if trigger_feuer_l or trigger_feuer_s
-    header_txt := "STATUS: 🟢 FEUER FREI (" + mode_prefix + ")" + (trigger_feuer_l ? t_mode_l : t_mode_s)
+    header_txt := "🟢 FEUER FREI (" + short_mode + ")" + (trigger_feuer_l ? t_mode_l : t_mode_s)
     header_bg := color.rgb(0, 100, 0)
 else if raw_feuer_l or raw_feuer_s
-    header_txt := "STATUS: ⚠️ TRIGGER OHNE SETUP-VOL (" + mode_prefix + ")" + (raw_feuer_l ? t_mode_l : t_mode_s)
+    header_txt := "⚠️ NO VOLUME (" + short_mode + ")" + (raw_feuer_l ? t_mode_l : t_mode_s)
     header_bg := color.rgb(100,0,0)
 else if is_lauern_l or is_lauern_s
-    header_txt := "STATUS: 📡 LAUERN (" + mode_prefix + ")" + (is_lauern_l ? t_mode_l : t_mode_s)
+    header_txt := "📡 LAUERN (" + short_mode + ")" + (is_lauern_l ? t_mode_l : t_mode_s)
     header_bg := color.rgb(150, 150, 0)
 
-if not cooldown_over and header_txt != "STATUS: NO SIGNAL"
-    header_txt := header_txt + " [Sperre: " + str.tostring(math.round(remaining_locked_ms / 1000)) + "s]"
+if not cooldown_over and header_txt != "NO SIGNAL"
+    header_txt := header_txt + " [Wait:" + str.tostring(math.round(remaining_locked_ms / 1000)) + "s]"
 
 // ==========================================
 // --- 9. COCKPIT UI ---
