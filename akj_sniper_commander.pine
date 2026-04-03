@@ -237,6 +237,11 @@ bool trigger_feuer_s = raw_feuer_s and vol_feuer_s
 bool trigger_golden_l = raw_feuer_l and vol_golden_l
 bool trigger_golden_s = raw_feuer_s and vol_golden_s
 
+// AKJ Elite Signal (v20.6.0)
+bool isAKJSignal_l = weinstein_stage == 2 and setup_strict_long and d_wpr >= 80 and low > d_lo and open != close
+bool isAKJSignal_s = weinstein_stage == 4 and setup_strict_short and d_wpr <= 20 and high < d_up and open != close
+bool isAKJSignal = isAKJSignal_l or isAKJSignal_s
+
 type VirtualTrade
     int   t_class // 1 = Lauern, 2 = Feuer Frei, 3 = Golden
     int   dir     // 1 = Long, -1 = Short
@@ -487,7 +492,10 @@ bool is_lauern_s = weinstein_stage == 4 and is_correct_zone_s and not is_wpr_tri
 string t_mode_l = is_momentum_l ? " (MOMENTUM)" : ""
 string t_mode_s = is_momentum_s ? " (MOMENTUM)" : ""
 
-if trigger_golden_l or trigger_golden_s
+if isAKJSignal_l or isAKJSignal_s
+    header_txt := "STATUS: 💎 AKJ ELITE SETUP (" + mode_prefix + ")" + (isAKJSignal_l ? t_mode_l : t_mode_s)
+    header_bg := color.fuchsia
+else if trigger_golden_l or trigger_golden_s
     header_txt := "STATUS: 🌟 GOLDEN SETUP (" + mode_prefix + ")" + (trigger_golden_l ? t_mode_l : t_mode_s)
     header_bg := color.lime
 else if trigger_feuer_l or trigger_feuer_s
@@ -633,7 +641,11 @@ if barstate.islast and w_trend != 0
 // ==========================================
 
 string tac_txt = "STATUS: NO SIGNAL"
-if trigger_golden_l
+if isAKJSignal_l
+    tac_txt := "AKJ_ELITE_LONG"
+else if isAKJSignal_s
+    tac_txt := "AKJ_ELITE_SHORT"
+else if trigger_golden_l
     tac_txt := "GOLDEN_LONG"
 else if trigger_golden_s
     tac_txt := "GOLDEN_SHORT"
@@ -646,11 +658,11 @@ else if trigger_lauern_l
 else if trigger_lauern_s
     tac_txt := "LAUERN_SHORT"
 
-bool is_upgrade_l = (last_tac_txt == "FEUER_LONG" or last_tac_txt == "LAUERN_LONG") and (tac_txt == "GOLDEN_LONG")
-bool is_upgrade_s = (last_tac_txt == "FEUER_SHORT" or last_tac_txt == "LAUERN_SHORT") and (tac_txt == "GOLDEN_SHORT")
+bool is_upgrade_l = (last_tac_txt == "FEUER_LONG" or last_tac_txt == "LAUERN_LONG") and (tac_txt == "GOLDEN_LONG" or tac_txt == "AKJ_ELITE_LONG")
+bool is_upgrade_s = (last_tac_txt == "FEUER_SHORT" or last_tac_txt == "LAUERN_SHORT") and (tac_txt == "GOLDEN_SHORT" or tac_txt == "AKJ_ELITE_SHORT")
 bool is_upgrade = is_upgrade_l or is_upgrade_s
 
-bool is_action_status = (tac_txt == "FEUER_LONG" or tac_txt == "FEUER_SHORT" or tac_txt == "GOLDEN_LONG" or tac_txt == "GOLDEN_SHORT")
+bool is_action_status = (tac_txt == "AKJ_ELITE_LONG" or tac_txt == "AKJ_ELITE_SHORT" or tac_txt == "FEUER_LONG" or tac_txt == "FEUER_SHORT" or tac_txt == "GOLDEN_LONG" or tac_txt == "GOLDEN_SHORT")
 bool status_is_new = (tac_txt != last_fired_status)
 
 bool can_alert = barstate.isrealtime and cooldown_over and is_action_status and status_is_new
@@ -673,13 +685,13 @@ if can_alert
     last_fired_status := tac_txt
     last_fired_time := timenow
 
-    string shares_str = (tac_txt == "GOLDEN_LONG" or tac_txt == "FEUER_LONG" or tac_txt == "LAUERN_LONG") ? shares_l_str : shares_s_str
+    string shares_str = (tac_txt == "AKJ_ELITE_LONG" or tac_txt == "GOLDEN_LONG" or tac_txt == "FEUER_LONG" or tac_txt == "LAUERN_LONG") ? shares_l_str : shares_s_str
     
     string rom_str = str.tostring(nz(active_risk_display), "#.##") + " €"
     string anc_str = str.tostring(nz(anchor_bars)) + " Bars ago"
     string ema_str = "EMA 21: " + f_p(ema21)
 
-    string alert_msg = "=== AKJ 2.0 SNIPER AUDIT-PROTOKOLL ===\n" +
+    string alert_msg = "= ALARM-PROTOKOLL =\n" +
       "ZEITPUNKT: " + str.format_time(timenow, "yyyy-MM-dd HH:mm:ss", "UTC") + "\n" +
       "TICKER: " + syminfo.ticker + "\n" +
       header_txt + "\n\n" +
@@ -709,7 +721,11 @@ if can_alert
       "--- ZUSATZ-INFO ---\n" +
       "Bollinger Check: " + bc_txt
 
-    if tac_txt == "GOLDEN_LONG"
+    if tac_txt == "AKJ_ELITE_LONG"
+        alert(star_p_g + "💎 AKJ ELITE SIGNAL 💎 🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar_close)
+    else if tac_txt == "AKJ_ELITE_SHORT"
+        alert(star_p_g + "💎 AKJ ELITE SIGNAL 💎 🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar_close)
+    else if tac_txt == "GOLDEN_LONG"
         alert(star_p_g + "🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
     else if tac_txt == "GOLDEN_SHORT"
         alert(star_p_g + "🌟 GOLDEN SETUP SHORT 🌟 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
