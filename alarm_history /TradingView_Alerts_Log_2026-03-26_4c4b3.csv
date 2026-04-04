@@ -1,0 +1,1534 @@
+Alarm ID,"Ticker, Name",Name,Beschreibung,Zeit,Webhook-Status
+4314972010,"BATS:MOS, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOS | Win: 30.7%
+--------------------------
+In: 25.2 | SL: 26.21
+Qty: 147 | TP1: 24.18
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T15:02:07Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T15:01:45Z,
+4314972010,"BATS:MOS, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOS | Win: 30.7%
+--------------------------
+In: 25.2 | SL: 26.21
+Qty: 147 | TP1: 24.18
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T15:01:32Z,
+4314972010,"BATS:WPM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: WPM | Win: 33.1%
+--------------------------
+In: 118.57 | SL: 123.57
+Qty: 30 | TP1: 113.57
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T15:01:16Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.22
+Qty: 545 | TP1: 14.67
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T15:00:55Z,
+4314972010,"BATS:MOS, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOS | Win: 30.7%
+--------------------------
+In: 25.2 | SL: 26.21
+Qty: 147 | TP1: 24.18
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T15:00:13Z,
+4314972010,"BATS:VRT, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: VRT | Win: 45.5%
+--------------------------
+In: 274.18 | SL: 256.65
+Qty: 8 | TP1: 291.71
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T15:00:08Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.89 | SL: 79.73
+Qty: 47 | TP1: 86.05
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T15:00:04Z,
+4314972010,"BATS:NEM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: NEM | Win: 34.6%
+--------------------------
+In: 98.83 | SL: 102.01
+Qty: 47 | TP1: 95.65
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:59:50Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:59:09Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.89 | SL: 79.73
+Qty: 47 | TP1: 86.05
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:59:01Z,
+4314972010,"BATS:VRT, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: VRT | Win: 45.5%
+--------------------------
+In: 274.18 | SL: 256.65
+Qty: 8 | TP1: 291.71
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:58:57Z,
+4314972010,"BATS:NEM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: NEM | Win: 34.6%
+--------------------------
+In: 98.83 | SL: 102.01
+Qty: 47 | TP1: 95.65
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:58:41Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:57:57Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:56:32Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:55:59Z,
+4314972010,"BATS:VRT, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: VRT | Win: 45.5%
+--------------------------
+In: 274.18 | SL: 256.65
+Qty: 8 | TP1: 291.71
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:55:45Z,
+4314972010,"BATS:FIX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FIX | Win: 31.1%
+--------------------------
+In: 1455.86 | SL: 1374.99
+Qty: 1 | TP1: 1536.73
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:55:43Z,
+4314972010,"EURONEXT_DLY:SU, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: SU | Win: 31%
+--------------------------
+In: 241.2 | SL: 246.75
+Qty: 27 | TP1: 235.65
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:55:38Z,
+4314972010,"BATS:MOS, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOS | Win: 30.7%
+--------------------------
+In: 25.36 | SL: 26.21
+Qty: 176 | TP1: 24.51
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:53:06Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:53:02Z,
+4314972010,"BATS:MOS, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOS | Win: 30.7%
+--------------------------
+In: 25.36 | SL: 26.21
+Qty: 176 | TP1: 24.51
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:52:37Z,
+4314972010,"BATS:DEW, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: DEW | Win: 33.3%
+--------------------------
+In: 65.3 | SL: 65.76
+Qty: 329 | TP1: 64.85
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:51:50Z,
+4314972010,"BATS:MOS, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOS | Win: 30.7%
+--------------------------
+In: 25.36 | SL: 26.21
+Qty: 176 | TP1: 24.51
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:51:34Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.89 | SL: 79.73
+Qty: 47 | TP1: 86.05
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:49:26Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.89 | SL: 79.73
+Qty: 47 | TP1: 86.05
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:47:47Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:47:40Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:47:40Z,
+4314972010,"BATS:HMC, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: HMC | Win: 37.1%
+--------------------------
+In: 24.61 | SL: 24.96
+Qty: 428 | TP1: 24.26
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:47:36Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:45:55Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:45:07Z,
+4314972010,"BATS:FIX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FIX | Win: 31.1%
+--------------------------
+In: 1455.86 | SL: 1394.98
+Qty: 2 | TP1: 1516.74
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:44:20Z,
+4314972010,"BATS:VRT, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: VRT | Win: 45.5%
+--------------------------
+In: 274.18 | SL: 259.96
+Qty: 10 | TP1: 288.4
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:43:34Z,
+4314972010,"BATS:PYPL, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: PYPL | Win: 35.5%
+--------------------------
+In: 44.45 | SL: 45.99
+Qty: 97 | TP1: 42.91
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:43:31Z,
+4314972010,"BATS:TER, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TER | Win: 31.4%
+--------------------------
+In: 315 | SL: 305.98
+Qty: 16 | TP1: 324.02
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:42:52Z,
+4314972010,"BATS:WPM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: WPM | Win: 33.1%
+--------------------------
+In: 118.57 | SL: 123.62
+Qty: 29 | TP1: 113.52
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:42:31Z,
+4314972010,"BATS:VRT, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: VRT | Win: 45.5%
+--------------------------
+In: 274.18 | SL: 260.09
+Qty: 10 | TP1: 288.27
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:42:10Z,
+4314972010,"BATS:MOS, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOS | Win: 30.7%
+--------------------------
+In: 25.36 | SL: 26.21
+Qty: 176 | TP1: 24.51
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:41:50Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.22
+Qty: 545 | TP1: 14.67
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:41:48Z,
+4314972010,"BATS:MOS, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOS | Win: 30.7%
+--------------------------
+In: 25.37 | SL: 26.21
+Qty: 178 | TP1: 24.53
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:41:20Z,
+4314972010,"BATS:FIX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FIX | Win: 31.1%
+--------------------------
+In: 1455.86 | SL: 1396.23
+Qty: 2 | TP1: 1515.49
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:41:11Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:41:09Z,
+4314972010,"BATS:TER, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TER | Win: 31.4%
+--------------------------
+In: 315 | SL: 305.98
+Qty: 16 | TP1: 324.02
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:41:09Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:41:00Z,
+4314972010,"BATS:TM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TM | Win: 34.4%
+--------------------------
+In: 210.05 | SL: 213.02
+Qty: 50 | TP1: 207.08
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:41:02Z,
+4314972010,"BATS:CIEN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: CIEN | Win: 32.9%
+--------------------------
+In: 428.76 | SL: 408.09
+Qty: 7 | TP1: 449.42
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:40:48Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.89 | SL: 79.73
+Qty: 47 | TP1: 86.05
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:40:32Z,
+4314972010,"BATS:VRT, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: VRT | Win: 45.5%
+--------------------------
+In: 274.18 | SL: 260.17
+Qty: 10 | TP1: 288.19
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:39:46Z,
+4314972010,"BATS:CIEN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: CIEN | Win: 32.9%
+--------------------------
+In: 428.76 | SL: 408.9
+Qty: 7 | TP1: 448.61
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:39:31Z,
+4314972010,"BATS:VRT, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: VRT | Win: 45.5%
+--------------------------
+In: 274.18 | SL: 260.17
+Qty: 10 | TP1: 288.19
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:38:46Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.22
+Qty: 545 | TP1: 14.67
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:38:36Z,
+4314972010,"BATS:CIEN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: CIEN | Win: 32.9%
+--------------------------
+In: 428.76 | SL: 409.46
+Qty: 7 | TP1: 448.05
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:38:06Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:37:58Z,
+4314972010,"BATS:FIX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FIX | Win: 31.1%
+--------------------------
+In: 1455.86 | SL: 1396.23
+Qty: 2 | TP1: 1515.49
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:37:21Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:37:11Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:36:44Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.89 | SL: 79.73
+Qty: 47 | TP1: 86.05
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:35:55Z,
+4314972010,"BATS:TM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TM | Win: 34.4%
+--------------------------
+In: 210.05 | SL: 212.93
+Qty: 52 | TP1: 207.17
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:35:52Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:35:15Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:34:04Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.89 | SL: 79.73
+Qty: 47 | TP1: 86.05
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:33:39Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:32:41Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:32:00Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:30:34Z,
+4314972010,"BATS:WPM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: WPM | Win: 33.1%
+--------------------------
+In: 118.57 | SL: 123.02
+Qty: 33 | TP1: 114.12
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:30:07Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:30:03Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:29:19Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.86 | SL: 79.73
+Qty: 47 | TP1: 85.99
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:28:36Z,
+4314972010,"BATS:WPM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: WPM | Win: 33.1%
+--------------------------
+In: 118.57 | SL: 122.91
+Qty: 34 | TP1: 114.23
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:27:14Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:26:52Z,
+4314972010,"BATS:NEM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: NEM | Win: 34.6%
+--------------------------
+In: 98.83 | SL: 102.01
+Qty: 47 | TP1: 95.65
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:26:11Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:25:49Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:24:50Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:24:03Z,
+4314972010,"BATS:NEM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: NEM | Win: 34.6%
+--------------------------
+In: 98.83 | SL: 102.01
+Qty: 47 | TP1: 95.65
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:23:35Z,
+4314972010,"BATS:FIX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FIX | Win: 31.1%
+--------------------------
+In: 1455.86 | SL: 1396.97
+Qty: 2 | TP1: 1514.75
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:23:27Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:22:50Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:22:05Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:21:00Z,
+4314972010,"BATS:FIX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FIX | Win: 31.1%
+--------------------------
+In: 1455.86 | SL: 1397.98
+Qty: 2 | TP1: 1513.74
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:20:52Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:20:46Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.98 | SL: 307.89
+Qty: 38 | TP1: 300.07
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:20:45Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:19:48Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.79 | SL: 79.73
+Qty: 49 | TP1: 85.85
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:19:38Z,
+4314972010,"BATS:PYPL, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: PYPL | Win: 35.5%
+--------------------------
+In: 44.45 | SL: 45.99
+Qty: 97 | TP1: 42.91
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:19:33Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 41.2%
+--------------------------
+In: 325.09 | SL: 335.02
+Qty: 15 | TP1: 315.16
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:18:17Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:17:14Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.79 | SL: 79.73
+Qty: 49 | TP1: 85.85
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:14:55Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 41.2%
+--------------------------
+In: 325.09 | SL: 335.02
+Qty: 15 | TP1: 315.16
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:14:45Z,
+4314972010,"BATS:FIX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FIX | Win: 31.1%
+--------------------------
+In: 1455.86 | SL: 1398.98
+Qty: 2 | TP1: 1512.74
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:14:27Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.79 | SL: 79.73
+Qty: 49 | TP1: 85.85
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:13:32Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 41.2%
+--------------------------
+In: 325.09 | SL: 335.02
+Qty: 15 | TP1: 315.16
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:12:52Z,
+4314972010,"BATS:FIX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FIX | Win: 31.1%
+--------------------------
+In: 1455.86 | SL: 1399.62
+Qty: 2 | TP1: 1512.1
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:12:04Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.2
+Qty: 10 | TP1: 956.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:11:20Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.2
+Qty: 588 | TP1: 14.69
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:10:31Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.86 | SL: 79.73
+Qty: 47 | TP1: 85.99
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:09:26Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:08:34Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.2
+Qty: 588 | TP1: 14.69
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:08:07Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:07:34Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.02
+Qty: 10 | TP1: 956.94
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:07:28Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.2
+Qty: 588 | TP1: 14.69
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:06:49Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 985.02
+Qty: 10 | TP1: 956.94
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:06:07Z,
+4314972010,"BATS:HOOD, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: HOOD | Win: 31.3%
+--------------------------
+In: 70.89 | SL: 73.26
+Qty: 63 | TP1: 68.52
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:05:38Z,
+4314972010,"BATS:TER, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TER | Win: 31.4%
+--------------------------
+In: 315 | SL: 305.98
+Qty: 16 | TP1: 324.02
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:05:19Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.2
+Qty: 588 | TP1: 14.69
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:05:16Z,
+4314972010,"BATS:HOOD, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: HOOD | Win: 31.3%
+--------------------------
+In: 70.89 | SL: 73.26
+Qty: 63 | TP1: 68.52
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:03:38Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.74 | SL: 79.73
+Qty: 49 | TP1: 85.75
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:03:32Z,
+4314972010,"BATS:TER, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TER | Win: 31.4%
+--------------------------
+In: 315 | SL: 305.98
+Qty: 16 | TP1: 324.02
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:02:56Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 41.2%
+--------------------------
+In: 325.22 | SL: 335.02
+Qty: 15 | TP1: 315.42
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:01:54Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.74 | SL: 79.73
+Qty: 49 | TP1: 85.75
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:01:46Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 41.2%
+--------------------------
+In: 325.22 | SL: 335.02
+Qty: 15 | TP1: 315.42
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:01:10Z,
+4314972010,"BATS:TER, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TER | Win: 31.4%
+--------------------------
+In: 315 | SL: 305.98
+Qty: 16 | TP1: 324.02
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:01:08Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 41.2%
+--------------------------
+In: 325.22 | SL: 335.02
+Qty: 15 | TP1: 315.42
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:01:02Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.74 | SL: 79.73
+Qty: 49 | TP1: 85.75
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T14:00:44Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.17
+Qty: 652 | TP1: 14.71
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T14:00:17Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:59:59Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:59:47Z,
+4314972010,"BATS:HMC, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: HMC | Win: 37.1%
+--------------------------
+In: 24.61 | SL: 24.92
+Qty: 483 | TP1: 24.3
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:59:24Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.61 | SL: 79.73
+Qty: 52 | TP1: 85.49
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:59:19Z,
+4314972010,"BATS:NEM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: NEM | Win: 34.6%
+--------------------------
+In: 98.83 | SL: 102.01
+Qty: 47 | TP1: 95.65
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:59:14Z,
+4314972010,"BATS:TER, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TER | Win: 31.4%
+--------------------------
+In: 315 | SL: 306.03
+Qty: 16 | TP1: 323.97
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:58:55Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:58:28Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 41.2%
+--------------------------
+In: 325.22 | SL: 335.02
+Qty: 15 | TP1: 315.42
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:58:25Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.17
+Qty: 652 | TP1: 14.71
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:58:13Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.52 | SL: 79.73
+Qty: 53 | TP1: 85.31
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:58:02Z,
+4314972010,"BATS:HOOD, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: HOOD | Win: 31.3%
+--------------------------
+In: 70.89 | SL: 73.26
+Qty: 63 | TP1: 68.52
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:57:57Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 41.2%
+--------------------------
+In: 325.22 | SL: 335.02
+Qty: 15 | TP1: 315.42
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:57:19Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.17
+Qty: 652 | TP1: 14.71
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:57:12Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 984.73
+Qty: 10 | TP1: 957.23
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:57:02Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.52 | SL: 79.73
+Qty: 53 | TP1: 85.31
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:56:49Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.49 | SL: 7.63
+Qty: 1013 | TP1: 7.34
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:55:08Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.17
+Qty: 652 | TP1: 14.71
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:55:01Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 984.73
+Qty: 10 | TP1: 957.23
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:54:32Z,
+4314972010,"BATS:ITIC, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: ITIC | Win: 45.4%
+--------------------------
+In: 210.45 | SL: 217.23
+Qty: 22 | TP1: 203.67
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:54:23Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.49 | SL: 7.63
+Qty: 1013 | TP1: 7.34
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:52:59Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.17
+Qty: 652 | TP1: 14.71
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:52:55Z,
+4314972010,"BATS:WPM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: WPM | Win: 33.1%
+--------------------------
+In: 118.57 | SL: 122.95
+Qty: 34 | TP1: 114.19
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:52:21Z,
+4314972010,"BATS:HMC, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: HMC | Win: 37.1%
+--------------------------
+In: 24.61 | SL: 24.9
+Qty: 517 | TP1: 24.32
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:51:12Z,
+4314972010,"BATS:WPM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: WPM | Win: 33.1%
+--------------------------
+In: 118.57 | SL: 122.95
+Qty: 34 | TP1: 114.19
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:50:52Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.16
+Qty: 681 | TP1: 14.72
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:50:08Z,
+4314972010,"BATS:TREX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TREX | Win: 31.6%
+--------------------------
+In: 36.88 | SL: 37.48
+Qty: 249 | TP1: 36.28
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:50:07Z,
+4314972010,"BATS:HOOD, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: HOOD | Win: 31.3%
+--------------------------
+In: 70.89 | SL: 72.99
+Qty: 71 | TP1: 68.79
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:50:06Z,
+4314972010,"BATS:WPM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: WPM | Win: 33.1%
+--------------------------
+In: 118.51 | SL: 122.88
+Qty: 34 | TP1: 114.14
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:49:45Z,
+4314972010,"BATS:PYPL, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: PYPL | Win: 35.5%
+--------------------------
+In: 44.46 | SL: 45.66
+Qty: 124 | TP1: 43.26
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:49:29Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 982.75
+Qty: 12 | TP1: 959.21
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:48:58Z,
+4314972010,"BATS:HOOD, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: HOOD | Win: 31.3%
+--------------------------
+In: 70.98 | SL: 72.98
+Qty: 75 | TP1: 68.98
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:48:56Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.16
+Qty: 697 | TP1: 14.73
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:48:23Z,
+4314972010,"BATS:HOOD, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: HOOD | Win: 31.3%
+--------------------------
+In: 70.98 | SL: 72.96
+Qty: 75 | TP1: 69
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:47:50Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.49 | SL: 7.63
+Qty: 1013 | TP1: 7.34
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:47:11Z,
+4314972010,"BATS:NVR, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: NVR | Win: 31.5%
+--------------------------
+In: 6470.47 | SL: 6577.27
+Qty: 1 | TP1: 6363.67
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:47:12Z,
+4314972010,"BATS:PYPL, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: PYPL | Win: 35.5%
+--------------------------
+In: 44.46 | SL: 45.55
+Qty: 137 | TP1: 43.37
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:46:21Z,
+4314972010,"BATS:FDX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FDX | Win: 31.7%
+--------------------------
+In: 355.33 | SL: 353.09
+Qty: 66 | TP1: 357.57
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:45:33Z,
+4314972010,"BATS:HOOD, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: HOOD | Win: 31.3%
+--------------------------
+In: 70.98 | SL: 72.85
+Qty: 80 | TP1: 69.11
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:45:45Z,
+4314972010,"BATS:FDX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FDX | Win: 31.7%
+--------------------------
+In: 355.33 | SL: 353.09
+Qty: 66 | TP1: 357.57
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:45:32Z,
+4314972010,"BATS:NEM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: NEM | Win: 34.6%
+--------------------------
+In: 98.73 | SL: 101.41
+Qty: 55 | TP1: 96.05
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:45:22Z,
+4314972010,"BATS:PYPL, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: PYPL | Win: 35.5%
+--------------------------
+In: 44.46 | SL: 45.55
+Qty: 137 | TP1: 43.37
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:45:18Z,
+4314972010,"BATS:BLK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: BLK | Win: 37.4%
+--------------------------
+In: 970.98 | SL: 981.95
+Qty: 13 | TP1: 960.01
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:44:34Z,
+4314972010,"BATS:ITIC, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [A (Top-Qualität)]
+Ticker: ITIC | Win: 45.4%
+--------------------------
+In: 210.37 | SL: 215.01
+Qty: 32 | TP1: 205.73
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:43:32Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.11
+Qty: 882 | TP1: 14.77
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:43:32Z,
+4314972010,"BATS:AVB, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: AVB | Win: 34.7%
+--------------------------
+In: 163.15 | SL: 164.39
+Qty: 120 | TP1: 161.91
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:43:27Z,
+4314972010,"BATS:ABEV, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABEV | Win: 32.4%
+--------------------------
+In: 2.81 | SL: 2.87
+Qty: 2727 | TP1: 2.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:43:27Z,
+4314972010,"BATS:PYPL, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: PYPL | Win: 35.5%
+--------------------------
+In: 44.46 | SL: 45.55
+Qty: 137 | TP1: 43.37
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:42:45Z,
+4314972010,"BATS:NVR, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: NVR | Win: 31.5%
+--------------------------
+In: 6470.47 | SL: 6552.52
+Qty: 1 | TP1: 6388.42
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:42:33Z,
+4314972010,"BATS:FDX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FDX | Win: 31.7%
+--------------------------
+In: 355.32 | SL: 353.09
+Qty: 67 | TP1: 357.55
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:42:28Z,
+4314972010,"BATS:FDX, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: FDX | Win: 31.7%
+--------------------------
+In: 355.32 | SL: 353.09
+Qty: 67 | TP1: 357.55
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:42:13Z,
+4314972010,"BATS:TM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TM | Win: 34.4%
+--------------------------
+In: 210.26 | SL: 211.32
+Qty: 141 | TP1: 209.2
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:42:14Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:42:00Z,
+4314972010,"BATS:TER, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TER | Win: 31.4%
+--------------------------
+In: 315 | SL: 306.42
+Qty: 17 | TP1: 323.58
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:41:49Z,
+4314972010,"BATS:PYPL, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: PYPL | Win: 35.5%
+--------------------------
+In: 44.46 | SL: 45.42
+Qty: 156 | TP1: 43.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:41:15Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:40:57Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:40:47Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.11
+Qty: 882 | TP1: 14.77
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:40:18Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.44 | SL: 307.33
+Qty: 38 | TP1: 299.55
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:40:14Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 43.8%
+--------------------------
+In: 325.91 | SL: 327.89
+Qty: 75 | TP1: 323.93
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:38:30Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.09
+Qty: 1000 | TP1: 14.79
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:37:00Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.44 | SL: 306.21
+Qty: 54 | TP1: 300.67
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:36:00Z,
+4314972010,"BATS:EQR, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: EQR | Win: 32%
+--------------------------
+In: 58.6 | SL: 59.11
+Qty: 294 | TP1: 58.09
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:35:56Z,
+4314972010,"BATS:CAVA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CAVA | Win: 36.8%
+--------------------------
+In: 82.39 | SL: 79.93
+Qty: 60 | TP1: 84.85
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:35:52Z,
+4314972010,"BATS:VALE, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: VALE | Win: 35%
+--------------------------
+In: 14.94 | SL: 15.09
+Qty: 1000 | TP1: 14.79
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:35:03Z,
+4314972010,"BATS:EQR, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: EQR | Win: 32%
+--------------------------
+In: 58.6 | SL: 59.11
+Qty: 294 | TP1: 58.09
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:34:00Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 43.8%
+--------------------------
+In: 326.12 | SL: 327.8
+Qty: 89 | TP1: 324.44
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:30:05Z,
+4314972010,"BATS:V, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: V | Win: 30.6%
+--------------------------
+In: 303.44 | SL: 306.16
+Qty: 55 | TP1: 300.72
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:32:10Z,
+4314972010,"BATS:ABEV, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABEV | Win: 32.4%
+--------------------------
+In: 2.81 | SL: 2.87
+Qty: 2727 | TP1: 2.76
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:31:54Z,
+4314972010,"BATS:EQR, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: EQR | Win: 32%
+--------------------------
+In: 58.6 | SL: 58.89
+Qty: 526 | TP1: 58.31
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:30:04Z,
+4314972010,"BATS:TM, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: TM | Win: 34.4%
+--------------------------
+In: 211.02 | SL: 211.06
+Qty: 3749 | TP1: 210.98
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:30:03Z,
+4314972010,"BATS:TLN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: TLN | Win: 43.8%
+--------------------------
+In: 327.76 | SL: 327.8
+Qty: 3750 | TP1: 327.72
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:30:03Z,
+4314972010,"BATS:CHDN, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: CHDN | Win: 30.3%
+--------------------------
+In: 86.95 | SL: 86.99
+Qty: 3750 | TP1: 86.91
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:30:03Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:29:19Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T13:19:52Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T13:01:30Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T12:56:01Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T12:52:53Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T12:45:55Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T12:37:02Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.5 | SL: 7.63
+Qty: 1153 | TP1: 7.37
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T12:36:02Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T12:24:00Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T12:23:40Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.5 | SL: 7.63
+Qty: 1153 | TP1: 7.37
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T12:22:14Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T12:09:57Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T12:08:41Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T12:02:21Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T11:52:01Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T11:49:13Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T11:47:45Z,
+4314972010,"GETTEX:CHK, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [B (Standard)]
+Ticker: CHK | Win: 40%
+--------------------------
+In: 2.66 | SL: 2.82
+Qty: 937 | TP1: 2.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T11:37:08Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T11:26:30Z,
+4314972010,"LSE_DLY:ABF, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: ABF | Win: 34.2%
+--------------------------
+In: 1812.5 | SL: 1847.5
+Qty: 4 | TP1: 1777.5
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T11:25:50Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T10:52:24Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T10:51:22Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T10:07:02Z,
+4314972010,"OSL_DLY:MOWI, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOWI | Win: 33.3%
+--------------------------
+In: 213 | SL: 216.2
+Qty: 46 | TP1: 209.8
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T10:06:17Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T10:05:43Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1171 | TP1: 7.38
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T10:02:28Z,
+4314972010,"OSL_DLY:MOWI, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOWI | Win: 33.3%
+--------------------------
+In: 213 | SL: 216.2
+Qty: 46 | TP1: 209.8
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T10:01:55Z,
+4314972010,"OSL_DLY:MOWI, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOWI | Win: 33.3%
+--------------------------
+In: 213 | SL: 216.2
+Qty: 46 | TP1: 209.8
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T09:56:27Z,
+4314972010,"OSL_DLY:MOWI, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOWI | Win: 33.3%
+--------------------------
+In: 213 | SL: 216.2
+Qty: 46 | TP1: 209.8
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T09:56:14Z,
+4314972010,"OSL_DLY:MOWI, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOWI | Win: 33.3%
+--------------------------
+In: 213 | SL: 216.2
+Qty: 46 | TP1: 209.8
+--------------------------
+Befehl: Order VORBEREITEN!",2026-03-26T09:52:09Z,
+4314972010,"OSL_DLY:MOWI, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: MOWI | Win: 33.3%
+--------------------------
+In: 213 | SL: 216.2
+Qty: 46 | TP1: 209.8
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T09:47:57Z,
+4314972010,"XETR_DLY:LHA, 1T","AKJ 2.0 Sniper-Commander v10.5 (Master) (150, 0,2, -70, -30, -82, -18): Jeder alert()-Funktionsaufruf","🎯 AKJ SNIPER [C (Sniper-Asymmetrie)]
+Ticker: LHA | Win: 32.7%
+--------------------------
+In: 7.51 | SL: 7.63
+Qty: 1229 | TP1: 7.39
+--------------------------
+Befehl: Order SCHARF SCHALTEN!",2026-03-26T09:43:42Z,
