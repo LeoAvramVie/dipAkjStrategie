@@ -244,13 +244,19 @@ if array.size(virtual_trades) > 0
         bool time_exit   = (bar_index - vt.entry_bar) >= 5
 
         if vt.dir == 1
-            if low  <= vt.sl then sl_hit      := true
-            if not vt.tp1_hit and high >= vt.tp then tp_hit := true
-            if vt.tp1_hit and (close < ema21 or w_trend == -1 or time_exit) then runner_exit := true
+            if low <= vt.sl
+                sl_hit := true
+            if not vt.tp1_hit and high >= vt.tp
+                tp_hit := true
+            if vt.tp1_hit and (close < ema21 or w_trend == -1 or time_exit)
+                runner_exit := true
         else
-            if high >= vt.sl then sl_hit      := true
-            if not vt.tp1_hit and low  <= vt.tp then tp_hit := true
-            if vt.tp1_hit and (close > ema21 or w_trend == 1 or time_exit)  then runner_exit := true
+            if high >= vt.sl
+                sl_hit := true
+            if not vt.tp1_hit and low <= vt.tp
+                tp_hit := true
+            if vt.tp1_hit and (close > ema21 or w_trend == 1 or time_exit)
+                runner_exit := true
 
         // Pessimistischer Ansatz: Wenn beides, SL gewinnt
         if sl_hit and tp_hit
@@ -368,6 +374,12 @@ var table rpt = table.new(position.top_center, 8, 10,
      frame_width    = 2,
      frame_color    = color.rgb(80,80,80))
 
+// v20.7: Farb-Helfer für die Report-Tabelle (müssen global definiert sein, nicht innerhalb if-Block)
+f_wr_bg(float wr)  => wr >= 55 ? color.rgb(0,80,0) : wr >= 50 ? color.rgb(10,50,10) : wr >= 40 ? color.rgb(50,30,0) : color.rgb(70,0,0)
+f_eur_bg(float e)  => e > 0 ? color.rgb(0,70,0) : color.rgb(70,0,0)
+f_eur_str(float e) => (e >= 0 ? "+" : "") + str.tostring(e, "#,###.##") + " €"
+f_tc_wr(float wr)  => wr >= 50 ? color.lime : color.orange
+
 if barstate.islast
     // Berechnungen
     int   tot_feuer_l   = w_feuer_l  + l_feuer_l
@@ -386,18 +398,12 @@ if barstate.islast
     float wr_gl  = tot_golden_l > 0 ? (w_golden_l / tot_golden_l) * 100 : 0.0
     float wr_gs  = tot_golden_s > 0 ? (w_golden_s / tot_golden_s) * 100 : 0.0
     float wr_f   = tot_feuer    > 0 ? (w_feuer_tot  / tot_feuer)  * 100 : 0.0
-    float wr_g   = tot_golden   > 0 ? (w_golden_tot / tot_golden)  * 100 : 0.0
+    float wr_g   = tot_golden   > 0 ? (w_golden_tot / tot_golden) * 100 : 0.0
 
     float total_feuer_eur  = eur_total_feuer_l  + eur_total_feuer_s
     float total_golden_eur = eur_total_golden_l + eur_total_golden_s
     float avg_feuer_eur    = tot_feuer  > 0 ? total_feuer_eur  / tot_feuer  : 0.0
     float avg_golden_eur   = tot_golden > 0 ? total_golden_eur / tot_golden : 0.0
-
-    // Farb-Helfer
-    f_wr_bg(float wr)  => wr >= 55 ? color.rgb(0,80,0) : wr >= 50 ? color.rgb(10,50,10) : wr >= 40 ? color.rgb(50,30,0) : color.rgb(70,0,0)
-    f_eur_bg(float e)  => e > 0 ? color.rgb(0,70,0) : color.rgb(70,0,0)
-    f_eur_str(float e) => (e >= 0 ? "+" : "") + str.tostring(e, "#,###.##") + " €"
-    f_tc(float wr)     => wr >= 50 ? color.lime : color.orange
 
     color COL_HDR  = color.rgb(15,15,30)
     color COL_ROW1 = color.rgb(10,10,20)
@@ -427,7 +433,7 @@ if barstate.islast
     table.cell(rpt, 2, 3, str.tostring(tot_feuer_l),      bgcolor=COL_ROW1, text_color=TC_MAIN)
     table.cell(rpt, 3, 3, str.tostring(w_feuer_l),        bgcolor=color.rgb(0,40,0), text_color=color.lime)
     table.cell(rpt, 4, 3, str.tostring(l_feuer_l),        bgcolor=color.rgb(40,0,0), text_color=color.orange)
-    table.cell(rpt, 5, 3, str.tostring(wr_fl, "#.#") + "%", bgcolor=f_wr_bg(wr_fl), text_color=f_tc(wr_fl))
+    table.cell(rpt, 5, 3, str.tostring(wr_fl, "#.#") + "%", bgcolor=f_wr_bg(wr_fl), text_color=f_tc_wr(wr_fl))
     table.cell(rpt, 6, 3, f_eur_str(eur_total_feuer_l),  bgcolor=f_eur_bg(eur_total_feuer_l), text_color=TC_MAIN)
     table.cell(rpt, 7, 3, f_eur_str(avg_fl),             bgcolor=f_eur_bg(avg_fl), text_color=TC_MAIN)
 
@@ -438,7 +444,7 @@ if barstate.islast
     table.cell(rpt, 2, 4, str.tostring(tot_feuer_s),      bgcolor=COL_ROW2, text_color=TC_MAIN)
     table.cell(rpt, 3, 4, str.tostring(w_feuer_s),        bgcolor=color.rgb(0,40,0), text_color=color.lime)
     table.cell(rpt, 4, 4, str.tostring(l_feuer_s),        bgcolor=color.rgb(40,0,0), text_color=color.orange)
-    table.cell(rpt, 5, 4, str.tostring(wr_fs, "#.#") + "%", bgcolor=f_wr_bg(wr_fs), text_color=f_tc(wr_fs))
+    table.cell(rpt, 5, 4, str.tostring(wr_fs, "#.#") + "%", bgcolor=f_wr_bg(wr_fs), text_color=f_tc_wr(wr_fs))
     table.cell(rpt, 6, 4, f_eur_str(eur_total_feuer_s),  bgcolor=f_eur_bg(eur_total_feuer_s), text_color=TC_MAIN)
     table.cell(rpt, 7, 4, f_eur_str(avg_fs),             bgcolor=f_eur_bg(avg_fs), text_color=TC_MAIN)
 
@@ -448,7 +454,7 @@ if barstate.islast
     table.cell(rpt, 2, 5, str.tostring(tot_feuer),     bgcolor=color.rgb(20,20,40), text_color=TC_MAIN)
     table.cell(rpt, 3, 5, str.tostring(w_feuer_tot),   bgcolor=color.rgb(0,50,0),  text_color=color.lime)
     table.cell(rpt, 4, 5, str.tostring(l_feuer_tot),   bgcolor=color.rgb(50,0,0),  text_color=color.orange)
-    table.cell(rpt, 5, 5, str.tostring(wr_f, "#.#") + "%", bgcolor=f_wr_bg(wr_f), text_color=f_tc(wr_f))
+    table.cell(rpt, 5, 5, str.tostring(wr_f, "#.#") + "%", bgcolor=f_wr_bg(wr_f), text_color=f_tc_wr(wr_f))
     table.cell(rpt, 6, 5, f_eur_str(total_feuer_eur),  bgcolor=f_eur_bg(total_feuer_eur), text_color=TC_MAIN)
     table.cell(rpt, 7, 5, f_eur_str(avg_feuer_eur),    bgcolor=f_eur_bg(avg_feuer_eur), text_color=TC_MAIN)
 
@@ -463,7 +469,7 @@ if barstate.islast
     table.cell(rpt, 2, 7, str.tostring(tot_golden_l),    bgcolor=COL_ROW1, text_color=TC_MAIN)
     table.cell(rpt, 3, 7, str.tostring(w_golden_l),      bgcolor=color.rgb(0,40,0), text_color=color.lime)
     table.cell(rpt, 4, 7, str.tostring(l_golden_l),      bgcolor=color.rgb(40,0,0), text_color=color.orange)
-    table.cell(rpt, 5, 7, str.tostring(wr_gl, "#.#") + "%", bgcolor=f_wr_bg(wr_gl), text_color=f_tc(wr_gl))
+    table.cell(rpt, 5, 7, str.tostring(wr_gl, "#.#") + "%", bgcolor=f_wr_bg(wr_gl), text_color=f_tc_wr(wr_gl))
     table.cell(rpt, 6, 7, f_eur_str(eur_total_golden_l), bgcolor=f_eur_bg(eur_total_golden_l), text_color=TC_MAIN)
     table.cell(rpt, 7, 7, f_eur_str(avg_gl),             bgcolor=f_eur_bg(avg_gl), text_color=TC_MAIN)
 
@@ -474,7 +480,7 @@ if barstate.islast
     table.cell(rpt, 2, 8, str.tostring(tot_golden_s),    bgcolor=COL_ROW2, text_color=TC_MAIN)
     table.cell(rpt, 3, 8, str.tostring(w_golden_s),      bgcolor=color.rgb(0,40,0), text_color=color.lime)
     table.cell(rpt, 4, 8, str.tostring(l_golden_s),      bgcolor=color.rgb(40,0,0), text_color=color.orange)
-    table.cell(rpt, 5, 8, str.tostring(wr_gs, "#.#") + "%", bgcolor=f_wr_bg(wr_gs), text_color=f_tc(wr_gs))
+    table.cell(rpt, 5, 8, str.tostring(wr_gs, "#.#") + "%", bgcolor=f_wr_bg(wr_gs), text_color=f_tc_wr(wr_gs))
     table.cell(rpt, 6, 8, f_eur_str(eur_total_golden_s), bgcolor=f_eur_bg(eur_total_golden_s), text_color=TC_MAIN)
     table.cell(rpt, 7, 8, f_eur_str(avg_gs),             bgcolor=f_eur_bg(avg_gs), text_color=TC_MAIN)
 
@@ -484,7 +490,7 @@ if barstate.islast
     table.cell(rpt, 2, 9, str.tostring(tot_golden),    bgcolor=color.rgb(40,30,0), text_color=TC_MAIN)
     table.cell(rpt, 3, 9, str.tostring(w_golden_tot),  bgcolor=color.rgb(0,60,0),  text_color=color.lime)
     table.cell(rpt, 4, 9, str.tostring(l_golden_tot),  bgcolor=color.rgb(60,0,0),  text_color=color.orange)
-    table.cell(rpt, 5, 9, str.tostring(wr_g, "#.#") + "%", bgcolor=f_wr_bg(wr_g), text_color=f_tc(wr_g))
+    table.cell(rpt, 5, 9, str.tostring(wr_g, "#.#") + "%", bgcolor=f_wr_bg(wr_g), text_color=f_tc_wr(wr_g))
     table.cell(rpt, 6, 9, f_eur_str(total_golden_eur), bgcolor=f_eur_bg(total_golden_eur), text_color=TC_MAIN)
     table.cell(rpt, 7, 9, f_eur_str(avg_golden_eur),   bgcolor=f_eur_bg(avg_golden_eur), text_color=TC_MAIN)
 
