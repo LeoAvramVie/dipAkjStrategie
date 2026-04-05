@@ -1,5 +1,5 @@
 //@version=6
-strategy("AKJ 2.0 Backtest-Engine v20.6", overlay=true, initial_capital=50000, default_qty_type=strategy.cash, commission_type=strategy.commission.cash_per_order, commission_value=2.0, slippage=1, calc_on_every_tick=true)
+strategy("AKJ 2.0 Backtest-Engine v20.7", overlay=true, initial_capital=50000, default_qty_type=strategy.cash, commission_type=strategy.commission.cash_per_order, commission_value=2.0, slippage=1, calc_on_every_tick=true)
 
 // ==========================================
 // --- 1. INPUTS ---
@@ -16,18 +16,23 @@ wpr_len          = input.int(4, "Williams %R Länge", group=group_strat)
 atr_len          = input.int(14, "ATR Länge (Filter)", group=group_strat)
 ema_exit         = input.int(21, "Trailing Stop EMA", group=group_strat)
 
-group_vol_filter = "Volumen Filter (v20.5)"
-vol_timeframe    = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
-backtest_flex_mode = input.bool(true, "Backtest-Modus (Lockerere Filter)", group=group_vol_filter)
-min_stop_density = input.float(1.5, "Min. Stop-Versicherung (%) (FEUER)", group=group_vol_filter)
-max_tp_density   = input.float(15.0, "Max. TP-Widerstand (%) (FEUER)", group=group_vol_filter)
-golden_stop_density = input.float(3.0, "Min. Stop-Versicherung (%) (GOLDEN)", group=group_vol_filter)
-golden_tp_density   = input.float(8.0, "Max. TP-Widerstand (%) (GOLDEN)", group=group_vol_filter)
+group_vol_filter    = "Volumen Filter (v20.7 ATR-Normalisiert)"
+vol_timeframe       = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
+backtest_flex_mode  = input.bool(true, "Backtest-Modus (Lockerere Filter)", group=group_vol_filter)
+// v20.7: ATR-normalisierte Schwellenwerte
+feuer_atr_mult      = input.float(0.75, "Stop-Mauer Faktor FEUER (× ATR%)",  group=group_vol_filter, step=0.05, minval=0.1)
+golden_atr_mult     = input.float(1.50, "Stop-Mauer Faktor GOLDEN (× ATR%)", group=group_vol_filter, step=0.05, minval=0.1)
+max_tp_density      = input.float(15.0, "Max. TP-Widerstand (%) (FEUER)",    group=group_vol_filter)
+golden_tp_density   = input.float(8.0,  "Max. TP-Widerstand (%) (GOLDEN)",   group=group_vol_filter)
 
 // ==========================================
 // --- ATR & Atmendes Risiko-Regime ---
 // ==========================================
 atr_val = ta.atr(atr_len)
+// v20.7: ATR-Normalisierung
+float atr_pct            = close > 0 ? (atr_val / close) * 100 : 2.0
+float dyn_min_stop_feuer  = feuer_atr_mult  * atr_pct
+float dyn_min_stop_golden = golden_atr_mult * atr_pct
 vix_c = request.security("CBOE:VIX", "1D", close, lookahead=barmerge.lookahead_off)
 
 // Risk Multiplikator (100% vs 25% vs 0%)
@@ -153,10 +158,11 @@ float rld_pct_l = avg_anchor_vol_l > 0 ? (current_bar_lower_vol / avg_anchor_vol
 float rld_pct_s = avg_anchor_vol_s > 0 ? (current_bar_lower_vol / avg_anchor_vol_s) * 100 : 0
 
 // Vakuum-Condition basiert nun auf reiner TP-Weitsicht, RLD entkoppelt
-bool vol_feuer_l  = stop_density_l >= min_stop_density and tp_density_l <= max_tp_density
-bool vol_feuer_s  = stop_density_s >= min_stop_density and tp_density_s <= max_tp_density
-bool vol_golden_l = stop_density_l >= golden_stop_density and tp_density_l <= golden_tp_density
-bool vol_golden_s = stop_density_s >= golden_stop_density and tp_density_s <= golden_tp_density
+// v20.7: ATR-normalisierte Schwellenwerte
+bool vol_feuer_l  = stop_density_l >= dyn_min_stop_feuer  and tp_density_l <= max_tp_density
+bool vol_feuer_s  = stop_density_s >= dyn_min_stop_feuer  and tp_density_s <= max_tp_density
+bool vol_golden_l = stop_density_l >= dyn_min_stop_golden and tp_density_l <= golden_tp_density
+bool vol_golden_s = stop_density_s >= dyn_min_stop_golden and tp_density_s <= golden_tp_density
 
 bool long_trigger_70  = d_wpr >= 70 and close < open and not is_doji and close > d_lo
 bool long_trigger_80  = d_wpr >= 80 and close < open and not is_doji and close > d_lo
@@ -167,30 +173,44 @@ bool short_trigger_20 = d_wpr <= 20 and close > open and not is_doji and close <
 // --- 5. FUNNEL & STATUS-AUDIT SYSTEM (v20.5) ---
 // ==========================================
 type VirtualTrade
-    int   t_class // 1 = Lauern, 2 = Feuer Frei, 3 = Golden
-    int   dir     // 1 = Long, -1 = Short
-    float ep
-    float sl
-    float tp
-    float r_dist
-    bool  tp1_hit
+    int   t_class     // 2 = Feuer, 3 = Golden
+    int   dir         // 1 = Long, -1 = Short
+    float ep          // Entry-Preis
+    float sl          // Stop-Loss
+    float tp          // Take-Profit (1:1)
+    float r_dist      // Risiko-Distanz (|EP-SL|)
+    float risk_eur    // Risiko in € bei Einstieg
+    bool  tp1_hit     // Wurde 1:1 schon erreicht?
+    int   entry_bar   // Bar-Index bei Einstieg
 
 var virtual_trades = array.new<VirtualTrade>()
 
-// Stat-Counter (Closed Trades: Win vs Loss)
-var int w_lauern = 0
-var int w_feuer = 0
-var int w_golden = 0
+// ---- ALARM-ZAEHLER (wie oft hat das Signal gebimmelt?) ----
+var int alarms_feuer_l  = 0   // Wie oft FEUER LONG Alarm ausgelöst
+var int alarms_feuer_s  = 0   // Wie oft FEUER SHORT Alarm ausgelöst
+var int alarms_golden_l = 0   // Wie oft GOLDEN LONG Alarm ausgelöst
+var int alarms_golden_s = 0   // Wie oft GOLDEN SHORT Alarm ausgelöst
 
-var int l_lauern = 0
-var int l_feuer = 0
-var int l_golden = 0
+// ---- TRADE-ERGEBNIS-ZAEHLER (was ist passiert wenn wir die Order gesetzt hätten?) ----
+var int w_feuer_l  = 0  // FEUER LONG  Gewinne
+var int l_feuer_l  = 0  // FEUER LONG  Verluste
+var int w_feuer_s  = 0  // FEUER SHORT Gewinne
+var int l_feuer_s  = 0  // FEUER SHORT Verluste
+var int w_golden_l = 0  // GOLDEN LONG  Gewinne
+var int l_golden_l = 0  // GOLDEN LONG  Verluste
+var int w_golden_s = 0  // GOLDEN SHORT Gewinne
+var int l_golden_s = 0  // GOLDEN SHORT Verluste
 
+// ---- GEWINN/VERLUST IN € ----
+var float eur_total_feuer_l  = 0.0
+var float eur_total_feuer_s  = 0.0
+var float eur_total_golden_l = 0.0
+var float eur_total_golden_s = 0.0
+
+// ---- LEGACY-ZAEHLER für R-Tracking ----
+var int   w_lauern = 0, var int   l_lauern = 0
 var float p_lauern = 0.0
-var float p_feuer = 0.0
-var float p_golden = 0.0
-
-var int total_missed_omega = 0
+var int   total_missed_omega = 0
 
 // Definition der Audit-Level (Zero-Latency Sync Logik)
 bool is_radar_l = high >= d_up + (atr_val * 0.2)
@@ -201,87 +221,98 @@ bool radar_state_s = weinstein_stage == 4 and (is_radar_s or setup_strict_short)
 bool raw_feuer_l   = radar_state_l and setup_strict_long and long_trigger_80
 bool raw_feuer_s   = radar_state_s and setup_strict_short and short_trigger_20
 
-bool trigger_lauern_l = radar_state_l and long_trigger_70 // 70er Trigger Kaskade
-bool trigger_feuer_l  = raw_feuer_l and vol_feuer_l 
-bool trigger_golden_l = raw_feuer_l and vol_golden_l 
+// v20.7: RS-Veto für Golden — brauchen perf_diff aus Sektor-Vergleich
+// Im Backtest: kein Sektor-Request (Performance), RS-Veto optional via Input
+bool rs_ok_for_premium = true  // Backtest: RS-Veto deaktiviert (kein Sektor-Request verfügbar ohne 6. call)
+
+bool trigger_lauern_l = radar_state_l and long_trigger_70
+bool trigger_feuer_l  = raw_feuer_l   and vol_feuer_l
+bool trigger_golden_l = raw_feuer_l   and vol_golden_l and rs_ok_for_premium
 
 bool trigger_lauern_s = radar_state_s and short_trigger_30
-bool trigger_feuer_s  = raw_feuer_s and vol_feuer_s
-bool trigger_golden_s = raw_feuer_s and vol_golden_s
+bool trigger_feuer_s  = raw_feuer_s   and vol_feuer_s
+bool trigger_golden_s = raw_feuer_s   and vol_golden_s and rs_ok_for_premium
 
 // Evaluierung offener virtueller Trades
 if array.size(virtual_trades) > 0
     for i = array.size(virtual_trades) - 1 to 0
         VirtualTrade vt = array.get(virtual_trades, i)
-        
-        bool sl_hit = false
-        bool tp_hit = false
+
+        bool sl_hit      = false
+        bool tp_hit      = false
         bool runner_exit = false
-        
+        bool time_exit   = (bar_index - vt.entry_bar) >= 5
+
         if vt.dir == 1
-            if low <= vt.sl
-                sl_hit := true
-            if not vt.tp1_hit and high >= vt.tp
-                tp_hit := true
-            if vt.tp1_hit and (close < ema21 or w_trend == -1) // Runner Exit
-                runner_exit := true
+            if low  <= vt.sl then sl_hit      := true
+            if not vt.tp1_hit and high >= vt.tp then tp_hit := true
+            if vt.tp1_hit and (close < ema21 or w_trend == -1 or time_exit) then runner_exit := true
         else
-            if high >= vt.sl
-                sl_hit := true
-            if not vt.tp1_hit and low <= vt.tp
-                tp_hit := true
-            if vt.tp1_hit and (close > ema21 or w_trend == 1) // Runner Exit
-                runner_exit := true
-                
-        // Pessimistischer Ansatz
+            if high >= vt.sl then sl_hit      := true
+            if not vt.tp1_hit and low  <= vt.tp then tp_hit := true
+            if vt.tp1_hit and (close > ema21 or w_trend == 1 or time_exit)  then runner_exit := true
+
+        // Pessimistischer Ansatz: Wenn beides, SL gewinnt
         if sl_hit and tp_hit
             tp_hit := false
-            
+
         if not vt.tp1_hit
-            // Erster Teil: SL vs TP1
-            if sl_hit
-                if vt.t_class == 1
+            if sl_hit or (time_exit and not tp_hit)
+                // VERLUST: -1R = -risk_eur
+                float pnl_eur = -vt.risk_eur
+                if vt.t_class == 2 and vt.dir == 1
+                    l_feuer_l  += 1 
+                    eur_total_feuer_l  += pnl_eur
+                else if vt.t_class == 2 and vt.dir == -1
+                    l_feuer_s  += 1
+                    eur_total_feuer_s  += pnl_eur
+                else if vt.t_class == 3 and vt.dir == 1
+                    l_golden_l += 1
+                    eur_total_golden_l += pnl_eur
+                else if vt.t_class == 3 and vt.dir == -1
+                    l_golden_s += 1
+                    eur_total_golden_s += pnl_eur
+                else
                     l_lauern += 1
                     p_lauern -= 1.0
-                else if vt.t_class == 2
-                    l_feuer += 1
-                    p_feuer -= 1.0
-                else
-                    l_golden += 1
-                    p_golden -= 1.0
-                array.remove(virtual_trades, i)
-            else if tp_hit
-                // 1:1 erreicht! 50% TP, Rest auf Break-Even
-                if vt.t_class == 1
-                    w_lauern += 1
-                else if vt.t_class == 2
-                    w_feuer += 1
-                else
-                    w_golden += 1
-                
-                vt.tp1_hit := true
-                vt.sl := vt.ep
-        else
-            // Zweiter Teil: Runner Trailing Start
-            if sl_hit or runner_exit
-                float exit_r = 0.0
-                if not sl_hit
-                    float act_exit_p = close // Exit am aktuellen Kerzenschluss nach Crossing
-                    exit_r := vt.dir == 1 ? (act_exit_p - vt.ep) / vt.r_dist : (vt.ep - act_exit_p) / vt.r_dist
-                
-                // Gesamtes R = 50% initial (1.0 R) + 50% runner (exit_r)
-                float total_r = (0.5 * 1.0) + (0.5 * exit_r)
-                
-                if vt.t_class == 1
-                    p_lauern += total_r
-                else if vt.t_class == 2
-                    p_feuer += total_r
-                else
-                    p_golden += total_r
-                    
                 array.remove(virtual_trades, i)
 
-// Hilfsfunktion: Prüft, ob ein virtueller Trade mit gleicher Klasse & Richtung schon aktiv ist (Lock-Check)
+            else if tp_hit
+                // TP1 erreicht: 50% Gewinn (+0.5R), restliche 50% laufen
+                if vt.t_class == 2 and vt.dir == 1
+                    w_feuer_l  += 1
+                else if vt.t_class == 2 and vt.dir == -1
+                    w_feuer_s  += 1
+                else if vt.t_class == 3 and vt.dir == 1
+                    w_golden_l += 1
+                else if vt.t_class == 3 and vt.dir == -1
+                    w_golden_s += 1
+                else
+                    w_lauern += 1
+                vt.tp1_hit := true
+                vt.sl      := vt.ep  // Stop auf Break-Even
+        else
+            // Runner-Phase: Exit bei EMA/Trend/Zeit
+            if sl_hit or runner_exit
+                float exit_p = sl_hit ? vt.sl : close
+                float exit_r = vt.dir == 1 ? (exit_p - vt.ep) / vt.r_dist : (vt.ep - exit_p) / vt.r_dist
+                // Gesamt-P&L: 50% zu 1R gesichert + 50% Runner-Ergebnis
+                float total_r   = (0.5 * 1.0) + (0.5 * math.max(0.0, exit_r))
+                float pnl_eur = total_r * vt.risk_eur
+
+                if vt.t_class == 2 and vt.dir == 1
+                    eur_total_feuer_l  += pnl_eur
+                else if vt.t_class == 2 and vt.dir == -1
+                    eur_total_feuer_s  += pnl_eur
+                else if vt.t_class == 3 and vt.dir == 1
+                    eur_total_golden_l += pnl_eur
+                else if vt.t_class == 3 and vt.dir == -1
+                    eur_total_golden_s += pnl_eur
+                else
+                    p_lauern += total_r
+                array.remove(virtual_trades, i)
+
+// Hilfsfunktion: prüft ob aktiver Trade der Klasse/Richtung bereits läuft
 f_is_active(int t_class, int dir) =>
     bool active = false
     if array.size(virtual_trades) > 0
@@ -292,99 +323,170 @@ f_is_active(int t_class, int dir) =>
                 break
     active
 
-// Event-Zähler (Nur ansteuern, wenn Zustand NEU oder nach Lock-Freigabe wieder möglich ist)
-bool evt_lauern_l = trigger_lauern_l and not trigger_lauern_l[1]
+// Event: Signal zum ERSTEN Mal auf diesem Bar (Flankendetektion)
 bool evt_feuer_l  = trigger_feuer_l  and not trigger_feuer_l[1]
-bool evt_golden_l = trigger_golden_l and not trigger_golden_l[1]
-
-bool evt_lauern_s = trigger_lauern_s and not trigger_lauern_s[1]
 bool evt_feuer_s  = trigger_feuer_s  and not trigger_feuer_s[1]
+bool evt_golden_l = trigger_golden_l and not trigger_golden_l[1]
 bool evt_golden_s = trigger_golden_s and not trigger_golden_s[1]
+bool evt_lauern_l = radar_state_l    and long_trigger_70 and not (radar_state_l[1] and long_trigger_70[1])
+bool evt_lauern_s = radar_state_s    and short_trigger_30 and not (radar_state_s[1] and short_trigger_30[1])
 
-// Neue Setups ins Audit einspeisen (LONG Event-Based)
-if evt_lauern_l and not f_is_active(1, 1)
-    array.push(virtual_trades, VirtualTrade.new(1, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
-if evt_feuer_l and not f_is_active(2, 1)
-    array.push(virtual_trades, VirtualTrade.new(2, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
+// ---- ALARM-ZAEHLER erhöhen ---
+if evt_feuer_l
+    alarms_feuer_l  += 1
+if evt_feuer_s
+    alarms_feuer_s  += 1
 if evt_golden_l
-    if not f_is_active(3, 1)
-        array.push(virtual_trades, VirtualTrade.new(3, 1, sp_long, sl_long, tp_long, sp_long - sl_long, false))
-
-// Neue Setups ins Audit einspeisen (SHORT Event-Based)
-if evt_lauern_s and not f_is_active(1, -1)
-    array.push(virtual_trades, VirtualTrade.new(1, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
-if evt_feuer_s and not f_is_active(2, -1)
-    array.push(virtual_trades, VirtualTrade.new(2, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
+    alarms_golden_l += 1
 if evt_golden_s
-    if not f_is_active(3, -1)
-        array.push(virtual_trades, VirtualTrade.new(3, -1, sp_short, sl_short, tp_short, sl_short - sp_short, false))
+    alarms_golden_s += 1
+
+// ---- Neue Trades in den Simulator einspeisen ----
+float cur_risk_l = not firewall_l ? active_risk_l : 0.0
+float cur_risk_s = not firewall_s ? active_risk_s : 0.0
+
+if evt_feuer_l and not f_is_active(2, 1) and cur_risk_l > 0
+    array.push(virtual_trades, VirtualTrade.new(2, 1, sp_long, sl_long, tp_long, sp_long - sl_long, cur_risk_l, false, bar_index))
+if evt_feuer_s and not f_is_active(2, -1) and cur_risk_s > 0
+    array.push(virtual_trades, VirtualTrade.new(2, -1, sp_short, sl_short, tp_short, sl_short - sp_short, cur_risk_s, false, bar_index))
+if evt_golden_l and not f_is_active(3, 1) and cur_risk_l > 0
+    array.push(virtual_trades, VirtualTrade.new(3, 1, sp_long, sl_long, tp_long, sp_long - sl_long, cur_risk_l, false, bar_index))
+if evt_golden_s and not f_is_active(3, -1) and cur_risk_s > 0
+    array.push(virtual_trades, VirtualTrade.new(3, -1, sp_short, sl_short, tp_short, sl_short - sp_short, cur_risk_s, false, bar_index))
+if evt_lauern_l and not f_is_active(1, 1)
+    array.push(virtual_trades, VirtualTrade.new(1, 1, sp_long, sl_long, tp_long, sp_long - sl_long, cur_risk_l, false, bar_index))
+if evt_lauern_s and not f_is_active(1, -1)
+    array.push(virtual_trades, VirtualTrade.new(1, -1, sp_short, sl_short, tp_short, sl_short - sp_short, cur_risk_s, false, bar_index))
 
 // ==========================================
-// --- 6. AUDIT-COCKPIT UI ---
+// --- 6. SIGNAL-PERFORMANCE REPORT ---
 // ==========================================
-var table audit_cockpit = table.new(position.top_center, 4, 6, border_width=1, border_color=color.rgb(40,40,40))
+// Tabelle: 8 Spalten × 10 Zeilen
+var table rpt = table.new(position.top_center, 8, 10,
+     border_width   = 1,
+     border_color   = color.rgb(50,50,50),
+     frame_width    = 2,
+     frame_color    = color.rgb(80,80,80))
 
 if barstate.islast
-    int c_lauern = l_lauern + w_lauern
-    int c_feuer  = l_feuer + w_feuer
-    int c_golden = l_golden + w_golden
+    // Berechnungen
+    int   tot_feuer_l   = w_feuer_l  + l_feuer_l
+    int   tot_feuer_s   = w_feuer_s  + l_feuer_s
+    int   tot_golden_l  = w_golden_l + l_golden_l
+    int   tot_golden_s  = w_golden_s + l_golden_s
+    int   tot_feuer     = tot_feuer_l  + tot_feuer_s
+    int   tot_golden    = tot_golden_l + tot_golden_s
+    int   w_feuer_tot   = w_feuer_l  + w_feuer_s
+    int   w_golden_tot  = w_golden_l + w_golden_s
+    int   l_feuer_tot   = l_feuer_l  + l_feuer_s
+    int   l_golden_tot  = l_golden_l + l_golden_s
 
-    float wr_lauern = c_lauern > 0 ? (w_lauern / c_lauern) * 100 : 0.0
-    float wr_feuer  = c_feuer > 0 ? (w_feuer / c_feuer) * 100 : 0.0
-    float wr_golden = c_golden > 0 ? (w_golden / c_golden) * 100 : 0.0
+    float wr_fl  = tot_feuer_l  > 0 ? (w_feuer_l  / tot_feuer_l)  * 100 : 0.0
+    float wr_fs  = tot_feuer_s  > 0 ? (w_feuer_s  / tot_feuer_s)  * 100 : 0.0
+    float wr_gl  = tot_golden_l > 0 ? (w_golden_l / tot_golden_l) * 100 : 0.0
+    float wr_gs  = tot_golden_s > 0 ? (w_golden_s / tot_golden_s) * 100 : 0.0
+    float wr_f   = tot_feuer    > 0 ? (w_feuer_tot  / tot_feuer)  * 100 : 0.0
+    float wr_g   = tot_golden   > 0 ? (w_golden_tot / tot_golden)  * 100 : 0.0
 
-    // Profit Berechnung mit Runner-Recycling
-    float r_lauern_avg = c_lauern > 0 ? p_lauern / c_lauern : 0.0
-    float r_feuer_avg  = c_feuer > 0 ? p_feuer / c_feuer : 0.0
-    float r_golden_avg = c_golden > 0 ? p_golden / c_golden : 0.0
+    float total_feuer_eur  = eur_total_feuer_l  + eur_total_feuer_s
+    float total_golden_eur = eur_total_golden_l + eur_total_golden_s
+    float avg_feuer_eur    = tot_feuer  > 0 ? total_feuer_eur  / tot_feuer  : 0.0
+    float avg_golden_eur   = tot_golden > 0 ? total_golden_eur / tot_golden : 0.0
 
-    float eur_lauern = r_lauern_avg * risk_per_trade
-    float eur_feuer = r_feuer_avg * risk_per_trade
-    float eur_golden = r_golden_avg * risk_per_trade
+    // Farb-Helfer
+    f_wr_bg(float wr)  => wr >= 55 ? color.rgb(0,80,0) : wr >= 50 ? color.rgb(10,50,10) : wr >= 40 ? color.rgb(50,30,0) : color.rgb(70,0,0)
+    f_eur_bg(float e)  => e > 0 ? color.rgb(0,70,0) : color.rgb(70,0,0)
+    f_eur_str(float e) => (e >= 0 ? "+" : "") + str.tostring(e, "#,###.##") + " €"
+    f_tc(float wr)     => wr >= 50 ? color.lime : color.orange
 
-    color bg_eur_l = eur_lauern > 0 ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    color bg_eur_f = eur_feuer > 0 ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
-    color bg_eur_g = eur_golden > 0 ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
+    color COL_HDR  = color.rgb(15,15,30)
+    color COL_ROW1 = color.rgb(10,10,20)
+    color COL_ROW2 = color.rgb(5,5,15)
+    color COL_SECT = color.rgb(20,10,40)
+    color TC_HDR   = color.rgb(170,170,220)
+    color TC_MAIN  = color.white
+    color TC_DIM   = color.rgb(150,150,150)
 
-    table.cell(audit_cockpit, 0, 0, "AKJ v20.6 SNR-State-Audit", bgcolor=color.black, text_color=color.white, text_size=size.large)
-    table.merge_cells(audit_cockpit, 0, 0, 3, 0)
-    
-    // Star-Ticker Label Logic
-    string star_l = wr_lauern >= 50 ? " 🔥 STAR-TICKER" : ""
-    string star_f = wr_feuer >= 50 ? " 🔥 STAR-TICKER" : ""
-    string star_g = wr_golden >= 50 ? " 🔥 STAR-TICKER" : ""
+    // ---- HEADER ----
+    table.cell(rpt, 0, 0, "AKJ 2.0 ► Signal-Performance Report v20.7", bgcolor=color.rgb(5,5,20), text_color=color.rgb(150,180,255), text_size=size.normal)
+    table.merge_cells(rpt, 0, 0, 7, 0)
 
-    color tc_l = wr_lauern >= 50 ? color.lime : color.yellow
-    color tc_f = wr_feuer >= 50 ? color.lime : color.blue
-    color tc_g = wr_golden >= 50 ? color.lime : color.fuchsia
+    // Spalten-Header
+    string[] hdrs = array.from("Signal-Typ", "🔔 Alarme", "✅ Trades", "🚀 Gewinne", "🛑 Verluste", "Win-Rate", "€ Gesamt P&L", "Ø pro Trade")
+    for c = 0 to 7
+        table.cell(rpt, c, 1, array.get(hdrs, c), bgcolor=COL_HDR, text_color=TC_HDR, text_size=size.small)
 
-    // Header
-    table.cell(audit_cockpit, 0, 1, "Status-Typ", bgcolor=color.rgb(30,30,30), text_color=color.gray)
-    table.cell(audit_cockpit, 1, 1, "Signal-Events", bgcolor=color.rgb(30,30,30), text_color=color.gray)
-    table.cell(audit_cockpit, 2, 1, "Win % (1:1 TP)", bgcolor=color.rgb(30,30,30), text_color=color.gray)
-    table.cell(audit_cockpit, 3, 1, "Erwartungswert (€)", bgcolor=color.rgb(30,30,30), text_color=color.gray)
+    // ---- FEUER FREI SECTION ----
+    table.cell(rpt, 0, 2, "--- FEUER FREI LONG ---", bgcolor=COL_SECT, text_color=color.rgb(100,200,255), text_size=size.small)
+    table.merge_cells(rpt, 0, 2, 7, 2)
 
-    // Lauern
-    table.cell(audit_cockpit, 0, 2, "LAUERN (Radar)" + star_l, bgcolor=color.rgb(20,20,20), text_color=tc_l)
-    table.cell(audit_cockpit, 1, 2, str.tostring(c_lauern), bgcolor=color.rgb(20,20,20), text_color=color.silver)
-    table.cell(audit_cockpit, 2, 2, str.tostring(wr_lauern, "#.#") + "%", bgcolor=wr_lauern >= 50 ? color.rgb(10,50,10) : color.rgb(40,10,10), text_color=color.white)
-    table.cell(audit_cockpit, 3, 2, (eur_lauern > 0 ? "+" : "") + str.tostring(eur_lauern, "#.##") + " €", bgcolor=bg_eur_l, text_color=color.white)
+    // FEUER LONG Zeile
+    float avg_fl = tot_feuer_l > 0 ? eur_total_feuer_l / tot_feuer_l : 0.0
+    table.cell(rpt, 0, 3, "🟢 FEUER LONG",        bgcolor=COL_ROW1, text_color=color.rgb(100,255,150), text_size=size.small)
+    table.cell(rpt, 1, 3, str.tostring(alarms_feuer_l),  bgcolor=COL_ROW1, text_color=TC_DIM)
+    table.cell(rpt, 2, 3, str.tostring(tot_feuer_l),      bgcolor=COL_ROW1, text_color=TC_MAIN)
+    table.cell(rpt, 3, 3, str.tostring(w_feuer_l),        bgcolor=color.rgb(0,40,0), text_color=color.lime)
+    table.cell(rpt, 4, 3, str.tostring(l_feuer_l),        bgcolor=color.rgb(40,0,0), text_color=color.orange)
+    table.cell(rpt, 5, 3, str.tostring(wr_fl, "#.#") + "%", bgcolor=f_wr_bg(wr_fl), text_color=f_tc(wr_fl))
+    table.cell(rpt, 6, 3, f_eur_str(eur_total_feuer_l),  bgcolor=f_eur_bg(eur_total_feuer_l), text_color=TC_MAIN)
+    table.cell(rpt, 7, 3, f_eur_str(avg_fl),             bgcolor=f_eur_bg(avg_fl), text_color=TC_MAIN)
 
-    // Feuer Frei
-    table.cell(audit_cockpit, 0, 3, "FEUER FREI" + star_f, bgcolor=color.rgb(20,20,20), text_color=tc_f)
-    table.cell(audit_cockpit, 1, 3, str.tostring(c_feuer), bgcolor=color.rgb(20,20,20), text_color=color.silver)
-    table.cell(audit_cockpit, 2, 3, str.tostring(wr_feuer, "#.#") + "%", bgcolor=wr_feuer >= 50 ? color.rgb(10,50,10) : color.rgb(40,10,10), text_color=color.white)
-    table.cell(audit_cockpit, 3, 3, (eur_feuer > 0 ? "+" : "") + str.tostring(eur_feuer, "#.##") + " €", bgcolor=bg_eur_f, text_color=color.white)
+    // FEUER SHORT Zeile
+    float avg_fs = tot_feuer_s > 0 ? eur_total_feuer_s / tot_feuer_s : 0.0
+    table.cell(rpt, 0, 4, "🔴 FEUER SHORT",       bgcolor=COL_ROW2, text_color=color.rgb(255,120,120), text_size=size.small)
+    table.cell(rpt, 1, 4, str.tostring(alarms_feuer_s),  bgcolor=COL_ROW2, text_color=TC_DIM)
+    table.cell(rpt, 2, 4, str.tostring(tot_feuer_s),      bgcolor=COL_ROW2, text_color=TC_MAIN)
+    table.cell(rpt, 3, 4, str.tostring(w_feuer_s),        bgcolor=color.rgb(0,40,0), text_color=color.lime)
+    table.cell(rpt, 4, 4, str.tostring(l_feuer_s),        bgcolor=color.rgb(40,0,0), text_color=color.orange)
+    table.cell(rpt, 5, 4, str.tostring(wr_fs, "#.#") + "%", bgcolor=f_wr_bg(wr_fs), text_color=f_tc(wr_fs))
+    table.cell(rpt, 6, 4, f_eur_str(eur_total_feuer_s),  bgcolor=f_eur_bg(eur_total_feuer_s), text_color=TC_MAIN)
+    table.cell(rpt, 7, 4, f_eur_str(avg_fs),             bgcolor=f_eur_bg(avg_fs), text_color=TC_MAIN)
 
-    // Golden Setup
-    table.cell(audit_cockpit, 0, 4, "GOLDEN SETUP" + star_g, bgcolor=color.rgb(20,20,20), text_color=tc_g)
-    table.cell(audit_cockpit, 1, 4, str.tostring(c_golden), bgcolor=color.rgb(20,20,20), text_color=color.white)
-    table.cell(audit_cockpit, 2, 4, str.tostring(wr_golden, "#.#") + "%", bgcolor=wr_golden >= 50 ? color.rgb(10,60,10) : color.rgb(60,10,10), text_color=color.white)
-    table.cell(audit_cockpit, 3, 4, (eur_golden > 0 ? "+" : "") + str.tostring(eur_golden, "#.##") + " €", bgcolor=bg_eur_g, text_color=color.white)
+    // FEUER GESAMT
+    table.cell(rpt, 0, 5, "∑ FEUER GESAMT",    bgcolor=color.rgb(20,20,40), text_color=color.rgb(100,200,255), text_size=size.small)
+    table.cell(rpt, 1, 5, str.tostring(alarms_feuer_l + alarms_feuer_s), bgcolor=color.rgb(20,20,40), text_color=TC_DIM)
+    table.cell(rpt, 2, 5, str.tostring(tot_feuer),     bgcolor=color.rgb(20,20,40), text_color=TC_MAIN)
+    table.cell(rpt, 3, 5, str.tostring(w_feuer_tot),   bgcolor=color.rgb(0,50,0),  text_color=color.lime)
+    table.cell(rpt, 4, 5, str.tostring(l_feuer_tot),   bgcolor=color.rgb(50,0,0),  text_color=color.orange)
+    table.cell(rpt, 5, 5, str.tostring(wr_f, "#.#") + "%", bgcolor=f_wr_bg(wr_f), text_color=f_tc(wr_f))
+    table.cell(rpt, 6, 5, f_eur_str(total_feuer_eur),  bgcolor=f_eur_bg(total_feuer_eur), text_color=TC_MAIN)
+    table.cell(rpt, 7, 5, f_eur_str(avg_feuer_eur),    bgcolor=f_eur_bg(avg_feuer_eur), text_color=TC_MAIN)
 
-    // Metrik Omega
-    table.cell(audit_cockpit, 0, 5, "VIX Efficiency (Blocked by OMEGA): " + str.tostring(total_missed_omega), bgcolor=color.rgb(10,10,10), text_color=color.orange, text_size=size.small)
-    table.merge_cells(audit_cockpit, 0, 5, 3, 5)
+    // ---- GOLDEN SETUP SECTION ----
+    table.cell(rpt, 0, 6, "--- GOLDEN SETUP ---", bgcolor=color.rgb(40,30,0), text_color=color.rgb(255,220,50), text_size=size.small)
+    table.merge_cells(rpt, 0, 6, 7, 6)
+
+    // GOLDEN LONG Zeile
+    float avg_gl = tot_golden_l > 0 ? eur_total_golden_l / tot_golden_l : 0.0
+    table.cell(rpt, 0, 7, "⭐ GOLDEN LONG",      bgcolor=COL_ROW1, text_color=color.rgb(255,220,50), text_size=size.small)
+    table.cell(rpt, 1, 7, str.tostring(alarms_golden_l), bgcolor=COL_ROW1, text_color=TC_DIM)
+    table.cell(rpt, 2, 7, str.tostring(tot_golden_l),    bgcolor=COL_ROW1, text_color=TC_MAIN)
+    table.cell(rpt, 3, 7, str.tostring(w_golden_l),      bgcolor=color.rgb(0,40,0), text_color=color.lime)
+    table.cell(rpt, 4, 7, str.tostring(l_golden_l),      bgcolor=color.rgb(40,0,0), text_color=color.orange)
+    table.cell(rpt, 5, 7, str.tostring(wr_gl, "#.#") + "%", bgcolor=f_wr_bg(wr_gl), text_color=f_tc(wr_gl))
+    table.cell(rpt, 6, 7, f_eur_str(eur_total_golden_l), bgcolor=f_eur_bg(eur_total_golden_l), text_color=TC_MAIN)
+    table.cell(rpt, 7, 7, f_eur_str(avg_gl),             bgcolor=f_eur_bg(avg_gl), text_color=TC_MAIN)
+
+    // GOLDEN SHORT Zeile
+    float avg_gs = tot_golden_s > 0 ? eur_total_golden_s / tot_golden_s : 0.0
+    table.cell(rpt, 0, 8, "⭐ GOLDEN SHORT",     bgcolor=COL_ROW2, text_color=color.rgb(255,180,50), text_size=size.small)
+    table.cell(rpt, 1, 8, str.tostring(alarms_golden_s), bgcolor=COL_ROW2, text_color=TC_DIM)
+    table.cell(rpt, 2, 8, str.tostring(tot_golden_s),    bgcolor=COL_ROW2, text_color=TC_MAIN)
+    table.cell(rpt, 3, 8, str.tostring(w_golden_s),      bgcolor=color.rgb(0,40,0), text_color=color.lime)
+    table.cell(rpt, 4, 8, str.tostring(l_golden_s),      bgcolor=color.rgb(40,0,0), text_color=color.orange)
+    table.cell(rpt, 5, 8, str.tostring(wr_gs, "#.#") + "%", bgcolor=f_wr_bg(wr_gs), text_color=f_tc(wr_gs))
+    table.cell(rpt, 6, 8, f_eur_str(eur_total_golden_s), bgcolor=f_eur_bg(eur_total_golden_s), text_color=TC_MAIN)
+    table.cell(rpt, 7, 8, f_eur_str(avg_gs),             bgcolor=f_eur_bg(avg_gs), text_color=TC_MAIN)
+
+    // GOLDEN GESAMT
+    table.cell(rpt, 0, 9, "∑ GOLDEN GESAMT",    bgcolor=color.rgb(40,30,0), text_color=color.rgb(255,220,50), text_size=size.small)
+    table.cell(rpt, 1, 9, str.tostring(alarms_golden_l + alarms_golden_s), bgcolor=color.rgb(40,30,0), text_color=TC_DIM)
+    table.cell(rpt, 2, 9, str.tostring(tot_golden),    bgcolor=color.rgb(40,30,0), text_color=TC_MAIN)
+    table.cell(rpt, 3, 9, str.tostring(w_golden_tot),  bgcolor=color.rgb(0,60,0),  text_color=color.lime)
+    table.cell(rpt, 4, 9, str.tostring(l_golden_tot),  bgcolor=color.rgb(60,0,0),  text_color=color.orange)
+    table.cell(rpt, 5, 9, str.tostring(wr_g, "#.#") + "%", bgcolor=f_wr_bg(wr_g), text_color=f_tc(wr_g))
+    table.cell(rpt, 6, 9, f_eur_str(total_golden_eur), bgcolor=f_eur_bg(total_golden_eur), text_color=TC_MAIN)
+    table.cell(rpt, 7, 9, f_eur_str(avg_golden_eur),   bgcolor=f_eur_bg(avg_golden_eur), text_color=TC_MAIN)
 
 // ==========================================
 // --- 7. STRATEGY EXEKUTION (Real Backtest) ---

@@ -1,5 +1,5 @@
 //@version=6
-indicator("AKJ 2.0 Sniper-Commander v20.6", overlay=true, max_labels_count=500)
+indicator("AKJ 2.0 Sniper-Commander v20.7", overlay=true, max_labels_count=500)
 
 // ==========================================
 // --- 1. INPUTS ---
@@ -15,12 +15,14 @@ bb_len           = input.int(10, "Bollinger Länge", group=group_strat)
 bb_mult          = input.float(1.0, "Bollinger Multiplikator", group=group_strat)
 wpr_len          = input.int(4, "Williams %R Länge", group=group_strat)
 atr_len          = input.int(14, "ATR Länge (Filter/Radar)", group=group_strat)
-group_vol_filter = "Volumen Filter (v20.6)"
-vol_timeframe    = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
-min_stop_density = input.float(1.5, "Min. Stop-Versicherung (%) (FEUER)", group=group_vol_filter)
-max_tp_density   = input.float(15.0, "Max. TP-Widerstand (%) (FEUER)", group=group_vol_filter)
-golden_stop_density = input.float(3.0, "Min. Stop-Versicherung (%) (GOLDEN)", group=group_vol_filter)
-golden_tp_density = input.float(8.0, "Max. TP-Widerstand (%) (GOLDEN)", group=group_vol_filter)
+group_vol_filter    = "Volumen Filter (v20.7 ATR-Normalisiert)"
+vol_timeframe       = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
+// v20.7: ATR-normalisierte Schwellenwerte statt fixe %-Werte
+// Kalibrierung: 0.75 × ATR% ≈ 1.5% bei ATR=2% (Standard-Aktie) | 2.75% bei TSLA (ATR≈3.7%)
+feuer_atr_mult      = input.float(0.75, "Stop-Mauer Faktor FEUER (× ATR%)",  group=group_vol_filter, step=0.05, minval=0.1, tooltip="Dynamische Mindest-Mauer = Faktor × (ATR/Kurs × 100). 0.75 entspricht ≈1.5% bei einer Aktie mit 2% ATR. Volatile Aktien (TSLA) brauchen automatisch mehr %.")
+golden_atr_mult     = input.float(1.50, "Stop-Mauer Faktor GOLDEN (× ATR%)", group=group_vol_filter, step=0.05, minval=0.1, tooltip="Dynamische Golden-Mauer = Faktor × (ATR/Kurs × 100). 1.5 entspricht ≈3.0% bei 2% ATR. Macht Golden-Status ticker-agnostisch.")
+max_tp_density      = input.float(15.0, "Max. TP-Widerstand (%) (FEUER)",    group=group_vol_filter)
+golden_tp_density   = input.float(8.0,  "Max. TP-Widerstand (%) (GOLDEN)",   group=group_vol_filter)
 
 group_rs         = "Sektor & Relative Stärke (v20.5)"
 use_auto_etf     = input.bool(true, "Auto-Detect Sektor", group=group_rs)
@@ -31,6 +33,10 @@ user_etf         = input.symbol("SPY", "Manueller Sektor-ETF", group=group_rs)
 // ==========================================
 atr_val = ta.atr(atr_len)
 ema21   = ta.ema(close, 21)
+// v20.7: ATR als % des aktuellen Kurses → Basis für normalisierte Wall-Schwellenwerte
+float atr_pct            = close > 0 ? (atr_val / close) * 100 : 2.0
+float dyn_min_stop_feuer  = feuer_atr_mult  * atr_pct  // z.B. 0.75 × 2% = 1.5% bei KO; 0.75 × 5% = 3.75% bei TSLA
+float dyn_min_stop_golden = golden_atr_mult * atr_pct  // z.B. 1.5  × 2% = 3.0% bei KO; 1.5  × 5% = 7.5% bei TSLA
 vix_c = request.security("CBOE:VIX", "1D", close, lookahead=barmerge.lookahead_off)
 
 // Asymmetrische Risk Multiplier Logik
@@ -226,10 +232,11 @@ bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_l
 bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
 
 // Volumen (Wall & Vakuum)
-bool vol_feuer_l = stop_density >= min_stop_density and tp_density <= max_tp_density
-bool vol_feuer_s = stop_density >= min_stop_density and tp_density <= max_tp_density
-bool vol_golden_l = stop_density >= golden_stop_density and tp_density <= golden_tp_density
-bool vol_golden_s = stop_density >= golden_stop_density and tp_density <= golden_tp_density
+// v20.7: ATR-normalisierte Schwellenwerte (ticker-agnostisch)
+bool vol_feuer_l  = stop_density >= dyn_min_stop_feuer  and tp_density <= max_tp_density
+bool vol_feuer_s  = stop_density >= dyn_min_stop_feuer  and tp_density <= max_tp_density
+bool vol_golden_l = stop_density >= dyn_min_stop_golden and tp_density <= golden_tp_density
+bool vol_golden_s = stop_density >= dyn_min_stop_golden and tp_density <= golden_tp_density
 
 // --- SYNCHRONIZED TRIGGER BOOLS ---
 bool trigger_lauern_l = radar_state_l and d_wpr < 80
@@ -238,15 +245,19 @@ bool trigger_lauern_s = radar_state_s and d_wpr > 20
 bool raw_feuer_l = radar_state_l and long_trigger
 bool raw_feuer_s = radar_state_s and short_trigger
 
-bool trigger_feuer_l = raw_feuer_l and vol_feuer_l and is_correct_zone_l   // Fix v20.6: Zone-Check jetzt aktiv im Signal
-bool trigger_feuer_s = raw_feuer_s and vol_feuer_s and is_correct_zone_s
+// v20.7: RS-Veto — GOLDEN und AKJ ELITE nur wenn Relative Stärke positiv (perf_diff > -2.0)
+// FEUER FREI bleibt auch bei schwacher RS aktiv (kein hartes Veto)
+bool rs_ok_for_premium = perf_diff > -2.0  // RS nicht SCHWACH → Pflicht für Golden/Elite
 
-bool trigger_golden_l = raw_feuer_l and vol_golden_l and is_correct_zone_l  // Fix v20.6: Zone-Check jetzt aktiv im Signal
-bool trigger_golden_s = raw_feuer_s and vol_golden_s and is_correct_zone_s
+bool trigger_feuer_l  = raw_feuer_l and vol_feuer_l  and is_correct_zone_l
+bool trigger_feuer_s  = raw_feuer_s and vol_feuer_s  and is_correct_zone_s
 
-// AKJ Elite Signal (v20.6.0)
-bool isAKJSignal_l = weinstein_stage == 2 and setup_strict_long and d_wpr >= 80 and low > d_lo and open != close
-bool isAKJSignal_s = weinstein_stage == 4 and setup_strict_short and d_wpr <= 20 and high < d_up and open != close
+bool trigger_golden_l = raw_feuer_l and vol_golden_l and is_correct_zone_l and rs_ok_for_premium  // v20.7: RS-Veto
+bool trigger_golden_s = raw_feuer_s and vol_golden_s and is_correct_zone_s and rs_ok_for_premium
+
+// AKJ Elite Signal (v20.7: RS-Veto hinzugefügt)
+bool isAKJSignal_l = weinstein_stage == 2 and setup_strict_long  and d_wpr >= 80 and low  > d_lo and open != close and rs_ok_for_premium
+bool isAKJSignal_s = weinstein_stage == 4 and setup_strict_short and d_wpr <= 20 and high < d_up and open != close and rs_ok_for_premium
 bool isAKJSignal = isAKJSignal_l or isAKJSignal_s
 
 type VirtualTrade
@@ -461,6 +472,11 @@ float perf_diff  = stock_perf - etf_perf
 string rs_txt = perf_diff > 2.0 ? "STARK" : perf_diff < -2.0 ? "SCHWACH" : "MITTEL"
 color  rs_bg  = perf_diff > 2.0 ? color.blue : perf_diff < -2.0 ? color.red : color.rgb(30, 30, 30)
 
+// v20.7: Bollinger Squeeze Anzeige
+float bb_width_pct = d_basis > 0 ? ((d_up - d_lo) / d_basis) * 100 : 0.0
+string squeeze_txt = bb_width_pct < 3.0 ? "🗜️ SQUEEZE (" + str.tostring(bb_width_pct, "#.#") + "%)" : (bb_width_pct > 8.0 ? "💥 EXPANSION (" + str.tostring(bb_width_pct, "#.#") + "%)" : "NORMAL (" + str.tostring(bb_width_pct, "#.#") + "%)")
+color  squeeze_bg  = bb_width_pct < 3.0 ? color.rgb(0, 50, 120) : (bb_width_pct > 8.0 ? color.rgb(100, 20, 20) : color.rgb(30, 30, 30))
+
 // ==========================================
 // --- 8. UI LOGIK & FARBEN ---
 // ==========================================
@@ -556,7 +572,7 @@ if barstate.islast
         wpr_bg := nz(d_wpr) <= 20 ? color.red : (nz(d_wpr) <= 30 ? color.yellow : color.rgb(40, 40, 40))
     color wpr_tc = (wpr_bg == color.yellow) ? color.black : color.white
     
-    color s_v_bg = nz(stop_density) >= min_stop_density ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
+    color s_v_bg = nz(stop_density) >= dyn_min_stop_feuer ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
     string sd_str = str.tostring(nz(stop_density), "#.#") + "%"
     
     color t_v_bg = vacuum_ok ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
@@ -581,7 +597,7 @@ if barstate.islast
     table.cell(cp, 1, 4, ws_txt, bgcolor=ws_bg, text_color=color.white)
 
     // 5-7: Trend-Analyse
-    table.cell(cp, 0, 5, "--- TREND-ANALYSE (v20.5) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    table.cell(cp, 0, 5, "--- TREND-ANALYSE (v20.6) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 5, 1, 5)
     table.cell(cp, 0, 6, "📅 Wochentrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt.")
     table.cell(cp, 1, 6, wt_txt, bgcolor=wt_bg, text_color=color.white)
@@ -610,7 +626,9 @@ if barstate.islast
     table.cell(cp, 0, 15, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.")
     table.cell(cp, 1, 15, c_txt, bgcolor=c_bg, text_color=color.white)
 
-    table.cell(cp, 0, 16, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >3% zur Absicherung der Position.")
+    string dyn_feuer_str = str.tostring(dyn_min_stop_feuer, "#.##") + "%"
+    string dyn_golden_str = str.tostring(dyn_min_stop_golden, "#.##") + "%"
+    table.cell(cp, 0, 16, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="v20.7 ATR-norm.: Min. FEUER=" + dyn_feuer_str + " | Min. GOLDEN=" + dyn_golden_str + " (dynamisch je Aktie-Volatilität)")
     table.cell(cp, 1, 16, sd_str, bgcolor=s_v_bg, text_color=color.white)
     
     table.cell(cp, 0, 17, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.")
@@ -638,12 +656,21 @@ if barstate.islast
     table.cell(cp, 0, 24, "🏃 Runner-Target", bgcolor=color.rgb(50, 50, 50), text_color=ema_col, tooltip="Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.")
     table.cell(cp, 1, 24, ema_str, bgcolor=color.rgb(30, 30, 30), text_color=ema_col)
 
-    // 25-26: Bollinger Check
-    table.cell(cp, 0, 25, "--- ZUSATZ-INFO ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
+    // 25-28: Zusatz-Info (Bollinger Check + Squeeze)
+    table.cell(cp, 0, 25, "--- ZUSATZ-INFO (v20.7) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
     table.merge_cells(cp, 0, 25, 1, 25)
 
-    table.cell(cp, 0, 26, "🔭 Bollinger Check", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="14-Punkte-System für Bollinger Bänder (10, 1).")
+    table.cell(cp, 0, 26, "🔭 Bollinger Zone", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="14-Punkte-System: LONG ZONE/EXTREME = Long erlaubt, SHORT ZONE/EXTREME = Short erlaubt. Im Scharf-Modus automatisch übergangen.")
     table.cell(cp, 1, 26, bc_txt, bgcolor=bc_bg, text_color=color.white)
+
+    table.cell(cp, 0, 27, "🗜️ BB Squeeze", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="v20.7: Bollinger Band Breite als % des Kurses. SQUEEZE (<3%) = Energie baut sich auf, guter Dip-Buy Kontext. EXPANSION (>8%) = Vorsicht, Bänder weiten sich, Dip-Buy riskanter.")
+    table.cell(cp, 1, 27, squeeze_txt, bgcolor=squeeze_bg, text_color=color.white)
+
+    // RS Veto Status Anzeige
+    string rs_veto_txt = rs_ok_for_premium ? "✅ (Golden/Elite OK)" : "⚠️ VETO (RS SCHWACH — kein Golden/Elite)"
+    color  rs_veto_bg  = rs_ok_for_premium ? color.rgb(10, 50, 10) : color.rgb(70, 20, 0)
+    table.cell(cp, 0, 28, "💪 RS-Veto Status", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="v20.7: Relative Stärke als Veto für Golden & AKJ Elite. Wenn Aktie ihren Sektor underperformt (RS = SCHWACH) können nur FEUER-Signale feuern — kein GOLDEN oder ELITE.")
+    table.cell(cp, 1, 28, rs_veto_txt, bgcolor=rs_veto_bg, text_color=color.white)
 
 // ==========================================
 // --- 10. VISUALS & ALARME ---
@@ -749,7 +776,16 @@ if can_alert
       "Stopp-Loss (SL): " + f_p(sl_price) + "\n" +
       "Runner-Target: " + ema_str + "\n\n" +
       "--- ZUSATZ-INFO ---\n" +
-      "Bollinger Check: " + bc_txt
+      "Bollinger Zone: " + bc_txt + "\n" +
+      "BB Squeeze: " + squeeze_txt + "\n" +
+      "RS-Veto: " + (rs_ok_for_premium ? "OK" : "AKTIV (RS SCHWACH)") + "\n" +
+      "ATR%: " + str.tostring(atr_pct, "#.##") + "% | Min.Wall FEUER: " + str.tostring(dyn_min_stop_feuer, "#.##") + "% | Min.Wall GOLDEN: " + str.tostring(dyn_min_stop_golden, "#.##") + "%" +
+      "\n\n--- JSON PAYLOAD ---\n" +
+      "{\"ticker\":\"" + syminfo.ticker + "\",\"signal\":\"" + tac_txt + "\"," +
+      "\"sp\":" + f_p(sp_price) + ",\"sl\":" + f_p(sl_price) + ",\"tp\":" + f_p(tp_price) + "," +
+      "\"shares\":" + str.tostring(nz(shares)) + ",\"risk_eur\":" + str.tostring(nz(active_risk_display), "#.##") + "," +
+      "\"wpr\":" + str.tostring(nz(d_wpr), "#.#") + ",\"stop_wall\":" + str.tostring(nz(stop_density), "#.##") + "," +
+      "\"tp_resistance\":" + str.tostring(nz(tp_density), "#.##") + ",\"rs_status\":\"" + rs_txt + "\",\"bb_squeeze\":\"" + squeeze_txt + "\"}"
 
     if tac_txt == "AKJ_ELITE_LONG"
         alert(star_p_g + "💎 AKJ ELITE SIGNAL 💎 🌟 GOLDEN SETUP LONG 🌟 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar_close)
