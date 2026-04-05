@@ -1,187 +1,408 @@
-# AKJ 2.0 Sniper-Commander
-## Das taktische Lagezentrum (v20.6 Elite)
+================================================================================
+  AKJ 2.0 Sniper-Commander v20.6 — TECHNISCHE REFERENZ-DOKUMENTATION
+  PineScript v6 | TradingView | Stand: April 2026
+================================================================================
 
----
-TEIL 1: FACHLICHES DOSSIER (System-Handbuch)
----
+Dieses Dokument beschreibt JEDE Berechnungsformel, JEDEN Schwellenwert und JEDE
+Alarmbedingung exakt so wie sie im Code implementiert ist. Kein Interpretationsspielraum.
 
-Detaillierte, technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.6.
-Das System wurde in v20.6 um drei kritische Logik-Fixes erweitert:
-(1) Wochentrend-Midline-Reset, (2) Tagesscharf-Midline-Reset, (3) Zonen-Check im Signal-Flow.
+================================================================================
+  ABSCHNITT 1: PARAMETER & STANDARDWERTE
+================================================================================
 
----
-### I. Das Interaktive Cockpit (Dashboard)
-Das HUD ist logisch in Blöcken gruppiert, um dir während des Tradings den perfekten
-Überblick über Kontext, Metriken und Exekution zu geben.
+RISIKOMANAGEMENT (einstellbar):
+  risk_per_trade    = 100.0 €    (Basis-Risiko pro Trade)
+  limit_offset_pct  = 0.2 %      (Abstand LP vom SP für Gap-Schutz)
+  atr_stop_mult     = 1.0        (ATR-Multiplikator für Stop-Loss)
+  use_dyn_risk      = true       (asymmetrisches Risiko ein/aus)
 
-💡 Die Werte im Cockpit besitzen interaktive Tooltips. Wenn du mit der Maus (Mouse-over)
-   über die Parameter-Titel in TradingView fährst, liefert das System dir sofortige
-   strategische Erklärungen.
+STRATEGIE-PARAMETER:
+  bb_len   = 10    (Bollinger Band Länge, Perioden)
+  bb_mult  = 1.0   (Bollinger Band Multiplikator, Standardabweichungen)
+  wpr_len  = 4     (Williams %R Periode)
+  atr_len  = 14    (ATR Länge)
 
-COCKPIT BLÖCKE:
----------------
-1. STATUS-ZEILE
-   - Zeigt den aktuellen Signalzustand: 💎 AKJ ELITE / 🌟 GOLDEN / 🟢 FEUER FREI / 📡 LAUERN / NO SIGNAL
-   - Zeigt außerdem das aktive Risiko-Regime (ALPHA / DELTA / OMEGA) und einen Cooldown-Timer.
+VOLUMEN-FILTER (4H Timeframe):
+  min_stop_density    = 1.5 %    (Minimale Stop-Versicherung für FEUER FREI)
+  max_tp_density      = 15.0 %   (Maximaler TP-Widerstand für FEUER FREI)
+  golden_stop_density = 3.0 %    (Minimale Stop-Versicherung für GOLDEN SETUP)
+  golden_tp_density   = 8.0 %    (Maximaler TP-Widerstand für GOLDEN SETUP)
 
-2. MARKT-KONTEXT
-   - 🌍 Sektor:        Automatisch erkannter Sektor-ETF (z.B. SMH für Halbleiter, XLE für Energie).
-   - 💪 Rel. Stärke:   Vergleich der Aktie mit dem Sektor über 20 Tage. STARK = Outperformance.
-   - 📈 Weinstein:     Stage 2 = institutionelle Akkumulation (Long). Stage 4 = Distribution (Short).
+================================================================================
+  ABSCHNITT 2: RISIKO-REGIME (VIX-basiert)
+================================================================================
 
-3. TREND-ANALYSE (v20.6 Fix)
-   - 📅 Wochentrend:   BULLISCH / NEUTRAL / BÄRISCH.
-     → [v20.6 FIX] Wird jetzt sofort auf NEUTRAL gesetzt, wenn der Wochenschlusskurs
-       unter die Wochi-Mittellinie (SMA 10, Wochenbasis) fällt – nicht erst am unteren Band!
-   - ☀️ Tagestrend:    LONG (Radar/Scharf) / SHORT (Radar/Scharf) / NEUTRAL.
-     → [v20.6 FIX] Scharf-Modus endet sofort, wenn der Tagesschlusskurs die Tages-Mittellinie
-       (SMA 10, Tagesbasis) kreuzt – nicht erst am unteren Band!
+Datenbasis: CBOE:VIX, Tages-Schlusskurs (lookahead=off)
 
-4. SNIPER METRIKEN
-   - 📊 Risk-O-Meter:  Dynamische Positionsgröße in €. Passt sich VIX und ATR an.
-   - 🛡️ Risk-Mode:    ALPHA (VIX < 25) / DELTA (VIX 25-35) / OMEGA (VIX > 35)
-   - ⚓ Anchor-Info:   Startpunkt der Anchored-Volume-Analyse (ab letztem Weinstein-Wechsel).
-   - 📐 Vacuum Quality: Zeigt ob der Weg zum TP historisch frei ist (< max. TP-Density %).
+BERECHNUNG risk_mult_l (Long-Risiko-Faktor):
+  VIX < 25.0  → risk_mult_l = 1.0   (100% Risiko)
+  VIX 25-35   → risk_mult_l = 0.25  (25% Risiko)
+  VIX > 35    → risk_mult_l = 0.0   (0% Risiko = gesperrt)
 
-5. SIGNAL-VALIDIERUNG
-   - 🕹️ Momentum (WPR): Williams %R (Periode 4). Trigger bei 80/20 (Feuer), Radar bei 70/30.
-   - 🕯️ Kerzenregel:   Prüft ob die Kerze eine echte Impulskerze ist (kein Doji, Richtung stimmt).
-   - 🛡️ Stopversicherung: Volumen-Mauer am Stop-Level in %. Zielwert für FEUER: > 1.5%.
-   - 🚧 TP Widerstand:  Volumen-Widerstand bis zum Ziel in %. Zielwert: < 15% (FEUER) / < 8% (GOLDEN).
-   - 🔭 Bollinger Check: [v20.6 FIX] Jetzt aktiv im Signal-Flow! Bestimmt ob Preis in der richtigen
-     Bollinger-Zone ist für ein FEUER oder GOLDEN Signal.
-     → LONG ZONE / LONG EXTREME  = Erlaubt Long-Signale
-     → SHORT ZONE / SHORT EXTREME = Erlaubt Short-Signale
-     → Im Scharf-Modus (Walking the Bands) wird dieser Check automatisch überbrückt.
+BERECHNUNG risk_mult_s (Short-Risiko-Faktor):
+  VIX < 25.0  → risk_mult_s = 1.0   (100% Risiko)
+  VIX 25-35   → risk_mult_s = 1.0   (100% Risiko — Short-Bias!)
+  VIX > 35    → risk_mult_s = 0.0   (0% Risiko = gesperrt)
 
-6. ORDER-MATRIX
-   - 🎯 SP (Stoppreis):  Dein Einstiegs-Trigger-Preis. Platziere hier Stop-Buy / Stop-Sell.
-   - 🤝 LP (Limitpreis): Gap-Schutz. Um 0.2% versetzt vom SP (einstellbar).
-   - 🔢 Stk (Anzahl):    Exakte Stückzahl für punktgenaues 1R Risiko.
-   - 💸 TP (Teilverkauf): 1:1 CRV Ziel (50% der Position schließen, Rest auf Break-Even).
-   - 🏁 SL (Stop-Loss):  ATR-basierter institutioneller Stop. Standard: 1.0x ATR14.
-   - 🏃 Runner-Target:   EMA 21 als Trailing-Kriterium für die 50% Runner-Position.
+AKTIVES RISIKO:
+  active_risk_l = risk_per_trade × risk_mult_l   (falls use_dyn_risk=true)
+  active_risk_s = risk_per_trade × risk_mult_s
 
-> ⚠️ NUTZER-HINWEIS: Handeln Sie nur, wenn die Signal-Validierung grün leuchtet.
->    Das Cockpit ist eine Navigationshilfe für ein 50k Depot.
+ANZEIGE im Cockpit:
+  VIX < 25.0  → "ALPHA (Full)"
+  VIX 25-35   → "DELTA (Short-Bias)"
+  VIX > 35    → "OMEGA (Lock)"
 
----
-### II. Asymmetrisches Risiko: Die „Atmende Firewall"
-Das System nutzt ein 3-Stufen-Risiko-Regime basierend auf dem CBOE VIX.
+================================================================================
+  ABSCHNITT 3: WOCHENTREND (w_trend)
+================================================================================
 
-1. REGIME ALPHA (VIX < 25) – Normalbetrieb:
-   Longs und Shorts werden mit 100% Risiko gehandelt (Basis: einstellbar, Standard 100€).
+Datenbasis: Weekly-Timeframe (lookahead=off), letzte 2 bestätigte Wochenkerzen
 
-2. REGIME DELTA (VIX 25 – 35) – Short-Spezialist:
-   - Long-Trades: nur noch 25% des Basis-Risikos (Kapitalschutz).
-   - Short-Trades: weiterhin 100% Risiko (Panikverkäufe als Beschleuniger nutzen).
+BOLLINGER BAND WÖCHENTLICH:
+  basis_w  = SMA(close, 10) auf Wochenbasis
+  dev_w    = STDEV(close, 10) × 1.0 auf Wochenbasis
+  w_up     = basis_w + dev_w    (oberes Wochenband)
+  w_lo     = basis_w - dev_w    (unteres Wochenband)
+  w_basis_1 = SMA(close, 10)[1] auf Wochenbasis (letzte abgeschlossene Woche)
 
-3. REGIME OMEGA (VIX > 35) – Handelsstopp:
-   Beide Richtungen werden auf 0% Risiko gesetzt. Dysfunktionaler Markt (Gaps, Slippage).
+VERWENDETE WERTE:
+  w_cl_1 = Wochenclose der vorletzten Woche (close[1] auf W-Chart)
+  w_cl_2 = Wochenclose der vorvorletzten Woche (close[2] auf W-Chart)
+  w_up_1 = Oberes Band der vorletzten Woche
+  w_lo_1 = Unteres Band der vorletzten Woche
+  w_up_2, w_lo_2 = Bänder 2 Wochen zurück
 
-MATHEMATIK: shares = floor(aktives_Risiko / abs(Entry - SL))
-Das bedeutet: Bei einem Stop-Out verbrennt das System punktgenau maximal dein Basis-Risiko.
+ZUSTANDSMASCHINE (sticky, nur Update bei Bedingungserfüllung):
+  → BULLISCH (w_trend = 1):
+      Bedingung: w_cl_1 > w_up_1 UND w_cl_2 > w_up_2
+      (Beide letzten Wochenkerzen schlossen ÜBER dem oberen Wochenband)
 
----
-### III. Die 4 Signalstufen (Kaskaden-System)
+  → BÄRISCH (w_trend = -1):
+      Bedingung: w_cl_1 < w_lo_1 UND w_cl_2 < w_lo_2
+      (Beide letzten Wochenkerzen schlossen UNTER dem unteren Wochenband)
 
-Das System ist als aufsteigender Funnel aufgebaut. Jede Stufe erfordert mehr Bedingungen.
+  → NEUTRAL (w_trend = 0) — Fix v20.6:
+      Wenn vorher BULLISCH: Bedingung: w_cl_1 < w_basis_1
+      (Letzte Wochenkerze schloss unter der Wochenmittellinie SMA10)
+      Wenn vorher BÄRISCH: Bedingung: w_cl_1 > w_basis_1
+      (Letzte Wochenkerze schloss über der Wochenmittellinie SMA10)
 
-1. 📡 LAUERN (Radar-Phase):
-   BEDINGUNGEN: Weinstein Stage 2/4 ✓ + Bollinger Hysterese berührt ✓ + WPR ≥ 70 (Long)
-               oder WPR ≤ 30 (Short) ✓
-   BEDEUTUNG:   Das Setup baut sich auf. Bereite dein Limit vor!
+  Hinweis: Bleibt auf aktuellem Stand wenn keine Bedingung erfüllt (sticky).
+  Initialwert = 0 (NEUTRAL).
 
-2. 🟢 FEUER FREI (Sniper-Trigger):
-   BEDINGUNGEN: Alles wie LAUERN + WPR ≥ 80 (Long) / ≤ 20 (Short) ✓
-               + Kerzenregel OK ✓ + Stopversicherung ≥ 1.5% ✓ + TP Widerstand ≤ 15% ✓
-               + [v20.6 FIX] Bollinger Zone passt ✓
-   BEDEUTUNG:   Einstieg möglich. Platziere Stop-Buy / Stop-Sell Order.
+================================================================================
+  ABSCHNITT 4: WEINSTEIN STAGE
+================================================================================
 
-3. 🌟 GOLDEN SETUP (Premium-Trade):
-   BEDINGUNGEN: Alles wie FEUER FREI + Stopversicherung ≥ 3.0% ✓ + TP Widerstand ≤ 8.0% ✓
-               + [v20.6 FIX] Bollinger Zone passt ✓
-   BEDEUTUNG:   High-Grade Entry. Smart Money steht hinter dem Stop. Volle 1R einsetzen.
+Datenbasis: Weekly-Timeframe, letzte 2 bestätigte Wochenkerzen
+  w_sma30_1 = SMA(close, 30)[1] auf Wochenbasis
+  w_sma30_2 = SMA(close, 30)[2] auf Wochenbasis
 
-4. 💎 AKJ ELITE (Ultra-Präzision):
-   BEDINGUNGEN: Weinstein Stage 2/4 ✓ + Scharf-Modus aktiv (2 Kerzen außerhalb) ✓
-               + WPR ≥ 80 / ≤ 20 ✓ + Kerze kein Doji ✓ + Kurs noch diesseits des Bandes
-   BEDEUTUNG:   Der seltenste und sauberste Signal-Typ. Nur für erfahrene Trader.
+BERECHNUNG:
+  Stage 2 (Long): w_cl_1 > w_sma30_1 UND w_sma30_1 > w_sma30_2
+    → Kurs über der SMA30 UND SMA30 steigt (institutionelle Akkumulation)
 
-🔒 ANTI-SPAM SCHUTZ: Jeder Ticker kann nur alle 3 Minuten einen Alarm senden.
-   Schützt vor automatischer TradingView-Sperrung bei hoher Marktaktivität (VIX 30+).
+  Stage 4 (Short): w_cl_1 < w_sma30_1 UND w_sma30_1 < w_sma30_2
+    → Kurs unter der SMA30 UND SMA30 fällt (institutionelle Distribution)
 
----
-### IV. v20.6 Bug-Fixes (Technische Änderungen)
+  Sonst: SEITWÄRTS (weinstein_stage = 0)
 
-FIX 1 – Wochentrend Midline-Reset:
-   PROBLEM:  w_trend blieb "BULLISCH" bis der Preis das untere Band erreichte (Wochen!).
-   FIX:      w_trend wird auf NEUTRAL gesetzt, sobald der wöchentliche Schlusskurs unter
-             die Wochenmittellinie (SMA 10) fällt.
-   CODE:     else if w_trend == 1 and w_cl_1 < w_basis_1 → w_trend := 0
+ANCHOR-BARS (Startpunkt der Volumenanalyse):
+  anchor_bars = bar_index - stage_change_bar
+  (Anzahl Tagesbars seit letztem Weinstein Stage-Wechsel, max. 300)
 
-FIX 2 – Tages-Scharf Midline-Reset:
-   PROBLEM:  setup_strict_long blieb aktiv bis 2 Kerzen unter dem unteren Band schlossen.
-   FIX:      setup_strict_long wird sofort deaktiviert, wenn close[1] < d_basis[1].
-   CODE:     if close[1] < d_basis[1] → setup_strict_long := false
+================================================================================
+  ABSCHNITT 5: TAGESTREND / SCHARF-MODUS (setup_strict)
+================================================================================
 
-FIX 3 – Zone-Check im Signal-Flow:
-   PROBLEM:  is_correct_zone_l/s war zwar berechnet, wurde aber nie in den Trigger-Booleans
-             verwendet (stiller toter Code).
-   FIX:      is_correct_zone_l/s ist jetzt Pflichtbedingung für FEUER und GOLDEN Signale.
-   CODE:     trigger_feuer_l  = raw_feuer_l and vol_feuer_l  and is_correct_zone_l
-             trigger_golden_l = raw_feuer_l and vol_golden_l and is_correct_zone_l
+BOLLINGER BAND TÄGLICH:
+  d_basis = SMA(close, 10)
+  d_up    = d_basis + STDEV(close, 10) × 1.0
+  d_lo    = d_basis - STDEV(close, 10) × 1.0
+  atr_buffer = ATR(14) × 0.2  (Hysteresepuffer)
 
----
-### V. Backtest-Anleitung (akj_sniper_backtest_v20_6.pine)
+SCHARF-MODUS AKTIVIERUNG (setup_strict_long = true):
+  Bedingung: close[1] > d_up[1] + atr_buffer UND close[2] > d_up[2] + atr_buffer
+  (Gestern UND vorgestern schloss die Aktie mind. 0.2×ATR über dem oberen Tagesband)
+  → Bedeutet: Stock "läuft an den Bändern entlang" (Walking the Bands)
 
-Das beigelegte Backtest-Script simuliert ein exaktes 50.000€ Depot.
-- Kommission:  2.00€ pro Order (IBKR-Standard)
-- Slippage:    1 Tick
-- Einstieg:    Nur GOLDEN SETUP Signale werden exekutiert.
-- Exit:        50% bei TP1 (1:1 CRV), 50% Runner bis EMA 21 oder Wochentrend-Wechsel.
-- Fallback:    Zeitbasierter Exit nach 5 Tagen (wenn weder TP noch SL erreicht).
+SCHARF-MODUS DEAKTIVIERUNG (setup_strict_long = false):
+  Bedingung: close[1] < d_lo[1] UND close[2] < d_lo[2]
+  (Gestern UND vorgestern schloss die Aktie unter dem unteren Tagesband)
+  → Strategie 80% Dip-Käufer: Modus bleibt bis zum unteren Band aktiv!
+  → Das erlaubt WPR-Signale an der Mittellinie (bester Einstiegspunkt)
 
-ANLEITUNG:
-1. Lade das Script im Pine Editor von TradingView.
-2. Öffne den Tab "Strategietester".
-3. Prüfe "Simulated Net Profit" und "Max Drawdown".
-4. Das Audit-Cockpit (oben Mitte) zeigt die historische Winrate pro Signalstufe.
+DOJI-FILTER:
+  is_doji = |close - open| < ATR(14) × 0.1
+  (Kerzenkörper kleiner als 10% des ATR → wird als Doji gewertet, kein Signal)
 
-AUDIT-AUSWERTUNG:
-- Win-Rate > 50% bei GOLDEN = statistischer Edge nachgewiesen 🔥 STAR-TICKER
-- Erwartungswert (€) = Durchschnittlicher R-Gewinn * Basis-Risiko
+================================================================================
+  ABSCHNITT 6: PREISBERECHNUNG (Order-Matrix)
+================================================================================
 
----
-### VI. Pine Screener Export (Massenscreening 1000+ Aktien)
+LONG:
+  sp_long  = high (Stoppkauf-Trigger: Hoch der aktuellen Kerze)
+  sl_long  = low - (ATR(14) × atr_stop_mult)  [Standard: low - 1.0×ATR]
+  tp_long  = sp_long + (sp_long - sl_long)      [1:1 CRV]
+  r_l      = max(|sp_long - sl_long| × pointvalue, mintick)
+  shares_l = floor(active_risk_l / r_l)
+  lp_long  = sp_long × (1 + 0.002)             [Gap-Schutz +0.2%]
 
-Der Indikator exportiert einen "Sniper Status" Code für den TradingView Pine Screener.
+SHORT:
+  sp_short = low (Stoppverkauf-Trigger: Tief der aktuellen Kerze)
+  sl_short = high + (ATR(14) × atr_stop_mult)
+  tp_short = sp_short - (sl_short - sp_short)
+  r_s      = max(|sp_short - sl_short| × pointvalue, mintick)
+  shares_s = floor(active_risk_s / r_s)
+  lp_short = sp_short × (1 - 0.002)            [Gap-Schutz -0.2%]
 
-  +4 = AKJ ELITE LONG      -4 = AKJ ELITE SHORT
-  +3 = GOLDEN SETUP LONG   -3 = GOLDEN SETUP SHORT
-  +2 = FEUER FREI LONG     -2 = FEUER FREI SHORT
-  +1 = LAUERN LONG         -1 = LAUERN SHORT
-   0 = Kein Signal
+RICHTUNGSAUSWAHL (basierend auf w_trend):
+  w_trend == -1  → Short-Werte aktiv
+  sonst          → Long-Werte aktiv (inkl. NEUTRAL!)
 
-So kannst du mit einem einzigen Script eine Watchlist von 1000 Aktien
-gleichzeitig auf aktive Signale scannen (Pine Screener → Column hinzufügen →
-"Sniper Status" auswählen → nach Wert filtern).
+================================================================================
+  ABSCHNITT 7: VOLUMENANALYSE (Anchored Volume Profile, 4H)
+================================================================================
 
----
-### VII. Risk-Recycling Strategie (50/50 Runner-Logik)
+METHODE: Für jeden 4H-Bar innerhalb von anchor_bars (max 300):
+  zone_vol_stop += bar_volume × (Überschneidung Stop-Zone / Bar-Range)
+  zone_vol_tp   += bar_volume × (Überschneidung TP-Zone / Bar-Range)
 
-TP1 (1:1 CRV):
-  - Sobald der Preis die ATR-Stop-Distanz als Gewinn zurücklegt, werden 50% verkauft.
-  - Der Stop-Loss der verbliebenen 50% wandert auf Break-Even (zero-loss-Modus).
+STOP-VERSICHERUNG (stop_density):
+  = (zone_vol_stop / total_volume) × 100 [%]
+  Stop-Zone: Preisbereich zwischen Entry (SP) und Stop-Loss (SL)
 
-TP2 (Runner Trailing):
-  - Die 50% Runner-Position läuft so lange, bis EINER dieser Exits triggert:
-    a) Tages-Schlusskurs kreuzt EMA 21 in die entgegengesetzte Richtung.
-    b) Wochentrend wechselt auf die Gegenseite.
-    c) 5 Handelstage vergangen ohne TP-Hit (Zeitbasierter Exit – Backtest).
+TP-WIDERSTAND (tp_density):
+  = (zone_vol_tp / total_volume) × 100 [%]
+  TP-Zone: Preisbereich zwischen Entry (SP) und Take-Profit (TP)
 
----
-Leitgedanke v20.6:
-"Der Sniper-Commander v20.6 schließt die logische Lücke zwischen Trend-Definition
-und Signal-Qualität. Er feuert nicht nur wenn das Setup da ist – er stellt sicher,
-dass der Trend nicht bereits eine Leiche ist, wenn er feuert."
+VACUUM QUALITY:
+  vacuum_ok = tp_density <= max_tp_density (Standard: <= 15%)
+  → "High (TP X.X%)" wenn Weg frei
+  → "Low (TP X.X%)"  wenn zu viel Widerstand
+
+PERFORMANCE-GATE: Volumenberechnung läuft nur auf dem letzten Bar oder
+  innerhalb der letzten 1000 Bars (Lazy Loading für Screeningperformance).
+
+================================================================================
+  ABSCHNITT 8: BOLLINGER ZONE CHECK (12-Zonen-System)
+================================================================================
+
+BERECHNUNG:
+  bc_basis = SMA(close, 10) [aktueller Tagesclose, Intrabar-Wert]
+  bc_dev   = STDEV(close, 10) × 1.0
+  bc_ub    = bc_basis + bc_dev    (oberes Band)
+  bc_lb    = bc_basis - bc_dev    (unteres Band)
+  bc_unit  = (bc_ub - bc_lb) / 12  (1/12 der Band-Breite)
+
+ZONENEINTEILUNG:
+  close > bc_ub                         → "SHORT (EXTREME)"   [über Band]
+  close >= bc_lb + (8 × bc_unit)        → "SHORT ZONE"        [obere 1/3]
+  close >= bc_lb + (4 × bc_unit)        → "NEUTRAL"           [mittlere 1/3]
+  close >= bc_lb                        → "LONG ZONE"         [untere 1/3]
+  close < bc_lb                         → "LONG (EXTREME)"    [unter Band]
+
+ZONE-FREIGABE FÜR SIGNALE:
+  is_correct_zone_l = (bc_txt == "LONG ZONE" OR "LONG (EXTREME)") OR setup_strict_long
+  is_correct_zone_s = (bc_txt == "SHORT ZONE" OR "SHORT (EXTREME)") OR setup_strict_short
+
+  → Im Scharf-Modus (setup_strict_long=true) wird die Zone automatisch übergangen!
+    Das erlaubt Walking-the-Bands Signale auch wenn Kurs im oberen Bereich ist.
+
+================================================================================
+  ABSCHNITT 9: SIGNAL-IDENTIFIKATION (vollständige Bedingungskette)
+================================================================================
+
+SCHRITT 1: RADAR-ZUSTAND
+
+  is_radar_l = high >= d_up + (ATR(14) × 0.2)
+  (Hoch der aktuellen Kerze mind. 0.2×ATR über dem oberen Tagesband)
+
+  radar_state_l = (weinstein_stage == 2) UND (is_radar_l OR setup_strict_long)
+  (Weinstein Stage 2 UND: entweder aktuell über Band ODER Scharf-Modus aktiv)
+
+  radar_state_s = (weinstein_stage == 4) UND (is_radar_s OR setup_strict_short)
+  is_radar_s = low <= d_lo - (ATR(14) × 0.2)
+
+SCHRITT 2: RAW-TRIGGER (Kerzenregel + WPR)
+
+  long_trigger  = WPR(4) >= 80 UND close < open UND NOT is_doji UND close > d_lo
+  short_trigger = WPR(4) <= 20 UND close > open UND NOT is_doji UND close < d_up
+
+  WPR(4): abs(ta.wpr(4))  → Werte 0-100, 80+ = tief überverkauft = DIP
+  Kerzenregel Long:  Bearische Kerze (close < open), kein Doji, nicht unter unterem Band
+  Kerzenregel Short: Bullische Kerze (close > open), kein Doji, nicht über oberem Band
+
+  raw_feuer_l = radar_state_l UND long_trigger
+  raw_feuer_s = radar_state_s UND short_trigger
+
+SCHRITT 3: VOLUMEN-VALIDIERUNG
+
+  vol_feuer_l  = stop_density >= 1.5% UND tp_density <= 15.0%
+  vol_feuer_s  = stop_density >= 1.5% UND tp_density <= 15.0%
+  vol_golden_l = stop_density >= 3.0% UND tp_density <= 8.0%
+  vol_golden_s = stop_density >= 3.0% UND tp_density <= 8.0%
+
+SCHRITT 4: FINALE TRIGGER-BOOLEANS
+
+  trigger_lauern_l = radar_state_l UND WPR(4) < 80
+  trigger_lauern_s = radar_state_s UND WPR(4) > 20
+
+  trigger_feuer_l  = raw_feuer_l UND vol_feuer_l UND is_correct_zone_l
+  trigger_feuer_s  = raw_feuer_s UND vol_feuer_s UND is_correct_zone_s
+
+  trigger_golden_l = raw_feuer_l UND vol_golden_l UND is_correct_zone_l
+  trigger_golden_s = raw_feuer_s UND vol_golden_s UND is_correct_zone_s
+
+AKJ ELITE SIGNAL (eigene Logik, unabhängig von Volumen):
+  isAKJSignal_l = weinstein_stage==2 UND setup_strict_long UND WPR(4)>=80
+                  UND low > d_lo UND open != close
+  isAKJSignal_s = weinstein_stage==4 UND setup_strict_short UND WPR(4)<=20
+                  UND high < d_up UND open != close
+
+  Besonderheit: KEIN Volumenfilter! AKJ Elite prüft nur Trend + Scharf + WPR + Preiposition.
+  Besonderheit: low > d_lo (Kurs über unterem Band) statt close > d_lo beim Feuer-Trigger.
+
+================================================================================
+  ABSCHNITT 10: SIGNAL-PRIORISIERUNG (Status-Hierarchie)
+================================================================================
+
+Die Statustexte werden in dieser Reihenfolge geprüft (höchste Priorität zuerst):
+
+  1. isAKJSignal_l  → "AKJ_ELITE_LONG"
+  2. isAKJSignal_s  → "AKJ_ELITE_SHORT"
+  3. trigger_golden_l → "GOLDEN_LONG"
+  4. trigger_golden_s → "GOLDEN_SHORT"
+  5. trigger_feuer_l  → "FEUER_LONG"
+  6. trigger_feuer_s  → "FEUER_SHORT"
+  7. trigger_lauern_l → "LAUERN_LONG"
+  8. trigger_lauern_s → "LAUERN_SHORT"
+  9. (sonst)          → "STATUS: NO SIGNAL"
+
+  → Es kann jeweils nur EIN Status aktiv sein (else-if-Kette).
+  → AKJ ELITE hat immer Vorrang vor GOLDEN, GOLDEN vor FEUER, etc.
+
+================================================================================
+  ABSCHNITT 11: ALARMSYSTEM — EXAKTE BEDINGUNGEN
+================================================================================
+
+WANN KANN EIN ALARM FEUERN? (can_alert)
+  can_alert = barstate.isrealtime           ← NUR bei Live-Echtzeitdaten
+              UND cooldown_over             ← 3-Minuten-Sperre abgelaufen
+              UND is_action_status          ← Status ist FEUER/GOLDEN/ELITE (nicht LAUERN!)
+              UND status_is_new             ← Status hat sich seit letztem Alarm geändert
+
+  cooldown_over: timenow - last_fired_time > 180.000 ms (3 Minuten)
+  is_action_status: tac_txt ∈ {AKJ_ELITE_LONG/SHORT, FEUER_LONG/SHORT, GOLDEN_LONG/SHORT}
+  status_is_new: tac_txt != last_fired_status
+
+  !!! WICHTIG: LAUERN feuert KEINEN Alarm (nur Cockpit-Anzeige)
+  !!! WICHTIG: Kein Alarm auf historischen Bars (nur barstate.isrealtime)
+  !!! WICHTIG: Kein Alarm wenn gleicher Status wie letzter Alarm (Anti-Doppel-Alarm)
+
+WELCHE ALARM-FREQUENZ PRO SIGNAL-TYP:
+  AKJ_ELITE_LONG / AKJ_ELITE_SHORT → alert.freq_once_per_bar_close
+    (Alarm NUR beim Kerzenschluss, nicht intrabar)
+  GOLDEN_LONG / GOLDEN_SHORT       → alert.freq_once_per_bar
+    (Alarm einmal pro Bar, kann intrabar kommen)
+  FEUER_LONG / FEUER_SHORT         → alert.freq_once_per_bar
+
+RE-ARMING (Zurücksetzen des Anti-Doppel-Schutzes):
+  Wenn Status auf NO SIGNAL zurückgeht → last_fired_status = ""
+  → Nächster Alarm kann wieder für den gleichen Alarmtyp feuern
+
+STAR-TICKER PREFIX im Alarm:
+  Wenn historischer Erwartungswert (Ø R × risk) > 0:
+  → Alarm-Nachricht bekommt "🔥 [STAR-TICKER] " als Präfix
+
+================================================================================
+  ABSCHNITT 12: ALARMNACHRICHT — INHALT
+================================================================================
+
+Jeder Alarm enthält folgende strukturierte Nachricht:
+
+  GRUND: [automatisch erklärter Trigger-Grund]
+  --- COCKPIT DATEN ---
+  ZEITPUNKT: yyyy-MM-dd HH:mm:ss (UTC)
+  TICKER: [Symbol]
+  [Signal-Status]
+  --- MARKT-KONTEXT ---
+  Sektor: [ETF] [(Ticker)]
+  Rel. Stärke: STARK/MITTEL/SCHWACH
+  Weinstein Stage: STAGE 2/4/SEITWÄRTS
+  --- TREND-ANALYSE ---
+  Wochentrend: BULLISCH/NEUTRAL/BÄRISCH (Sticky)
+  Tagestrend:  LONG/SHORT (Radar/Scharf) / NEUTRAL
+  --- SNIPER METRIKEN ---
+  Risk-O-Meter: [€]
+  Risk-Mode: ALPHA/DELTA/OMEGA
+  Anchor-Info: [X] Bars ago
+  Vacuum Quality: High/Low (TP X.X%)
+  Momentum (WPR): [Wert 0-100]
+  Kerzenregel: OK / WAIT
+  Stopversicherung: X.X%
+  TP Widerstand: X.X%
+  --- ORDER-MATRIX ---
+  Stoppreis (SP): [Preis]
+  Limitpreis (LP): [SP × 1.002 (Long) / SP × 0.998 (Short)]
+  Anzahl (Stk): [Shares]
+  TP (Teilverkauf): [Preis]
+  Stopp-Loss (SL): [Preis]
+  Runner-Target: EMA 21: [Wert]
+  --- ZUSATZ-INFO ---
+  Bollinger Check: [Zone]
+
+================================================================================
+  ABSCHNITT 13: ZUSAMMENFASSUNG ALARM-TRIGGER-TABELLE
+================================================================================
+
+Signal          | weinstein | scharf  | WPR       | Kerze | Vol.Stop | Vol.TP | Zone   | Alarm?
+----------------|-----------|---------|-----------|-------|----------|--------|--------|-------
+LAUERN LONG     | Stage 2   | oder    | < 80      | -     | -        | -      | -      | NEIN
+LAUERN SHORT    | Stage 4   | oder    | > 20      | -     | -        | -      | -      | NEIN
+FEUER LONG      | Stage 2   | oder    | >= 80     | Bear  | >= 1.5%  | <=15%  | korrekt| JA
+FEUER SHORT     | Stage 4   | oder    | <= 20     | Bull  | >= 1.5%  | <=15%  | korrekt| JA
+GOLDEN LONG     | Stage 2   | oder    | >= 80     | Bear  | >= 3.0%  | <= 8%  | korrekt| JA
+GOLDEN SHORT    | Stage 4   | oder    | <= 20     | Bull  | >= 3.0%  | <= 8%  | korrekt| JA
+AKJ ELITE LONG  | Stage 2   | MUSS!   | >= 80     | !Doji | KEIN     | KEIN   | -      | JA*
+AKJ ELITE SHORT | Stage 4   | MUSS!   | <= 20     | !Doji | KEIN     | KEIN   | -      | JA*
+
+*AKJ ELITE: Alarm nur bei Kerzenschluss (freq_once_per_bar_close)
+  "oder" bedeutet: radar_state ODER setup_strict genügen für die Radar-Bedingung
+  "korrekt" bedeutet: Zone passt ODER Scharf-Modus aktiv (Zone wird dann übergangen)
+
+ZUSÄTZLICHE SPERRUNG durch Cooldown:
+  Kein Alarm wenn < 3 Minuten seit letztem Alarm vergangen sind.
+
+================================================================================
+  ABSCHNITT 14: PINE SCREENER CODE
+================================================================================
+
+Export-Variable "Sniper Status" (Werte -4 bis +4):
+  +4 = AKJ_ELITE_LONG    -4 = AKJ_ELITE_SHORT
+  +3 = GOLDEN_LONG        -3 = GOLDEN_SHORT
+  +2 = FEUER_LONG         -2 = FEUER_SHORT
+  +1 = LAUERN_LONG        -1 = LAUERN_SHORT
+   0 = NO SIGNAL
+
+================================================================================
+  ABSCHNITT 15: RUNNER-LOGIK & EXIT-KRITERIEN
+================================================================================
+
+RUNNERS EXIT LONG (nach TP1-Hit):
+  runner_exit = close < EMA(close, 21) ODER w_trend == -1 ODER time_exit
+  time_exit   = (bar_index - entry_bar) >= 5 Tagesbars
+
+RUNNERS EXIT SHORT:
+  runner_exit = close > EMA(close, 21) ODER w_trend == 1 ODER time_exit
+
+STOP-LOSS ANPASSUNG NACH TP1:
+  vt.sl := vt.ep  (Stop auf Break-Even = Einstiegspreis)
+
+PROFIT-BERECHNUNG (R-Vielfaches):
+  TP1-Hälfte:  +0.5 × 1.0 R  (50% der Position zu 1R verkauft)
+  Runner-Rest: +0.5 × exit_r  (50% zum aktuellen Kurs beim Exit)
+  Gesamt-R    = 0.5 × 1.0 + 0.5 × exit_r
+
+================================================================================
