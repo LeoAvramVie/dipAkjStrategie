@@ -1,5 +1,5 @@
 //@version=6
-indicator("AKJ 2.0 Sniper-Commander v20.5", overlay=true, max_labels_count=500)
+indicator("AKJ 2.0 Sniper-Commander v20.6", overlay=true, max_labels_count=500)
 
 // ==========================================
 // --- 1. INPUTS ---
@@ -60,12 +60,17 @@ f_bb_w_hist() =>
     [close[1], basis[1] + dev[1], basis[1] - dev[1], close[2], basis[2] + dev[2], basis[2] - dev[2], ta.sma(close, 30)[1], ta.sma(close, 30)[2]]
 
 [w_cl_1, w_up_1, w_lo_1, w_cl_2, w_up_2, w_lo_2, w_sma30_1, w_sma30_2] = request.security(syminfo.tickerid, "W", f_bb_w_hist(), lookahead=barmerge.lookahead_off)
+float w_basis_1 = request.security(syminfo.tickerid, "W", ta.sma(close, bb_len)[1], lookahead=barmerge.lookahead_off) // Fix v20.6: Wochenmittellinie für Midline-Reset
 
 var int w_trend = 0 
 if w_cl_1 > w_up_1 and w_cl_2 > w_up_2
     w_trend := 1
 else if w_cl_1 < w_lo_1 and w_cl_2 < w_lo_2
     w_trend := -1
+else if w_trend == 1 and w_cl_1 < w_basis_1  // Fix v20.6: Midline-Reset – Trend pausiert wenn Wochenkurs unter Basis fällt
+    w_trend := 0
+else if w_trend == -1 and w_cl_1 > w_basis_1  // Fix v20.6: Midline-Reset – Trend pausiert wenn Wochenkurs über Basis steigt
+    w_trend := 0
 
 int weinstein_stage = 0
 if w_cl_1 > w_sma30_1 and w_sma30_1 > w_sma30_2
@@ -103,6 +108,8 @@ if close[1] < d_lo[1] and close[2] < d_lo[2]
     setup_strict_long := false
 if close[1] > d_up[1] and close[2] > d_up[2]
     setup_strict_short := false
+// Scharf-Modus bleibt bis zum unteren Band aktiv (80% Dip-Käufer: WPR-Signal an der Mittellinie ist der beste Entry!)
+// w_trend Midline-Reset läuft unabhängig auf Wochenbasis (Fix 1 bleibt).  Guard entfernt in v20.6b.
 
 bool is_doji = math.abs(close - open) < (atr_val * 0.1)
 
@@ -231,11 +238,11 @@ bool trigger_lauern_s = radar_state_s and d_wpr > 20
 bool raw_feuer_l = radar_state_l and long_trigger
 bool raw_feuer_s = radar_state_s and short_trigger
 
-bool trigger_feuer_l = raw_feuer_l and vol_feuer_l
-bool trigger_feuer_s = raw_feuer_s and vol_feuer_s
+bool trigger_feuer_l = raw_feuer_l and vol_feuer_l and is_correct_zone_l   // Fix v20.6: Zone-Check jetzt aktiv im Signal
+bool trigger_feuer_s = raw_feuer_s and vol_feuer_s and is_correct_zone_s
 
-bool trigger_golden_l = raw_feuer_l and vol_golden_l
-bool trigger_golden_s = raw_feuer_s and vol_golden_s
+bool trigger_golden_l = raw_feuer_l and vol_golden_l and is_correct_zone_l  // Fix v20.6: Zone-Check jetzt aktiv im Signal
+bool trigger_golden_s = raw_feuer_s and vol_golden_s and is_correct_zone_s
 
 // AKJ Elite Signal (v20.6.0)
 bool isAKJSignal_l = weinstein_stage == 2 and setup_strict_long and d_wpr >= 80 and low > d_lo and open != close

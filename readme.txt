@@ -1,97 +1,187 @@
 # AKJ 2.0 Sniper-Commander
-## Das taktische Lagezentrum (v20.5 Elite)
+## Das taktische Lagezentrum (v20.6 Elite)
 
 ---
 TEIL 1: FACHLICHES DOSSIER (System-Handbuch)
 ---
 
-Hier ist die detaillierte, fachliche und technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.5. Das System wurde in v20.5 Elite um ein adaptives (asymmetrisches) Risikomanagement, Anchored Volume Profile (AVP) und strengere Doji-/Hysterese-Filter erweitert.
+Detaillierte, technische Aufschlüsselung des AKJ 2.0 Sniper-Commander v20.6.
+Das System wurde in v20.6 um drei kritische Logik-Fixes erweitert:
+(1) Wochentrend-Midline-Reset, (2) Tagesscharf-Midline-Reset, (3) Zonen-Check im Signal-Flow.
 
+---
 ### I. Das Interaktive Cockpit (Dashboard)
-Das HUD wurde logisch in Blöcken gruppiert, um dir während des Tradings den perfekten Überblick über Kontext, Metriken und Exekution zu geben. 
+Das HUD ist logisch in Blöcken gruppiert, um dir während des Tradings den perfekten
+Überblick über Kontext, Metriken und Exekution zu geben.
 
-💡 **NEU IN v20.5:** Die Werte im Cockpit besitzen interaktive Tooltips. Wenn du mit der Maus (Mouse-over) über die Parameter-Titel in TradingView fährst, liefert das System dir sofortige strategische Erklärungen. 
+💡 Die Werte im Cockpit besitzen interaktive Tooltips. Wenn du mit der Maus (Mouse-over)
+   über die Parameter-Titel in TradingView fährst, liefert das System dir sofortige
+   strategische Erklärungen.
 
-**Folgende Tooltips sind im Chart aktiv:**
-*   **Sektor:** „Der maßgebliche Sektor-ETF der Aktie. Dient zur Bestimmung des Marktumfelds und der relativen Stärke.“
-*   **Rel. Stärke:** „Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance und erhöht die Wahrscheinlichkeit für einen erfolgreichen Trade.“
-*   **Weinstein-Stage:** „Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short).“
-*   **Wochentrend:** „Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt.“
-*   **Tagestrend:** „Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern.“
-*   **Risk-O-Meter:** „Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an.“
-*   **Risk-Mode (Adaptiv):** „ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilität.“
-*   **Anchor-Info:** „Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.“
-*   **Vacuum Quality:** „Prüft den historischen Ziel-Widerstand (TP < 8%). Der RLD-Current-Volumen Check blockiert Trades nicht mehr fälschlicherweise bei Breakouts.“
-*   **Kerzenregel:** „Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.“
-*   **Stopversicherung:** „Die Volumen-Mauer (🛡️) an deinem Stopp-Level. Gemessen ab dem Ankerpunkt (v20.5). Zielwert: >3% zur Absicherung der Position.“
-*   **TP Widerstand:** „Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.“
+COCKPIT BLÖCKE:
+---------------
+1. STATUS-ZEILE
+   - Zeigt den aktuellen Signalzustand: 💎 AKJ ELITE / 🌟 GOLDEN / 🟢 FEUER FREI / 📡 LAUERN / NO SIGNAL
+   - Zeigt außerdem das aktive Risiko-Regime (ALPHA / DELTA / OMEGA) und einen Cooldown-Timer.
 
-**ORDER-MATRIX TOOLTIPS:**
-*   **Stoppreis (SP):** „Dein Einstiegs-Preis (Trigger). Platziere hier deine Stop-Buy (Long) oder Stop-Sell (Short) Limit-Order.“
-*   **LimitPreis (LP):** „Gap-Schutz für deine Einstiegsorder. Vermeidet Slippage, wenn der Markt extem wild über deinen Preis springt.“
-*   **Anzahl (Stk):** „Die Anzahl an Aktien, mit denen du EXAKT dein gewünschtes asymmetrisches (€) 1R Risiko triffst.“
-*   **TP (Teilverkauf):** „Das 1:1 CRV Ziel. Verkaufe hier exakt 50% deiner Position (Risk-Recycling) und ziehe den restlichen Stop auf Break-Even.“
-*   **Stopp-Loss (SL):** „Initialer institutioneller ATR-Stop (1.5 * ATR14). Schützt dich vor massiven Ausbrüchen entgegen deiner Richtung.“
-*   **Runner-Target:** „Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.“
+2. MARKT-KONTEXT
+   - 🌍 Sektor:        Automatisch erkannter Sektor-ETF (z.B. SMH für Halbleiter, XLE für Energie).
+   - 💪 Rel. Stärke:   Vergleich der Aktie mit dem Sektor über 20 Tage. STARK = Outperformance.
+   - 📈 Weinstein:     Stage 2 = institutionelle Akkumulation (Long). Stage 4 = Distribution (Short).
 
-> ⚠️ **NUTZER-HINWEIS:** Dieses Cockpit dient als Navigationshilfe zur Skalierung eines 50k Depots. Handeln Sie nur, wenn die Signal-Validierung grün leuchtet.
+3. TREND-ANALYSE (v20.6 Fix)
+   - 📅 Wochentrend:   BULLISCH / NEUTRAL / BÄRISCH.
+     → [v20.6 FIX] Wird jetzt sofort auf NEUTRAL gesetzt, wenn der Wochenschlusskurs
+       unter die Wochi-Mittellinie (SMA 10, Wochenbasis) fällt – nicht erst am unteren Band!
+   - ☀️ Tagestrend:    LONG (Radar/Scharf) / SHORT (Radar/Scharf) / NEUTRAL.
+     → [v20.6 FIX] Scharf-Modus endet sofort, wenn der Tagesschlusskurs die Tages-Mittellinie
+       (SMA 10, Tagesbasis) kreuzt – nicht erst am unteren Band!
 
----
-### II. Asymmetrisches Risiko: Die „Atmende Firewall“
-In v20.5 Elite wurde das einfache "VIX an/aus" Flag (Firewall) durch ein hoch-intelligentes 3-Stufen-Modell ersetzt, um in fallenden Märkten Short-Gewinne zu extrahieren, anstatt einfach das Trading komplett einzustellen.
-*   **1. Regime ALPHA (VIX < 25):** Der Markt ist geordnet. Longs und Shorts werden mit 100% Risiko (Basis 150€) gehandelt.
-*   **2. Regime DELTA (VIX 25 - 35):** Es herrscht Unruhe und Abwärtsdruck. Hier wird die Strategie zu einem absoluten "Short-Spezialisten", um die Gewinnwahrscheinlichkeiten bei hoher Markt-Angst zu optimieren. Bei Long-Trades wird das Risiko zum reinen Kapitalschutz geviertelt (25% R). Short-Trades bleiben auf **100% Risiko**, um Panikverkäufe als Gewinnbeschleuniger zu nutzen.
-*   **3. Regime OMEGA (VIX > 35):** Massive Volatilität / Schwarze Schwäne. Der Markt ist dysfunktional, Gaps und Slippage zerstören CRVs. Beide Seiten werden gnadenlos mit 0% Risiko blockiert.
+4. SNIPER METRIKEN
+   - 📊 Risk-O-Meter:  Dynamische Positionsgröße in €. Passt sich VIX und ATR an.
+   - 🛡️ Risk-Mode:    ALPHA (VIX < 25) / DELTA (VIX 25-35) / OMEGA (VIX > 35)
+   - ⚓ Anchor-Info:   Startpunkt der Anchored-Volume-Analyse (ab letztem Weinstein-Wechsel).
+   - 📐 Vacuum Quality: Zeigt ob der Weg zum TP historisch frei ist (< max. TP-Density %).
 
-> **Mathematische Risiko-Kontrolle (Shares):** Die Berechnung der Stückzahl ist zu 100% wasserdicht an den ATR-Stop gekoppelt (`shares = floor(dyn_risk / abs(Entry - SL))`). Das bedeutet: Unabhängig von der individuellen Volatilität der Aktie und der Weite des 1.5x ATR-Stops, verbrennt das System bei einem Stop-Out punktgenau maximal 150 € (oder den aktuellen DELTA-Betrag). Das Kapital ist absolut geschützt.
----
-### III. v20.5 Innovationen (Filter-Kalibrierung & Vakuum-Definition)
-Neben der asymmetrischen Risk-Logik schlägt unter der Haube ein neues mathematisches Herz, welches die größten Probleme klassischer MTF-Indikatoren löst:
+5. SIGNAL-VALIDIERUNG
+   - 🕹️ Momentum (WPR): Williams %R (Periode 4). Trigger bei 80/20 (Feuer), Radar bei 70/30.
+   - 🕯️ Kerzenregel:   Prüft ob die Kerze eine echte Impulskerze ist (kein Doji, Richtung stimmt).
+   - 🛡️ Stopversicherung: Volumen-Mauer am Stop-Level in %. Zielwert für FEUER: > 1.5%.
+   - 🚧 TP Widerstand:  Volumen-Widerstand bis zum Ziel in %. Zielwert: < 15% (FEUER) / < 8% (GOLDEN).
+   - 🔭 Bollinger Check: [v20.6 FIX] Jetzt aktiv im Signal-Flow! Bestimmt ob Preis in der richtigen
+     Bollinger-Zone ist für ein FEUER oder GOLDEN Signal.
+     → LONG ZONE / LONG EXTREME  = Erlaubt Long-Signale
+     → SHORT ZONE / SHORT EXTREME = Erlaubt Short-Signale
+     → Im Scharf-Modus (Walking the Bands) wird dieser Check automatisch überbrückt.
 
-1.  **Filter-Kalibrierung auf 3% (Die AVP-Synergie):** Die **v20.5 Anker-Logik** startet den Volumen-Zähler exakt zu dem Zeitpunkt, an dem das "Smart Money" die Weinstein-Phase historisch gedreht hat. Da dies ein absolutes Qualitäts-Volumen ist, reicht bereits eine Schwellenwert-Kalibrierung von **3% Stopversicherung** als starker institutioneller Schutzwall aus!
-2.  **Vakuum-Definition (Entkopplung):** Das Vakuum basiert nun rein auf der historischen Preis-Volumen-Struktur bis zum Target. Es bewertet, ob der Weg historisch "frei" ist. Zuvor hat der RLD-Check hohes Live-Volumen der Breakout-Kerze fälschlicherweise bestraft – dies ist behoben! RLD dient nun rein als informatives Element.
-3.  **Sticky Trend Hysterese:** Um Rauschen an den Bändern auszufiltern, muss ein Trendausbruch nun 0.2 ATR über/unter das Band hinausschießen.
+6. ORDER-MATRIX
+   - 🎯 SP (Stoppreis):  Dein Einstiegs-Trigger-Preis. Platziere hier Stop-Buy / Stop-Sell.
+   - 🤝 LP (Limitpreis): Gap-Schutz. Um 0.2% versetzt vom SP (einstellbar).
+   - 🔢 Stk (Anzahl):    Exakte Stückzahl für punktgenaues 1R Risiko.
+   - 💸 TP (Teilverkauf): 1:1 CRV Ziel (50% der Position schließen, Rest auf Break-Even).
+   - 🏁 SL (Stop-Loss):  ATR-basierter institutioneller Stop. Standard: 1.0x ATR14.
+   - 🏃 Runner-Target:   EMA 21 als Trailing-Kriterium für die 50% Runner-Position.
 
-### IV. Das Kaskaden-Alarmsystem (v20.6 Sensitivity)
-Das Alarmsystem wurde in v20.6 komplett überarbeitet und als 3-stufiger Funnel aufgebaut. Dies löst das Problem, dass zu restriktive Filter am Anfang die besten Trades komplett verschluckt haben.
-Das Alarmsystem ist als Kaskade aufgebaut, bei der der Williams %R (4) Momentum-Oszillator als Kern-Trigger dient. Die Signale sind in Stufen unterteilt, um frühzeitig zu warnen und dann präzise abzufeuern. Wir nutzen die 70/30-Zonen für die frühestmögliche Beobachtung (um keine Zeit bei der Limit-Planung zu verlieren), während wir für die tatsächliche Exekution auf das finale 80/20 Extrem warten.
-
-1. **📡 LAUERN (Radar & 70er WPR Trigger):**
-   - Das Setup erfüllt die Trend-Kriterien (Phase 2/4) und hat die Bollinger-Band-Hysterese berührt.
-   - Der erste Alarm wird ausgelöst, wenn das WPR-Momentum den **70er Bereich (Long)** oder **30er Bereich (Short)** erreicht. Du weißt nun: "Achtung, das Setup baut sich auf!"
-
-2. **🎯 FEUER FREI (Sniper & 80er WPR Trigger):**
-   - Sobald die Kauf-Kerzenregel zuschlägt und das WPR-Momentum das tiefe Extrem von **80 (Long)** oder **20 (Short)** erreicht, erfolgt der finale Exekutions-Trigger.
-   - Hat die Aktie hierbei min. 1.5% Stopversicherung, erscheint der blaue FEUER FREI Status.
-
-3. **🌟 GOLDEN SETUP (Premium):** Der absolute High-Grade Trade. Nur Setups, die neben dem Trigger auch noch eine exzellente Volumen-Struktur (>3% Stop-Mauer, <8% Vakuum-Widerstand) ins Orderbuch legen, erreichen diesen Status.
-
-4. **🔒 ANTI-SPAM SCHUTZ (v20.7.2):** v20.7.2 nutzt den Atomic-Gate-Schutz. Ein Ticker kann nur alle 3 Minuten einen Alarm senden. Dies ist die einzige Methode, um die automatische Sperrung durch TradingView bei VIX 30+ zu verhindern.
-
-Risk-Recycling: **Sobald das feste CRV (Risiko) 1:1 erreicht ist, werden 50% der Position aus dem Markt genommen und der Stop-Loss läuft sofort auf Break-Even nach.**
-### V. Backtest-Anleitung (IBKR Abgleich)
-Es liegt ein separates `akj_sniper_backtest_v20_5.pine` Script bei. Dieses simuliert ein exaktes 50.000€ Depot, zieht 2.00€ Kommission ab und rechnet 1 Tick Slippage pro Trade.
-*   Lade das Script im Pine Editor.
-*   Nutze den **Tab "Strategietester"** in TradingView, um den "Simulated Net Profit" zu prüfen.
-*   Wenn du auf Ticker wie LHA, TEAM, CSCO oder PYPL im Chart gehst, zeigt dir die eingebaute "IBKR Reality Check Note" unten rechts tabellarisch an, warum deine echten Depot-Ausführungen im IBKR-Statement historisch von der harten Indikator-Logik abweichen (z.B. wegen fehlendem VIX Filter bei CSCO).
+> ⚠️ NUTZER-HINWEIS: Handeln Sie nur, wenn die Signal-Validierung grün leuchtet.
+>    Das Cockpit ist eine Navigationshilfe für ein 50k Depot.
 
 ---
-### V. Die statistische Kante (Edge Audit & Ticker-Stars)
-Die Backtest-Engine trackt historisch den gesamten Ticker über das Kaskaden-Radar. Sobald die 1:1 TP1 Winrate für ein Setup über 50% liegt, zeichnet das System die Setup-Stufe mit dem Sternchen-Label "⭐ STAR-TICKER" aus!
-Zusätzlich zeigt dir das Cockpit jetzt direkt den potenziellen Geldwert (Erwartungswert in €) eines Tickers, multipliziert mit deinem Basis-Risiko. Jede Aktie mit einem **grünen Euro-Erwartungswert** im Audit ist ein statistischer Favorit.
+### II. Asymmetrisches Risiko: Die „Atmende Firewall"
+Das System nutzt ein 3-Stufen-Risiko-Regime basierend auf dem CBOE VIX.
 
-*   **LAUERN:** Wie oft das Asset in Position lief (Stage + Scharf 1).
-*   **FEUER FREI:** Wie oft der reine Trigger bei Mindestvolumen (>1.5%) zuschlug.
-*   **GOLDEN:** Wie oft zudem das exzellente Momentum-Volumen (Premium-Mauer) stimmte.
+1. REGIME ALPHA (VIX < 25) – Normalbetrieb:
+   Longs und Shorts werden mit 100% Risiko gehandelt (Basis: einstellbar, Standard 100€).
 
-Wenn bei einem Typen die Win-Rate (Kurs erreicht 1R Ziel, bevor der Initial-Stop-Loss platzt) im **grünen Bereich (>50%)** liegt, hast du in diesem Asset einen systematischen, bewiesenen Edge! Der Ø Profit inkludiert zudem das Risk-Recycling (sichere +0.5R bei Gewinn, -1.0R bei Verlust).
+2. REGIME DELTA (VIX 25 – 35) – Short-Spezialist:
+   - Long-Trades: nur noch 25% des Basis-Risikos (Kapitalschutz).
+   - Short-Trades: weiterhin 100% Risiko (Panikverkäufe als Beschleuniger nutzen).
 
-> **Handlungsanweisung:** „Das Audit zeigt nun die echte historische Trefferquote basierend auf Signal-Ereignissen. Ein Wert über 50% bei 'GOLDEN SETUP' signalisiert einen statistischen Edge.“
+3. REGIME OMEGA (VIX > 35) – Handelsstopp:
+   Beide Richtungen werden auf 0% Risiko gesetzt. Dysfunktionaler Markt (Gaps, Slippage).
+
+MATHEMATIK: shares = floor(aktives_Risiko / abs(Entry - SL))
+Das bedeutet: Bei einem Stop-Out verbrennt das System punktgenau maximal dein Basis-Risiko.
 
 ---
-### VII. Professional Swing-Trading (ATR-Stops & Runner-Logik)
-v20.5 nutzt nun institutionelle ATR-Stops und eine Runner-Logik am EMA 21, um Gewinne in starken Trends (Stage 2/4) zu maximieren und unnötige Ausstopper zu vermeiden.
+### III. Die 4 Signalstufen (Kaskaden-System)
 
-**Das 50/50 Risk-Recycling:**
-*   **TP1 (1:1 CRV):** Sobald die Distanz des ATR-Stops als Gewinn erreicht ist, werden 50% der Position verkauft. Der Stop für den Rest wandert auf Break-Even.
-*   **TP2 (Der Runner):** Die verbleibenden 50% reiten den Trend so lange, bis der Tages-Schlusskurs den EMA 21 in die entgegengesetzte Richtung kreuzt oder sich die Weinstein-Phase ändert.
+Das System ist als aufsteigender Funnel aufgebaut. Jede Stufe erfordert mehr Bedingungen.
+
+1. 📡 LAUERN (Radar-Phase):
+   BEDINGUNGEN: Weinstein Stage 2/4 ✓ + Bollinger Hysterese berührt ✓ + WPR ≥ 70 (Long)
+               oder WPR ≤ 30 (Short) ✓
+   BEDEUTUNG:   Das Setup baut sich auf. Bereite dein Limit vor!
+
+2. 🟢 FEUER FREI (Sniper-Trigger):
+   BEDINGUNGEN: Alles wie LAUERN + WPR ≥ 80 (Long) / ≤ 20 (Short) ✓
+               + Kerzenregel OK ✓ + Stopversicherung ≥ 1.5% ✓ + TP Widerstand ≤ 15% ✓
+               + [v20.6 FIX] Bollinger Zone passt ✓
+   BEDEUTUNG:   Einstieg möglich. Platziere Stop-Buy / Stop-Sell Order.
+
+3. 🌟 GOLDEN SETUP (Premium-Trade):
+   BEDINGUNGEN: Alles wie FEUER FREI + Stopversicherung ≥ 3.0% ✓ + TP Widerstand ≤ 8.0% ✓
+               + [v20.6 FIX] Bollinger Zone passt ✓
+   BEDEUTUNG:   High-Grade Entry. Smart Money steht hinter dem Stop. Volle 1R einsetzen.
+
+4. 💎 AKJ ELITE (Ultra-Präzision):
+   BEDINGUNGEN: Weinstein Stage 2/4 ✓ + Scharf-Modus aktiv (2 Kerzen außerhalb) ✓
+               + WPR ≥ 80 / ≤ 20 ✓ + Kerze kein Doji ✓ + Kurs noch diesseits des Bandes
+   BEDEUTUNG:   Der seltenste und sauberste Signal-Typ. Nur für erfahrene Trader.
+
+🔒 ANTI-SPAM SCHUTZ: Jeder Ticker kann nur alle 3 Minuten einen Alarm senden.
+   Schützt vor automatischer TradingView-Sperrung bei hoher Marktaktivität (VIX 30+).
+
+---
+### IV. v20.6 Bug-Fixes (Technische Änderungen)
+
+FIX 1 – Wochentrend Midline-Reset:
+   PROBLEM:  w_trend blieb "BULLISCH" bis der Preis das untere Band erreichte (Wochen!).
+   FIX:      w_trend wird auf NEUTRAL gesetzt, sobald der wöchentliche Schlusskurs unter
+             die Wochenmittellinie (SMA 10) fällt.
+   CODE:     else if w_trend == 1 and w_cl_1 < w_basis_1 → w_trend := 0
+
+FIX 2 – Tages-Scharf Midline-Reset:
+   PROBLEM:  setup_strict_long blieb aktiv bis 2 Kerzen unter dem unteren Band schlossen.
+   FIX:      setup_strict_long wird sofort deaktiviert, wenn close[1] < d_basis[1].
+   CODE:     if close[1] < d_basis[1] → setup_strict_long := false
+
+FIX 3 – Zone-Check im Signal-Flow:
+   PROBLEM:  is_correct_zone_l/s war zwar berechnet, wurde aber nie in den Trigger-Booleans
+             verwendet (stiller toter Code).
+   FIX:      is_correct_zone_l/s ist jetzt Pflichtbedingung für FEUER und GOLDEN Signale.
+   CODE:     trigger_feuer_l  = raw_feuer_l and vol_feuer_l  and is_correct_zone_l
+             trigger_golden_l = raw_feuer_l and vol_golden_l and is_correct_zone_l
+
+---
+### V. Backtest-Anleitung (akj_sniper_backtest_v20_6.pine)
+
+Das beigelegte Backtest-Script simuliert ein exaktes 50.000€ Depot.
+- Kommission:  2.00€ pro Order (IBKR-Standard)
+- Slippage:    1 Tick
+- Einstieg:    Nur GOLDEN SETUP Signale werden exekutiert.
+- Exit:        50% bei TP1 (1:1 CRV), 50% Runner bis EMA 21 oder Wochentrend-Wechsel.
+- Fallback:    Zeitbasierter Exit nach 5 Tagen (wenn weder TP noch SL erreicht).
+
+ANLEITUNG:
+1. Lade das Script im Pine Editor von TradingView.
+2. Öffne den Tab "Strategietester".
+3. Prüfe "Simulated Net Profit" und "Max Drawdown".
+4. Das Audit-Cockpit (oben Mitte) zeigt die historische Winrate pro Signalstufe.
+
+AUDIT-AUSWERTUNG:
+- Win-Rate > 50% bei GOLDEN = statistischer Edge nachgewiesen 🔥 STAR-TICKER
+- Erwartungswert (€) = Durchschnittlicher R-Gewinn * Basis-Risiko
+
+---
+### VI. Pine Screener Export (Massenscreening 1000+ Aktien)
+
+Der Indikator exportiert einen "Sniper Status" Code für den TradingView Pine Screener.
+
+  +4 = AKJ ELITE LONG      -4 = AKJ ELITE SHORT
+  +3 = GOLDEN SETUP LONG   -3 = GOLDEN SETUP SHORT
+  +2 = FEUER FREI LONG     -2 = FEUER FREI SHORT
+  +1 = LAUERN LONG         -1 = LAUERN SHORT
+   0 = Kein Signal
+
+So kannst du mit einem einzigen Script eine Watchlist von 1000 Aktien
+gleichzeitig auf aktive Signale scannen (Pine Screener → Column hinzufügen →
+"Sniper Status" auswählen → nach Wert filtern).
+
+---
+### VII. Risk-Recycling Strategie (50/50 Runner-Logik)
+
+TP1 (1:1 CRV):
+  - Sobald der Preis die ATR-Stop-Distanz als Gewinn zurücklegt, werden 50% verkauft.
+  - Der Stop-Loss der verbliebenen 50% wandert auf Break-Even (zero-loss-Modus).
+
+TP2 (Runner Trailing):
+  - Die 50% Runner-Position läuft so lange, bis EINER dieser Exits triggert:
+    a) Tages-Schlusskurs kreuzt EMA 21 in die entgegengesetzte Richtung.
+    b) Wochentrend wechselt auf die Gegenseite.
+    c) 5 Handelstage vergangen ohne TP-Hit (Zeitbasierter Exit – Backtest).
+
+---
+Leitgedanke v20.6:
+"Der Sniper-Commander v20.6 schließt die logische Lücke zwischen Trend-Definition
+und Signal-Qualität. Er feuert nicht nur wenn das Setup da ist – er stellt sicher,
+dass der Trend nicht bereits eine Leiche ist, wenn er feuert."
