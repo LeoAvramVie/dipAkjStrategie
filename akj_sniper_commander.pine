@@ -617,45 +617,69 @@ bool grp_zusatz = show_bbzone or show_squeeze or show_rsveto
 int n = 1  // Row 0 = STATUS Header immer da
 if grp_markt
     n += 1  // Trennlinie MARKT-KONTEXT
-if show_sektor  : n += 1
-if show_rs      : n += 1
-if show_stage   : n += 1
+if show_sektor
+    n += 1
+if show_rs
+    n += 1
+if show_stage
+    n += 1
 if grp_trend
     n += 1  // Trennlinie TREND-ANALYSE
-if show_wtrend  : n += 1
-if show_dtrend  : n += 1
+if show_wtrend
+    n += 1
+if show_dtrend
+    n += 1
 if grp_sniper
     n += 1  // Trennlinie SNIPER METRIKEN
-if show_riskometer : n += 1
-if show_riskmode   : n += 1
-if show_anchor     : n += 1
-if show_vacuum     : n += 1
+if show_riskometer
+    n += 1
+if show_riskmode
+    n += 1
+if show_anchor
+    n += 1
+if show_vacuum
+    n += 1
 if grp_signal
     n += 1  // Trennlinie SIGNAL-VALIDIERUNG
-if show_wpr     : n += 1
-if show_kerze   : n += 1
-if show_stopins : n += 1
-if show_tpwid   : n += 1
+if show_wpr
+    n += 1
+if show_kerze
+    n += 1
+if show_stopins
+    n += 1
+if show_tpwid
+    n += 1
 if grp_order
     n += 1  // Trennlinie ORDER-MATRIX
-if show_sp      : n += 1
-if show_lp      : n += 1
-if show_anzahl  : n += 1
-if show_tp_row  : n += 1
-if show_sl      : n += 1
-if show_runner  : n += 1
+if show_sp
+    n += 1
+if show_lp
+    n += 1
+if show_anzahl
+    n += 1
+if show_tp_row
+    n += 1
+if show_sl
+    n += 1
+if show_runner
+    n += 1
 if grp_zusatz
     n += 1  // Trennlinie ZUSATZ-INFO
-if show_bbzone  : n += 1
-if show_squeeze : n += 1
-if show_rsveto  : n += 1
+if show_bbzone
+    n += 1
+if show_squeeze
+    n += 1
+if show_rsveto
+    n += 1
 
-// Tabelle mit exakt n Zeilen (kein Leerraum!)
-var table cp = table.new(position.top_right, 2, 1, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
-table.delete(cp)
-cp := table.new(position.top_right, 2, n, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
+
+// Tabelle: deklariert als var, wird auf letztem Bar neu erstellt mit exakt n Zeilen
+var table cp = table.new(position.top_right, 2, 29, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
 
 if barstate.islast
+    // Plan B: Tabelle löschen und mit korrekter Zeilenzahl neu erstellen
+    table.delete(cp)
+    cp := table.new(position.top_right, 2, n, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
     color h_tc = (header_bg == color.yellow or header_bg == color.lime) ? color.black : color.white
     color dt_tc = (dt_bg == color.yellow) ? color.black : color.white
     string rom_str = str.tostring(nz(active_risk_display), "#.##") + " €"
@@ -676,6 +700,8 @@ if barstate.islast
     string ema_str = "EMA 21: " + f_p(ema21)
     string rs_veto_txt = rs_ok_for_premium ? "✅ (Golden/Elite OK)" : "⚠️ VETO (RS SCHWACH — kein Golden/Elite)"
     color  rs_veto_bg  = rs_ok_for_premium ? color.rgb(10, 50, 10) : color.rgb(70, 20, 0)
+    string dyn_feuer_str  = str.tostring(dyn_min_stop_feuer,  "#.##") + "%"
+    string dyn_golden_str = str.tostring(dyn_min_stop_golden, "#.##") + "%"
 
     // Laufender Zeilen-Index (r) — wächst nur wenn Zeile sichtbar ist
     int r = 0
@@ -808,89 +834,7 @@ if barstate.islast
         table.cell(cp, 0, r, "💪 RS-Veto Status", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="v20.7: Relative Stärke als Veto für Golden & AKJ Elite. Wenn Aktie ihren Sektor underperformt (RS = SCHWACH) können nur FEUER-Signale feuern — kein GOLDEN oder ELITE.")
         table.cell(cp, 1, r, rs_veto_txt, bgcolor=rs_veto_bg, text_color=color.white, text_size=cp_txt_main)
         r += 1
-        _ = r  // suppress unused variable warning
-    table.cell(cp, 0, 2, "🌍 Sektor", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Der maßgebliche Sektor-ETF der Aktie. Dient zur Bestimmung des Marktumfelds und der relativen Stärke.")
-    table.cell(cp, 1, 2, sec_txt, bgcolor=sec_bg, text_color=color.white)
-    table.cell(cp, 0, 3, "💪 Rel. Stärke", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance und erhöht die Wahrscheinlichkeit für einen erfolgreichen Trade.")
-    table.cell(cp, 1, 3, rs_txt, bgcolor=rs_bg, text_color=color.white)
-    table.cell(cp, 0, 4, "📈 Weinstein Stage", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short).")
-    table.cell(cp, 1, 4, ws_txt, bgcolor=ws_bg, text_color=color.white)
-
-    // 5-7: Trend-Analyse
-    table.cell(cp, 0, 5, "--- TREND-ANALYSE (v20.6) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 5, 1, 5)
-    table.cell(cp, 0, 6, "📅 Wochentrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt.")
-    table.cell(cp, 1, 6, wt_txt, bgcolor=wt_bg, text_color=color.white)
-    table.cell(cp, 0, 7, "☀️ Tagestrend", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern.")
-    table.cell(cp, 1, 7, dt_txt, bgcolor=dt_bg, text_color=dt_tc)
-
-    // 8-12: Sniper Metriken
-    table.cell(cp, 0, 8, "--- SNIPER METRIKEN ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 8, 1, 8)
-    table.cell(cp, 0, 9, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an.")
-    table.cell(cp, 1, 9, rom_str, bgcolor=color.rgb(30, 30, 30), text_color=color.white)
-    table.cell(cp, 0, 10, "🛡️ Risk-Mode (Adaptiv)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip=rm_tooltip)
-    table.cell(cp, 1, 10, risk_mode_txt, bgcolor=risk_mode_bg, text_color=color.white)
-    table.cell(cp, 0, 11, "⚓ Anchor-Info", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.")
-    table.cell(cp, 1, 11, anc_str, bgcolor=color.rgb(30, 30, 30), text_color=color.white)
-    table.cell(cp, 0, 12, "📐 Vacuum Quality", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft den historischen Ziel-Widerstand (TP < 8%). Der RLD-Current-Volumen Check blockiert Trades nicht mehr fälschlicherweise bei Breakouts.")
-    table.cell(cp, 1, 12, vacuum_qual, bgcolor=vacuum_ok ? color.rgb(0, 180, 0) : color.rgb(60, 10, 10), text_color=color.white)
-
-    // 13-17: Signal Validierung
-    table.cell(cp, 0, 13, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 13, 1, 13)
-    
-    table.cell(cp, 0, 14, "🕹️ Momentum (WPR)", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Williams %R (4). Kaskade: 70/30 für Radar, 80/20 für Sniper-Einstieg.")
-    table.cell(cp, 1, 14, wpr_txt, bgcolor=wpr_bg, text_color=wpr_tc)
-
-    table.cell(cp, 0, 15, "🕯️ Kerzenregel", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.")
-    table.cell(cp, 1, 15, c_txt, bgcolor=c_bg, text_color=color.white)
-
-    string dyn_feuer_str = str.tostring(dyn_min_stop_feuer, "#.##") + "%"
-    string dyn_golden_str = str.tostring(dyn_min_stop_golden, "#.##") + "%"
-    table.cell(cp, 0, 16, "🛡️ Stopversicherung", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="v20.7 ATR-norm.: Min. FEUER=" + dyn_feuer_str + " | Min. GOLDEN=" + dyn_golden_str + " (dynamisch je Aktie-Volatilität)")
-    table.cell(cp, 1, 16, sd_str, bgcolor=s_v_bg, text_color=color.white)
-    
-    table.cell(cp, 0, 17, "🚧 TP Widerstand", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.")
-    table.cell(cp, 1, 17, tp_str, bgcolor=t_v_bg, text_color=color.white)
-
-    // 18-24: Order-Matrix
-    table.cell(cp, 0, 18, "--- ORDER-MATRIX ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 18, 1, 18)
-
-    table.cell(cp, 0, 19, "🎯 Stoppreis (SP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, tooltip="Dein Einstiegs-Preis (Trigger). Platziere hier deine Stop-Buy (Long) oder Stop-Sell (Short) Limit-Order.")
-    table.cell(cp, 1, 19, f_p(sp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
-
-    table.cell(cp, 0, 20, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50, 50, 50), text_color=color.yellow, tooltip="Gap-Schutz für deine Einstiegsorder. Vermeidet Slippage, wenn der Markt extem wild über deinen Preis springt.")
-    table.cell(cp, 1, 20, f_p(lp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.yellow)
-
-    table.cell(cp, 0, 21, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50, 50, 50), text_color=color.white, tooltip="Die Anzahl an Aktien, mit denen du EXAKT dein gewünschtes asymmetrisches (€) 1R Risiko triffst.")
-    table.cell(cp, 1, 21, shares_display, bgcolor=color.rgb(30, 30, 30), text_color=color.white)
-
-    table.cell(cp, 0, 22, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50, 50, 50), text_color=color.lime, tooltip="Das 1:1 CRV Ziel. Verkaufe hier exakt 50% deiner Position (Risk-Recycling) und ziehe den restlichen Stop auf Break-Even.")
-    table.cell(cp, 1, 22, f_p(tp_price), bgcolor=color.rgb(30, 30, 30), text_color=color.lime)
-
-    table.cell(cp, 0, 23, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50, 50, 50), text_color=color.orange, tooltip="Institutioneller Stop-Loss (1.0x ATR). Schützt vor Rauschen und Gaps.")
-    table.cell(cp, 1, 23, f_p(sl_price), bgcolor=color.rgb(30, 30, 30), text_color=color.orange)
-
-    table.cell(cp, 0, 24, "🏃 Runner-Target", bgcolor=color.rgb(50, 50, 50), text_color=ema_col, tooltip="Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.")
-    table.cell(cp, 1, 24, ema_str, bgcolor=color.rgb(30, 30, 30), text_color=ema_col)
-
-    // 25-28: Zusatz-Info (Bollinger Check + Squeeze)
-    table.cell(cp, 0, 25, "--- ZUSATZ-INFO (v20.7) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 25, 1, 25)
-
-    table.cell(cp, 0, 26, "🔭 Bollinger Zone", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="14-Punkte-System: LONG ZONE/EXTREME = Long erlaubt, SHORT ZONE/EXTREME = Short erlaubt. Im Scharf-Modus automatisch übergangen.")
-    table.cell(cp, 1, 26, bc_txt, bgcolor=bc_bg, text_color=color.white)
-
-    table.cell(cp, 0, 27, "🗜️ BB Squeeze", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="v20.7: Bollinger Band Breite als % des Kurses. SQUEEZE (<3%) = Energie baut sich auf, guter Dip-Buy Kontext. EXPANSION (>8%) = Vorsicht, Bänder weiten sich, Dip-Buy riskanter.")
-    table.cell(cp, 1, 27, squeeze_txt, bgcolor=squeeze_bg, text_color=color.white)
-
-    // RS Veto Status Anzeige
-    string rs_veto_txt = rs_ok_for_premium ? "✅ (Golden/Elite OK)" : "⚠️ VETO (RS SCHWACH — kein Golden/Elite)"
-    color  rs_veto_bg  = rs_ok_for_premium ? color.rgb(10, 50, 10) : color.rgb(70, 20, 0)
-    table.cell(cp, 0, 28, "💪 RS-Veto Status", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="v20.7: Relative Stärke als Veto für Golden & AKJ Elite. Wenn Aktie ihren Sektor underperformt (RS = SCHWACH) können nur FEUER-Signale feuern — kein GOLDEN oder ELITE.")
-    table.cell(cp, 1, 28, rs_veto_txt, bgcolor=rs_veto_bg, text_color=color.white)
+    int _done = r  // Cockpit-Ende: verhindert Pine-v6 Block-Fehler
 
 // ==========================================
 // --- 10. VISUALS & ALARME ---
