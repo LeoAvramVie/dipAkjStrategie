@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AKJ 2.0 Sniper-Commander v20.6 - Documentation</title>
-    <meta name="description" content="Vollständige technische Dokumentation des AKJ 2.0 Sniper-Commander v20.6 PineScript Indikators für TradingView.">
+    <title>AKJ 2.0 Sniper-Commander v20.7 - Documentation</title>
+    <meta name="description" content="Vollständige technische Dokumentation des AKJ 2.0 Sniper-Commander v20.7 PineScript Indikators für TradingView.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -201,7 +201,7 @@
         <header>
             <h1>AKJ 2.0 Sniper-Commander</h1>
             <p class="subtitle">Das taktische Lagezentrum</p>
-            <span class="version-badge">v20.6 Elite — PineScript v6</span>
+            <span class="version-badge">v20.7 Elite — PineScript v6</span>
         </header>
 
         <div class="divider"></div>
@@ -324,48 +324,33 @@
         <h2 class="section-title">IV. Cockpit Statusanzeige (Logik vs. Screener)</h2>
         <div class="glass-card">
             <h4 style="color:#fff; margin-top:1.5rem;">COCKPIT TEXT PRIORITÄTEN (Live)</h4>
-            <div class="alert-box" style="margin-bottom: 1.5rem;">
-                <div class="alert-icon">ℹ️</div>
-                <div class="alert-content">
-                    <p style="margin: 0;"><strong>Hinweis zu Long / Short:</strong> Der Code berechnet Long- (<code>_l</code>) und Short- (<code>_s</code>) Signale zu 100% identisch und spiegelbildlich. Zur besseren Lesbarkeit sind in den untenstehenden Formeln die <strong>Long-Werte</strong> notiert (z.B. Weinstein 2, rote Kerze, WPR &gt;= 80). Bei Short dreht sich die Logik automatisch um (Weinstein 4, grüne Kerze, WPR &lt;= 20, etc.).</p>
-                </div>
-            </div>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Das Cockpit prüft von oben nach unten, welcher Status erreicht ist. Jede Ebene durchläuft exakte mathematische Checks:</p>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Das Cockpit prüft von oben nach unten, welcher Status erreicht ist. Jede Ebene durchläuft exakte mathematische Checks für Long- und Short-Signale:</p>
             <ol style="margin-bottom: 2rem; color: var(--text-muted);">
                 <li style="margin-bottom: 0.8rem;"><strong>💎 AKJ ELITE:</strong> Sonder-Signal! Extremes Momentum (Scharf-Modus).<br>
-                <em>Technisch:</em> <code>weinstein_stage == 2</code> AND <code>setup_strict_long</code> AND <code>wpr >= 80</code> AND <code>low > d_lo</code> AND <code>open != close</code>.<br>
-                <em>Fachlich:</em> Wir befinden uns in einem so massiven Aufwärtstrend (Scharf-Modus), dass wir jeden minimalen Rücksetzer sofort blind kaufen. Kein Doji erlaubt, aber die Kerze hat das untere Bollinger Band nicht einmal berührt (low > d_lo). Komplett ohne Volumencheck!</li>
+                <em>Technisch LONG:</em> <code>weinstein_stage == 2</code> AND <code>setup_strict_long</code> AND <code>wpr >= 80</code> AND <code>low > d_lo</code> AND <code>open != close</code>.<br>
+                <em>Technisch SHORT:</em> <code>weinstein_stage == 4</code> AND <code>setup_strict_short</code> AND <code>wpr <= 20</code> AND <code>high < d_up</code> AND <code>open != close</code>.<br>
+                <em>Fachlich:</em> Wir befinden uns in einem so massiven Trend (Scharf-Modus), dass wir jeden minimalen Rücksetzer sofort blind traden. Kein Doji erlaubt, aber die Kerze hat das Tagesband nicht einmal zurück-berührt. Komplett ohne Volumencheck!</li>
 
                 <li style="margin-bottom: 0.8rem;"><strong>🌟 GOLDEN:</strong> Das Premium-Setup! Ein FEUER-Signal plus einer massiven Volumen-Mauer.<br>
-                <em>Technisch:</em> <code>raw_feuer_l</code> AND <code>is_correct_zone_l</code> AND <code>vol_golden_l</code> (Stop-Dichte >= 3% & TP-Dichte <= 8%) AND <code>rs_ok_for_premium</code> (Sektor-Veto inaktiv).<br>
-                <em>Fachlich:</em> Das bestmögliche Standardsetup. Die Aktie fällt sauber in die erlaubte Kaufzone (unteres Drittel des Tagesbandes), das Timing stimmt perfekt und — ganz wichtig — das "Anchored Volume Profile" zeigt an, dass direkt unter unserem Entry fettes, massives Groß-Kapital lauert, das unseren Stop schützt.</li>
+                <em>Technisch LONG:</em> <code>raw_feuer_l</code> AND <code>is_correct_zone_l</code> AND <code>vol_golden_l</code> (Stop-Dichte >= 3% & TP-Dichte <= 8%) AND <code>rs_ok_for_premium</code>.<br>
+                <em>Technisch SHORT:</em> <code>raw_feuer_s</code> AND <code>is_correct_zone_s</code> AND <code>vol_golden_s</code> (Stop-Dichte >= 3% & TP-Dichte <= 8%) AND <code>rs_ok_for_premium</code>.<br>
+                <em>Fachlich:</em> Das bestmögliche Standardsetup. Die Aktie fällt/steigt sauber in die erlaubte Kauf-/Verkauf-Zone (Drittel des Tagesbandes), das Timing stimmt perfekt und das "Anchored Volume Profile" zeigt an, dass direkt hinter unserem Entry fettes, massives Groß-Kapital lauert, das unseren Stop schützt.</li>
 
                 <li style="margin-bottom: 0.8rem;"><strong>🟢 FEUER FREI:</strong> Basis-Signal! Reines Chart- & Timing-Setup.<br>
-                <em>Technisch:</em> <code>raw_feuer_l</code> (<code>radar_state</code> AND <code>wpr >= 80</code> AND <code>close < open</code> AND NOT <code>doji</code>) AND <code>is_correct_zone_l</code>.<br>
-                <em>Fachlich:</em> Typisches "Reversion to the Mean" (Rückkehr zum Mittelwert) Setup. Die Aktie korrigiert nach einem Hoch (Radar) in den günstigen "Oversold"-Bereich (WPR > 80), die Dip-Kerze schließt rot, und fällt sauber ins untere Band. Kein Volumenzwang!</li>
+                <em>Technisch LONG:</em> <code>raw_feuer_l</code> (<code>radar_state_l</code> AND <code>wpr >= 80</code> AND rote Kerze <code>close < open</code> AND NOT <code>doji</code>) AND <code>is_correct_zone_l</code>.<br>
+                <em>Technisch SHORT:</em> <code>raw_feuer_s</code> (<code>radar_state_s</code> AND <code>wpr <= 20</code> AND grüne Kerze <code>close > open</code> AND NOT <code>doji</code>) AND <code>is_correct_zone_s</code>.<br>
+                <em>Fachlich:</em> Typisches "Reversion to the Mean" (Rückkehr zum Mittelwert) Setup. Die Aktie korrigiert nach einem Hoch/Tief (Radar) in den günstigen Extrem-Bereich, die Dip-Kerze schließt korrekt, bricht aber das Band nicht. Kein Volumenzwang!</li>
 
                 <li style="margin-bottom: 0.8rem;"><strong>📡 LAUERN:</strong> Radar-Zustand erfasst, Warten auf Auslöser.<br>
-                <em>Technisch:</em> <code>radar_state_l</code> (<code>weinstein == 2</code> AND <code>high >= d_up + ATR*0.2</code>) AND (<code>wpr >= 70</code> AND <code>wpr &lt; 80</code>).<br>
-                <em>Fachlich:</em> Die Aktie hat erst kürzlich starke Aufwärtsenergie bewiesen (das Hoch war weit über dem Tagesband), ABER sie ist noch nicht reif für einen Einstieg. Der WPR ist jedoch bereits in der heißen Vorwarn-Zone (70-80). Die Spannung steigt!</li>
+                <em>Technisch LONG:</em> <code>radar_state_l</code> (<code>weinstein == 2</code> AND <code>high >= d_up + ATR*0.2</code>) AND (<code>wpr >= 70</code> AND <code>wpr &lt; 80</code>).<br>
+                <em>Technisch SHORT:</em> <code>radar_state_s</code> (<code>weinstein == 4</code> AND <code>low <= d_lo - ATR*0.2</code>) AND (<code>wpr <= 30</code> AND <code>wpr &gt; 20</code>).<br>
+                <em>Fachlich:</em> Die Aktie hat erst kürzlich starke Ausbruchsenergie bewiesen (das Tagesband wurde massiv durchstoßen), ABER sie ist noch nicht reif für einen Einstieg. Der WPR ist jedoch bereits in der heißen Vorwarn-Zone (70-80 bzw. 20-30). Die Spannung steigt!</li>
 
                 <li><strong>STATUS: NO SIGNAL:</strong> Nichts erfüllt.</li>
             </ol>
 
-            <h4 style="color:#fff; margin-top:1.5rem;">ZUSÄTZE IM TEXT (Exakte Berechnung)</h4>
+            <h4 style="color:#fff; margin-top:1.5rem;">ZUSÄTZE IM COCKPIT-HEADER</h4>
             <ol style="list-style-type: decimal; padding-left: 1.5rem; color: var(--text-muted);">
-                <li style="margin-bottom: 0.8rem;"><strong>Risk-Mode: <code>(ALPHA) / (DELTA) / (OMEGA)</code></strong><br>
-                Bestimmt vom gestrigen Tagesschlusskurs des VIX.<br>
-                • <code>(ALPHA)</code> = VIX < 25.0 (Normalbetrieb, 100% Risiko)<br>
-                • <code>(DELTA)</code> = VIX 25–35 (Short-Bias, reduziertes Long-Risiko)<br>
-                • <code>(OMEGA)</code> = VIX > 35.0 (Handel gesperrt, 0% Risiko)</li>
-
-                <li style="margin-bottom: 0.8rem;"><strong>Momentum-Status: <code>(MOM)</code></strong><br>
-                Wird angehängt, wenn der "Scharf-Modus" aktiv ist (<code>is_momentum == setup_strict_long</code>).<br>
-                Berechnung Long: <code>close[1] > Tages-Oberband[1] + (ATR * 0.2)</code><br> 
-                UND <code>close[2] > Tages-Oberband[2] + (ATR * 0.2)</code><br>
-                Effekt: Aktie klebt im massiven Aufwärtstrend am oberen Band. 
-                Der normale Bollinger-Zonen-Check (Kauf im unteren Drittel) wird dabei überschrieben!</li>
-
                 <li style="margin-bottom: 0.8rem;"><strong>Cooldown-Sperre: <code>[Wait: Xs]</code></strong><br>
                 Berechnung: <code>(timenow - last_Alarm_Time) / 1000</code> = verbleibende Sekunden<br>
                 Sperrt das Signal-System für 3 Minuten nach einem Auslöser als Anti-Spam Filter.</li>

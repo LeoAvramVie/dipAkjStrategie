@@ -1,5 +1,5 @@
 ================================================================================
-  AKJ 2.0 Sniper-Commander v20.6 — TECHNISCHE REFERENZ-DOKUMENTATION
+  AKJ 2.0 Sniper-Commander v20.7 — TECHNISCHE REFERENZ-DOKUMENTATION
   PineScript v6 | TradingView | Stand: April 2026
 ================================================================================
 
@@ -287,35 +287,33 @@ Die Statustexte werden in dieser Reihenfolge geprüft (höchste Priorität zuers
   ABSCHNITT 11: COCKPIT STATUSANZEIGE (Logik vs. Screener)
 ================================================================================
 
-Das Cockpit UI (`header_txt`) und der Pine Screener nutzen die gleiche Mathematik, 
-werten diese aber unterschiedlich aus (Live-Tick vs. Snapshot).
+Das Cockpit prüft von oben nach unten, welcher Status erreicht ist. Jede Ebene durchläuft exakte mathematische Checks für Long- und Short-Signale:
 
-COCKPIT TEXT PRIORITÄTEN (Live):
-Das Cockpit prüft von oben nach unten, welcher Status erreicht ist:
+  1. 💎 AKJ ELITE ➔ Sonder-Signal! Extremes Momentum (Scharf-Modus).
+     Technisch LONG: weinstein_stage == 2 UND setup_strict_long UND wpr >= 80 UND low > d_lo UND open != close.
+     Technisch SHORT: weinstein_stage == 4 UND setup_strict_short UND wpr <= 20 UND high < d_up UND open != close.
+     Fachlich: Wir befinden uns in einem massiven Trend, dass wir jeden minimalen Rücksetzer sofort blind traden. Komplett ohne Volumencheck!
 
-  1. 💎 AKJ ELITE  ➔ Sonder-Signal! Extremes Momentum (Scharf-Modus), wir kaufen den Dip blind ohne Volumencheck.
-  2. 🌟 GOLDEN     ➔ Aufwertung! Das FEUER-Signal hat eine massive Stop-Volumen-Mauer (> 3%).
-  3. 🟢 FEUER FREI ➔ Basis-Signal! Trend passt, WPR extrem (> 80), rote Dip-Kerze. (Ohne Volumenzwang)
-  4. 📡 LAUERN     ➔ Radar erfasst die Aktie (Trend passt, Kurs am Band), wir warten auf den WPR-Trigger.
+  2. 🌟 GOLDEN ➔ Das Premium-Setup! Ein FEUER-Signal plus einer massiven Volumen-Mauer.
+     Technisch LONG: raw_feuer_l UND is_correct_zone_l UND vol_golden_l (Stop-Dichte >= 3% & TP-Dichte <= 8%) UND rs_ok_for_premium.
+     Technisch SHORT: raw_feuer_s UND is_correct_zone_s UND vol_golden_s (Stop-Dichte >= 3% & TP-Dichte <= 8%) UND rs_ok_for_premium.
+     Fachlich: Perfektes Timing, und das Volume Profile zeigt massive Institutionelle Orders direkt hinter dem Entry als Schutz an.
+
+  3. 🟢 FEUER FREI ➔ Basis-Signal! Reines Chart- & Timing-Setup.
+     Technisch LONG: raw_feuer_l (radar_state UND wpr >= 80 UND rote Kerze UND NOT doji) UND is_correct_zone_l.
+     Technisch SHORT: raw_feuer_s (radar_state UND wpr <= 20 UND grüne Kerze UND NOT doji) UND is_correct_zone_s.
+     Fachlich: Klasisches Pullback Setup ("Reversion to Mean"). Die Aktie ist überverkauft/überkauft an einer relevanten Tagesband-Kante. Kein Volumenzwang!
+
+  4. 📡 LAUERN ➔ Radar-Zustand erfasst, Warten auf Auslöser.
+     Technisch LONG: radar_state_l (weinstein == 2 UND high >= d_up + ATR*0.2) UND (wpr >= 70 UND wpr < 80).
+     Technisch SHORT: radar_state_s (weinstein == 4 UND low <= d_lo - ATR*0.2) UND (wpr <= 30 UND wpr > 20).
+     Fachlich: Die Trend-Energie ist da, wir warten nur noch bis sich der WPR richtig extrem aufgeladen hat. Vorwarn-Phase!
+
   5. STATUS: NO SIGNAL ➔ Nichts erfüllt.
 
-ZUSÄTZE IM COCKPIT-TEXT:
-  1. Risk-Mode: (ALPHA) / (DELTA) / (OMEGA)
-     Bestimmt vom Tagesschlusskurs des VIX. 
-     • (ALPHA) = VIX < 25.0 (Normalbetrieb, 100% Risiko)
-     • (DELTA) = VIX 25–35 (Short-Bias, stark reduziertes Long-Risiko)
-     • (OMEGA) = VIX > 35.0 (Handel gesperrt, 0% Risiko)
-
-  2. Momentum-Status: (MOM)
-     Wird angehängt, wenn der "Scharf-Modus" aktiv ist (is_momentum == setup_strict).
-     Berechnung Long:  close[1] > Tages-Oberband[1] + (ATR * 0.2) 
-                 UND close[2] > Tages-Oberband[2] + (ATR * 0.2)
-     Effekt: Aktie klebt im massiven Aufwärtstrend am oberen Band. 
-     Der normale Bollinger-Zonen-Check (Kauf im unteren Drittel) wird überschrieben.
-
-  3. Cooldown-Sperre: [Wait: Xs]
-     Berechnung: (timenow - last_Alarm_Zeit) / 1000 = verbleibende Sekunden
-     Sperrt das Signal-System für 3 Minuten nach einem Auslöser (Anti-Spam Filter).
+ZUSÄTZE IM COCKPIT-HEADER:
+  1. Cooldown-Sperre: [Wait: Xs]
+     Sperrt das Signal-System für 3 Minuten nach einem Auslöser als Anti-Spam Filter.
 
 TAGESTREND-ZEILE IM COCKPIT (Angezeigte Modi):
   • LONG / SHORT (Scharf) 

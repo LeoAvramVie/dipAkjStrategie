@@ -568,21 +568,17 @@ color header_bg = color.black
 bool is_wpr_trig_l = d_wpr >= 80
 bool is_wpr_trig_s = d_wpr <= 20
 
-string t_mode_l = is_momentum_l ? " (MOM)" : ""
-string t_mode_s = is_momentum_s ? " (MOM)" : ""
-string short_mode = vix_c < 25.0 ? "ALPHA" : (vix_c <= 35.0 ? "DELTA" : "OMEGA")
-
 if isAKJSignal_l or isAKJSignal_s
-    header_txt := "💎 AKJ ELITE (" + short_mode + ")" + (isAKJSignal_l ? t_mode_l : t_mode_s)
+    header_txt := "💎 AKJ ELITE"
     header_bg := color.fuchsia
 else if trigger_golden_l or trigger_golden_s
-    header_txt := "🌟 GOLDEN (" + short_mode + ")" + (trigger_golden_l ? t_mode_l : t_mode_s)
+    header_txt := "🌟 GOLDEN"
     header_bg := color.lime
 else if trigger_feuer_l or trigger_feuer_s
-    header_txt := "🟢 FEUER FREI (" + short_mode + ")" + (trigger_feuer_l ? t_mode_l : t_mode_s)
+    header_txt := "🟢 FEUER FREI"
     header_bg := color.rgb(0, 100, 0)
 else if trigger_lauern_l or trigger_lauern_s
-    header_txt := "📡 LAUERN (" + short_mode + ")" + (trigger_lauern_l ? t_mode_l : t_mode_s)
+    header_txt := "📡 LAUERN"
     header_bg := color.rgb(150, 150, 0)
 
 string diagnose_txt = "-"
