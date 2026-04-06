@@ -37,11 +37,15 @@ ema21   = ta.ema(close, 21)
 float atr_pct            = close > 0 ? (atr_val / close) * 100 : 2.0
 float dyn_min_stop_feuer  = feuer_atr_mult  * atr_pct  // z.B. 0.75 × 2% = 1.5% bei KO; 0.75 × 5% = 3.75% bei TSLA
 float dyn_min_stop_golden = golden_atr_mult * atr_pct  // z.B. 1.5  × 2% = 3.0% bei KO; 1.5  × 5% = 7.5% bei TSLA
+// v20.7 Screener-Fix: VIX als single call - ATR-Proxy als Fallback wenn Screener VIX blockiert
 vix_c = request.security("CBOE:VIX", "1D", close, lookahead=barmerge.lookahead_off)
+// Lokaler ATR-Proxy: wenn VIX = 0 oder na (Screener-Modus), berechne Volatilitat aus ATR
+float vix_proxy = (atr_pct * 8)  // ATR% * 8 ~ VIX-Aquivalent (2% ATR ~ VIX 16)
+float vix_eff   = (na(vix_c) or vix_c <= 0) ? vix_proxy : vix_c  // na-safe VIX
 
-// Asymmetrische Risk Multiplier Logik
-float risk_mult_l = vix_c < 25.0 ? 1.0 : (vix_c <= 35.0 ? 0.25 : 0.0)
-float risk_mult_s = vix_c < 25.0 ? 1.0 : (vix_c <= 35.0 ? 1.0  : 0.0)
+// Risk-Regime basiert auf vix_eff (na-sicher, funktioniert im Screener)
+float risk_mult_l = vix_eff < 25.0 ? 1.0 : (vix_eff <= 35.0 ? 0.25 : 0.0)
+float risk_mult_s = vix_eff < 25.0 ? 1.0 : (vix_eff <= 35.0 ? 1.0  : 0.0)
 
 float active_risk_l = use_dyn_risk ? risk_per_trade * risk_mult_l : risk_per_trade
 float active_risk_s = use_dyn_risk ? risk_per_trade * risk_mult_s : risk_per_trade
@@ -49,24 +53,29 @@ float active_risk_s = use_dyn_risk ? risk_per_trade * risk_mult_s : risk_per_tra
 bool firewall_l = use_dyn_risk and risk_mult_l == 0.0
 bool firewall_s = use_dyn_risk and risk_mult_s == 0.0
 
-string risk_mode_txt = vix_c < 25.0 ? "ALPHA (Full)" : (vix_c <= 35.0 ? "DELTA (Short-Bias)" : "OMEGA (Lock)")
-color  risk_mode_bg  = vix_c < 25.0 ? color.rgb(10, 60, 10) : (vix_c <= 35.0 ? color.rgb(200, 100, 0) : color.rgb(100, 10, 10))
-string rm_tooltip    = "ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilität."
+string risk_mode_txt = vix_eff < 25.0 ? "ALPHA (Full)" : (vix_eff <= 35.0 ? "DELTA (Short-Bias)" : "OMEGA (Lock)")
+color  risk_mode_bg  = vix_eff < 25.0 ? color.rgb(10, 60, 10) : (vix_eff <= 35.0 ? color.rgb(200, 100, 0) : color.rgb(100, 10, 10))
+string rm_tooltip    = "ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Shorts aktiv (100% R). OMEGA: Handelsstopp wegen Extrem-Volatilitat."
 
-string mode_prefix = vix_c < 25.0 ? "ALPHA Mode" : (vix_c <= 35.0 ? "DELTA Mode" : "OMEGA Mode")
+string mode_prefix = vix_eff < 25.0 ? "ALPHA Mode" : (vix_eff <= 35.0 ? "DELTA Mode" : "OMEGA Mode")
 
 d_wpr = math.abs(ta.wpr(wpr_len))
 
 // ==========================================
 // --- 2. WOCHEN-DATA (Sticky & Strict) ---
 // ==========================================
-f_bb_w_hist() => 
+// v20.7 Screener-Fix: w_basis_1 in f_bb_w_hist() integriert → 2 Weekly-Calls werden zu 1
+f_bb_w_hist() =>
     basis = ta.sma(close, bb_len)
-    dev = ta.stdev(close, bb_len) * bb_mult
-    [close[1], basis[1] + dev[1], basis[1] - dev[1], close[2], basis[2] + dev[2], basis[2] - dev[2], ta.sma(close, 30)[1], ta.sma(close, 30)[2]]
+    dev   = ta.stdev(close, bb_len) * bb_mult
+    // Gibt 9 Werte zurck: 8 original + w_basis_1 am Ende
+    [close[1], basis[1] + dev[1], basis[1] - dev[1],
+     close[2], basis[2] + dev[2], basis[2] - dev[2],
+     ta.sma(close, 30)[1], ta.sma(close, 30)[2],
+     basis[1]]  // <-- w_basis_1 jetzt hier integriert (9. Wert)
 
-[w_cl_1, w_up_1, w_lo_1, w_cl_2, w_up_2, w_lo_2, w_sma30_1, w_sma30_2] = request.security(syminfo.tickerid, "W", f_bb_w_hist(), lookahead=barmerge.lookahead_off)
-float w_basis_1 = request.security(syminfo.tickerid, "W", ta.sma(close, bb_len)[1], lookahead=barmerge.lookahead_off) // Fix v20.6: Wochenmittellinie für Midline-Reset
+[w_cl_1, w_up_1, w_lo_1, w_cl_2, w_up_2, w_lo_2, w_sma30_1, w_sma30_2, w_basis_1] = request.security(syminfo.tickerid, "W", f_bb_w_hist(), lookahead=barmerge.lookahead_off)
+// Kein separater w_basis_1 Call mehr notwendig — v20.7 Screener-Fix (war: 2. Weekly-Security-Call)
 
 var int w_trend = 0 
 if w_cl_1 > w_up_1 and w_cl_2 > w_up_2
@@ -245,9 +254,10 @@ bool trigger_lauern_s = radar_state_s and d_wpr > 20
 bool raw_feuer_l = radar_state_l and long_trigger
 bool raw_feuer_s = radar_state_s and short_trigger
 
-// v20.7: RS-Veto — GOLDEN und AKJ ELITE nur wenn Relative Stärke positiv (perf_diff > -2.0)
-// FEUER FREI bleibt auch bei schwacher RS aktiv (kein hartes Veto)
-bool rs_ok_for_premium = perf_diff > -2.0  // RS nicht SCHWACH → Pflicht für Golden/Elite
+// v20.7: RS-Veto — GOLDEN und AKJ ELITE nur wenn Relative Stärke nicht SCHWACH (perf_diff > -2.0)
+// perf_diff wird erst nach request.security berechnet (Zeile ~470) → var bool mit Defaultwert true
+// Nach der perf_diff Berechnung wird rs_ok_for_premium aktualisiert
+var bool rs_ok_for_premium = true  // Default: kein Veto (wird unten überschrieben)
 
 bool trigger_feuer_l  = raw_feuer_l and vol_feuer_l  and is_correct_zone_l
 bool trigger_feuer_s  = raw_feuer_s and vol_feuer_s  and is_correct_zone_s
@@ -468,6 +478,10 @@ color sec_bg = sector_long ? color.blue : color.red
 float stock_perf = close[20] != 0 ? ((close - close[20]) / close[20]) * 100 : 0.0
 float etf_perf   = etf_c20 != 0 ? ((etf_c - etf_c20) / etf_c20) * 100 : 0.0
 float perf_diff  = stock_perf - etf_perf
+
+// v20.7: RS-Veto jetzt aktualisieren (perf_diff ist jetzt bekannt)
+// GOLDEN und AKJ ELITE werden blockiert wenn RS = SCHWACH (Aktie underperformt Sektor um >2%)
+rs_ok_for_premium := perf_diff > -2.0
 
 string rs_txt = perf_diff > 2.0 ? "STARK" : perf_diff < -2.0 ? "SCHWACH" : "MITTEL"
 color  rs_bg  = perf_diff > 2.0 ? color.blue : perf_diff < -2.0 ? color.red : color.rgb(30, 30, 30)

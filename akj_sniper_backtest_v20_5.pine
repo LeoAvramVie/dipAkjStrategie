@@ -18,10 +18,11 @@ ema_exit         = input.int(21, "Trailing Stop EMA", group=group_strat)
 
 group_vol_filter    = "Volumen Filter (v20.7 ATR-Normalisiert)"
 vol_timeframe       = input.timeframe("240", "Volumen Timeframe (4H)", group=group_vol_filter)
-backtest_flex_mode  = input.bool(true, "Backtest-Modus (Lockerere Filter)", group=group_vol_filter)
-// v20.7: ATR-normalisierte Schwellenwerte
-feuer_atr_mult      = input.float(0.75, "Stop-Mauer Faktor FEUER (× ATR%)",  group=group_vol_filter, step=0.05, minval=0.1)
-golden_atr_mult     = input.float(1.50, "Stop-Mauer Faktor GOLDEN (× ATR%)", group=group_vol_filter, step=0.05, minval=0.1)
+backtest_flex_mode  = input.bool(true,  "Flex-Modus: Weinstein-Stage-Filter entfernen (KO/XOM kompatibel)", group=group_vol_filter, tooltip="EIN = Strategie handelt ALLE Aktientypen (KO, XOM, stabile Dividenden). AUS = Nur klassische Stage-2/4 Wachstumsaktien.")
+use_feuer_entries   = input.bool(true,  "FEUER FREI auch als Strategy-Entry testen", group=group_vol_filter, tooltip="EIN = Backtest f\u00fcr GOLDEN und FEUER FREI. AUS = Nur GOLDEN SETUP. Erkl\u00e4rt warum KO mehr Trades als erwartet zeigt.")
+min_bars_hold       = input.int(3,      "Mindest-Haltedauer (Bars) vor Runner-Exit", group=group_vol_filter, minval=1, maxval=20, tooltip="KO/XOM brauchen mehr Zeit um nach dem Dip zu laufen. Mindestens 3 Bars halten bevor der EMA21-Runner-Exit greift.")
+feuer_atr_mult      = input.float(0.75, "Stop-Mauer Faktor FEUER (\u00d7 ATR%)",  group=group_vol_filter, step=0.05, minval=0.1)
+golden_atr_mult     = input.float(1.50, "Stop-Mauer Faktor GOLDEN (\u00d7 ATR%)", group=group_vol_filter, step=0.05, minval=0.1)
 max_tp_density      = input.float(15.0, "Max. TP-Widerstand (%) (FEUER)",    group=group_vol_filter)
 golden_tp_density   = input.float(8.0,  "Max. TP-Widerstand (%) (GOLDEN)",   group=group_vol_filter)
 
@@ -212,11 +213,14 @@ var int   w_lauern = 0, var int   l_lauern = 0
 var float p_lauern = 0.0
 var int   total_missed_omega = 0
 
-// Definition der Audit-Level (Zero-Latency Sync Logik)
+// Definition der Audit-Level
+// v20.7 Flex-Modus: backtest_flex_mode = true entfernt den Weinstein-Stage-Filter
+// → Strategie funktioniert dann für ALLE Aktientypen (KO, XOM, stabile Dividenden)
+// → EIN = Universal-Modus | AUS = Nur Stage-2/4 Wachstumsaktien
 bool is_radar_l = high >= d_up + (atr_val * 0.2)
-bool radar_state_l = weinstein_stage == 2 and (is_radar_l or setup_strict_long)
+bool radar_state_l = backtest_flex_mode ? (is_radar_l or setup_strict_long) : (weinstein_stage == 2 and (is_radar_l or setup_strict_long))
 bool is_radar_s = low <= d_lo - (atr_val * 0.2)
-bool radar_state_s = weinstein_stage == 4 and (is_radar_s or setup_strict_short)
+bool radar_state_s = backtest_flex_mode ? (is_radar_s or setup_strict_short) : (weinstein_stage == 4 and (is_radar_s or setup_strict_short))
 
 bool raw_feuer_l   = radar_state_l and setup_strict_long and long_trigger_80
 bool raw_feuer_s   = radar_state_s and setup_strict_short and short_trigger_20
@@ -495,27 +499,92 @@ if barstate.islast
     table.cell(rpt, 7, 9, f_eur_str(avg_golden_eur),   bgcolor=f_eur_bg(avg_golden_eur), text_color=TC_MAIN)
 
 // ==========================================
-// --- 7. STRATEGY EXEKUTION (Real Backtest) ---
+// --- 7. STRATEGY EXEKUTION (Universal v20.7) ---
 // ==========================================
-// PFLICHT: Ein Strategy-Script benötigt entry()-Calls zum Kompilieren. Wir feuern hier das Golden Setup ab!
+// Testet: GOLDEN SETUP + FEUER FREI (optional), Long + Short
+// Fix: TP1-Erkennung via Positionsgrößen-Änderung verhindert sofortigen Runner-Out bei KO/XOM
+
+// ---- TP1-Tracking: Wurde der erste Teilverkauf (50%) bereits ausgeführt? ----
+var float strat_entry_qty_l  = 0.0
+var float strat_entry_qty_s  = 0.0
+var bool  strat_tp1_done_l   = false
+var bool  strat_tp1_done_s   = false
+var int   strat_entry_bar_l  = 0       // Bar-Index beim Long-Einstieg
+var int   strat_entry_bar_s  = 0       // Bar-Index beim Short-Einstieg
+
+// ---- LONG ENTRIES ----
+// GOLDEN SETUP Long
 if evt_golden_l and not firewall_l and strategy.position_size == 0
-    strategy.entry("Long", strategy.long, qty=dyn_shares_l(sp_long, sl_long), stop=sp_long)
-    strategy.exit("TP1_L", "Long", qty_percent=50, stop=sl_long, limit=tp_long)
+    float qty = dyn_shares_l(sp_long, sl_long)
+    strat_entry_qty_l := qty
+    strat_tp1_done_l  := false
+    strat_entry_bar_l := bar_index
+    strategy.entry("Long-G", strategy.long, qty=qty, stop=sp_long, comment="GOLDEN")
+    strategy.exit("TP1_LG", "Long-G", qty_percent=50, stop=sl_long, limit=tp_long)
 
+// FEUER FREI Long (optional, per Input aktivierbar)
+if use_feuer_entries and evt_feuer_l and not evt_golden_l and not firewall_l and strategy.position_size == 0
+    float qty = dyn_shares_l(sp_long, sl_long)
+    strat_entry_qty_l := qty
+    strat_tp1_done_l  := false
+    strat_entry_bar_l := bar_index
+    strategy.entry("Long-F", strategy.long, qty=qty, stop=sp_long, comment="FEUER")
+    strategy.exit("TP1_LF", "Long-F", qty_percent=50, stop=sl_long, limit=tp_long)
+
+// ---- LONG EXIT ----
 if strategy.position_size > 0
-    float be_stop = strategy.opentrades.entry_price(0)
-    if close < ema21 or w_trend == -1
-        strategy.close("Long", comment="Runner Out")
-    else
-        strategy.exit("Trail_L", "Long", stop=math.max(sl_long, be_stop))
+    // TP1-Erkennung: Wenn Positionsgröße auf < Erstgröße gefallen ist → 50% wurde verkauft
+    if not strat_tp1_done_l and strategy.position_size < strat_entry_qty_l
+        strat_tp1_done_l := true
+    
+    float be_stop_l = strategy.opentrades.entry_price(0)
+    int   bars_held_l = bar_index - strat_entry_bar_l
+    
+    if strat_tp1_done_l
+        // Nach TP1: Runner läuft mit EMA21 oder Trend-Exit
+        if close < ema21 or w_trend == -1
+            strategy.close_all(comment="Runner Out")
+        else
+            strategy.exit("Trail_L", from_entry="Long-G", stop=math.max(sl_long, be_stop_l))
+            strategy.exit("Trail_LF", from_entry="Long-F", stop=math.max(sl_long, be_stop_l))
+    else if bars_held_l >= min_bars_hold
+        // Kein TP1 nach Mindest-Haltedauer: EMA21 als Notausgang (verhindert Endlos-Verlust)
+        if close < ema21 and w_trend == -1
+            strategy.close_all(comment="Time Exit")
 
+// ---- SHORT ENTRIES ----
+// GOLDEN SETUP Short
 if evt_golden_s and not firewall_s and strategy.position_size == 0
-    strategy.entry("Short", strategy.short, qty=dyn_shares_s(sp_short, sl_short), stop=sp_short)
-    strategy.exit("TP1_S", "Short", qty_percent=50, stop=sl_short, limit=tp_short)
+    float qty = dyn_shares_s(sp_short, sl_short)
+    strat_entry_qty_s := qty
+    strat_tp1_done_s  := false
+    strat_entry_bar_s := bar_index
+    strategy.entry("Short-G", strategy.short, qty=qty, stop=sp_short, comment="GOLDEN")
+    strategy.exit("TP1_SG", "Short-G", qty_percent=50, stop=sl_short, limit=tp_short)
 
+// FEUER FREI Short (optional)
+if use_feuer_entries and evt_feuer_s and not evt_golden_s and not firewall_s and strategy.position_size == 0
+    float qty = dyn_shares_s(sp_short, sl_short)
+    strat_entry_qty_s := qty
+    strat_tp1_done_s  := false
+    strat_entry_bar_s := bar_index
+    strategy.entry("Short-F", strategy.short, qty=qty, stop=sp_short, comment="FEUER")
+    strategy.exit("TP1_SF", "Short-F", qty_percent=50, stop=sl_short, limit=tp_short)
+
+// ---- SHORT EXIT ----
 if strategy.position_size < 0
-    float be_stop = strategy.opentrades.entry_price(0)
-    if close > ema21 or w_trend == 1
-        strategy.close("Short", comment="Runner Out")
-    else
-        strategy.exit("Trail_S", "Short", stop=math.min(sl_short, be_stop))
+    if not strat_tp1_done_s and strategy.position_size > -strat_entry_qty_s
+        strat_tp1_done_s := true
+    
+    float be_stop_s = strategy.opentrades.entry_price(0)
+    int   bars_held_s = bar_index - strat_entry_bar_s
+    
+    if strat_tp1_done_s
+        if close > ema21 or w_trend == 1
+            strategy.close_all(comment="Runner Out")
+        else
+            strategy.exit("Trail_S",  from_entry="Short-G", stop=math.min(sl_short, be_stop_s))
+            strategy.exit("Trail_SF", from_entry="Short-F", stop=math.min(sl_short, be_stop_s))
+    else if bars_held_s >= min_bars_hold
+        if close > ema21 and w_trend == 1
+            strategy.close_all(comment="Time Exit")
