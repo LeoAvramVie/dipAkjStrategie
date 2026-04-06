@@ -324,102 +324,60 @@
         <h2 class="section-title">IV. Cockpit Statusanzeige (Logik vs. Screener)</h2>
 
         <div class="glass-card">
-            <h3>Cockpit UI und Pine Screener im Vergleich</h3>
-            <p>Beide Systeme nutzen dieselbe Mathematik, werten diese aber methodisch unterschiedlich aus (Live-Tick vs. Interval-Snapshot).</p>
-            
             <h4 style="color:#fff; margin-top:1.5rem;">COCKPIT TEXT PRIORITÄTEN (Live)</h4>
-            <ol>
-                <li><strong>💎 AKJ ELITE:</strong> wenn isAKJSignal_l/s == true</li>
-                <li><strong>🌟 GOLDEN:</strong> wenn trigger_golden_l/s == true</li>
-                <li><strong>🟢 FEUER FREI:</strong> wenn trigger_feuer_l/s == true</li>
-                <li><strong>⚠️ NO VOLUME:</strong> wenn raw_feuer_l/s == true aber Volumencheck/Zone fehlschlägt</li>
-                <li><strong>📡 LAUERN:</strong> wenn radar_state erfüllt ist, aber WPR noch NICHT auf Spannung</li>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Das Cockpit prüft von oben nach unten, welcher Status erreicht ist. Es liest sich wie eine einfache Kaskade:</p>
+            <ol style="margin-bottom: 2rem;">
+                <li style="margin-bottom: 0.5rem;"><strong>💎 AKJ ELITE:</strong> Sonder-Signal! Extremes Momentum (Scharf-Modus), wir kaufen den Dip blind ohne Volumencheck.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>🌟 GOLDEN:</strong> Aufwertung! Das FEUER-Signal hat eine massive Stop-Volumen-Mauer (&gt; 3%).</li>
+                <li style="margin-bottom: 0.5rem;"><strong>🟢 FEUER FREI:</strong> Basis-Signal! Trend passt, WPR extrem (&gt; 80), rote Dip-Kerze. (Ohne Volumenzwang!)</li>
+                <li style="margin-bottom: 0.5rem;"><strong>📡 LAUERN:</strong> Radar erfasst die Aktie (Trend passt, Kurs am Band), wir warten auf den WPR-Trigger.</li>
+                <li style="color:var(--text-muted);"><strong>STATUS: NO SIGNAL:</strong> Nichts erfüllt.</li>
             </ol>
 
-            <h4 style="color:#fff; margin-top:1.5rem;">ZUSÄTZE IM TEXT</h4>
-            <ul>
-                <li><code>(ALPHA/DELTA/OMEGA)</code> = Hängt vom Risk-Mode (VIX) ab</li>
-                <li><code>(MOM)</code> = Wenn extremes kurzfristiges Volatilitäts-Momentum vorliegt</li>
-                <li><code>[Wait: Xs]</code> = Wenn die 30-Sekunden Anti-Spam Sperre aktiv ist</li>
+            <h4 style="color:#fff; margin-top:1.5rem;">ZUSÄTZE IM TEXT (Exakte Berechnung)</h4>
+            <ol style="list-style-type: decimal; padding-left: 1.5rem; color: var(--text-muted);">
+                <li style="margin-bottom: 0.8rem;"><strong>Risk-Mode: <code>(ALPHA) / (DELTA) / (OMEGA)</code></strong><br>
+                Bestimmt vom gestrigen Tagesschlusskurs des VIX.<br>
+                • <code>(ALPHA)</code> = VIX < 25.0 (Normalbetrieb, 100% Risiko)<br>
+                • <code>(DELTA)</code> = VIX 25–35 (Short-Bias, reduziertes Long-Risiko)<br>
+                • <code>(OMEGA)</code> = VIX > 35.0 (Handel gesperrt, 0% Risiko)</li>
+
+                <li style="margin-bottom: 0.8rem;"><strong>Momentum-Status: <code>(MOM)</code></strong><br>
+                Wird angehängt, wenn der "Scharf-Modus" aktiv ist (<code>is_momentum == setup_strict_long</code>).<br>
+                Berechnung Long: <code>close[1] > Tages-Oberband[1] + (ATR * 0.2)</code><br> 
+                UND <code>close[2] > Tages-Oberband[2] + (ATR * 0.2)</code><br>
+                Effekt: Aktie klebt im massiven Aufwärtstrend am oberen Band. 
+                Der normale Bollinger-Zonen-Check (Kauf im unteren Drittel) wird dabei überschrieben!</li>
+
+                <li style="margin-bottom: 0.8rem;"><strong>Cooldown-Sperre: <code>[Wait: Xs]</code></strong><br>
+                Berechnung: <code>(timenow - last_Alarm_Time) / 1000</code> = verbleibende Sekunden<br>
+                Sperrt das Signal-System für 3 Minuten nach einem Auslöser als Anti-Spam Filter.</li>
+            </ol>
+
+            <h4 style="color:#fff; margin-top:1.5rem;">SETUP DIAGNOSE ZEILE (Cockpit)</h4>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Eine zuschaltbare Fehleranalyse-Zeile (🔍 Setup Diagnose), die anzeigt, woran ein Signal scheitert oder wie es veredelt werden kann:</p>
+            <ul style="color: var(--text-muted); list-style-type: disc; padding-left: 1.5rem;">
+                <li style="margin-bottom: 0.5rem;"><strong>💎 PREMIUM:</strong> Alle Checks OK (Golden Volumen erreicht).</li>
+                <li style="margin-bottom: 0.5rem;"><strong>⚠️ MISSING: Golden Volumen</strong> FEUER ist aktiv, aber Stop-Volumen &lt; 3%. Reicht nicht ganz für Golden.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>❌ FAILED: Zonen-Check</strong> WPR Extrem erreicht, aber Aktie crasht zu tief durch das Tagesband. Risiko für Messergriff zu hoch.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>⏳ WAIT:</strong> Kurs formiert sich im Radar, warte auf WPR &gt; 80.</li>
             </ul>
 
-            <div class="alert-box" style="margin-top: 1.5rem;">
-                <div class="alert-icon">⚡</div>
-                <div class="alert-content">
-                    <p><strong>Warum kommt es zu Abweichungen (Screener +4, Cockpit LAUERN)?</strong><br>
-                    Screener = Snapshot-Berechnung (z.B. alle paar Minuten am Server). Cockpit = Echtzeit-Tick im Chart.<br>
-                    Wenn der WPR z.B. von 80.1 (Snapshot = +4) auf 79.8 (Live-Tick = LAUERN) fällt, siehst du live was unter der Haube flackert. Der Alarm ignoriert dieses Flackern sicher durch seinen Cooldown!</p>
-                </div>
-            </div>
+            <h4 style="color:#fff; margin-top:1.5rem;">TAGESTREND-ZEILE IM COCKPIT (Angezeigte Modi)</h4>
+            <ul style="color: var(--text-muted); list-style-type: disc; padding-left: 1.5rem;">
+                <li style="margin-bottom: 0.5rem;"><strong>LONG / SHORT (Scharf)</strong><br>
+                Der "Scharf-Modus" (starker, anhaltender Trend) ist aktiv.<br>
+                Bedingung (Long): <code>close[1] > d_up[1] + (ATR*0.2)</code> UND <code>close[2] > d_up[2] + (ATR*0.2)</code></li>
+                <li style="margin-bottom: 0.5rem;"><strong>LONG / SHORT (Radar)</strong><br>
+                Aktie hat das äußere Bollinger Band berührt, aber der Trend ist noch nicht "Scharf" genug.<br>
+                Bedingung (Long): <code>close[1] > d_up[1]</code></li>
+                <li><strong>NEUTRAL</strong><br>
+                Weder Scharf noch Radar aktiv (Kurs bewegt sich langweilig innerhalb der Bollinger Bänder).</li>
+            </ul>
         </div>
 
-        <!-- TEIL 5: STATISTISCHE KANTE -->
-        <h2 class="section-title">V. Statistische Kante — Edge Audit</h2>
-
-        <div class="glass-card">
-            <h3>Eingebaute Backtest-Auswertung (Virtual Trades)</h3>
-            <p>Der Indikator simuliert parallel virtuelle Trades für alle drei Signalstufen und trackt historisch Winrate und Erwartungswert. Kein separates Script nötig.</p>
-
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Signal-Typ</th>
-                            <th>Bedingungen</th>
-                            <th>Winrate-Ziel</th>
-                            <th>Label bei Edge</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>📡 LAUERN</td><td>Stage + Hysterese + WPR 70+</td><td>&gt; 50%</td><td>🔥 STAR-TICKER</td></tr>
-                        <tr><td>🟢 FEUER FREI</td><td>+ WPR 80 + Kerze + Volumen + Zone</td><td>&gt; 50%</td><td>🔥 STAR-TICKER</td></tr>
-                        <tr><td>🌟 GOLDEN</td><td>+ Premium-Mauer (3%) + Vakuum (8%)</td><td>&gt; 50%</td><td>🔥 STAR-TICKER</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="alert-box">
-                <div class="alert-icon">📈</div>
-                <div class="alert-content">
-                    <p><strong>Erwartungswert (€)</strong> = Durchschnittlicher R-Gewinn × Basis-Risiko. Eine Aktie mit grünem Erwartungswert in der GOLDEN-Reihe ist ein statistisch bewiesener Edge für dein System!</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- TEIL 6: BACKTEST -->
-        <h2 class="section-title">VI. Backtest-Anleitung</h2>
-
-        <div class="glass-card">
-            <h3>akj_sniper_backtest_v20_6.pine — Real-Simulation</h3>
-            <p>Das beigelegte Strategy-Script simuliert ein vollständiges 50.000€ Depot mit realistischen Kosten.</p>
-
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr><th>Parameter</th><th>Wert</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Startkapital</td><td>50.000 €</td></tr>
-                        <tr><td>Kommission</td><td>2.00 € pro Order (IBKR-Standard)</td></tr>
-                        <tr><td>Slippage</td><td>1 Tick</td></tr>
-                        <tr><td>Einstieg</td><td>Nur GOLDEN SETUP Signale</td></tr>
-                        <tr><td>Exit 1 (TP1)</td><td>50% der Position bei 1:1 CRV</td></tr>
-                        <tr><td>Exit 2 (Runner)</td><td>50% Runner bis EMA 21-Bruch oder Trend-Wechsel</td></tr>
-                        <tr><td>Exit 3 (Zeit)</td><td>Zeitbasiert nach 5 Handelstagen (Backtest-Fallback)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <ol>
-                <li>Pine-Script im <strong>Pine Editor</strong> in TradingView laden.</li>
-                <li>Tab <strong>"Strategietester"</strong> öffnen.</li>
-                <li><strong>Simulated Net Profit</strong> und <strong>Max Drawdown</strong> prüfen.</li>
-                <li>Audit-Cockpit (oben Mitte) zeigt Winrate pro Signalstufe.</li>
-            </ol>
-        </div>
-
-        <!-- TEIL 7: PINE SCREENER -->
-        <h2 class="section-title">VII. Pine Screener — 1000+ Aktien scannen</h2>
+        <!-- TEIL 5: PINE SCREENER -->
+        <h2 class="section-title">V. Pine Screener — 1000+ Aktien scannen</h2>
 
         <div class="glass-card">
             <h3>Massenscreening mit dem Sniper Status Code</h3>

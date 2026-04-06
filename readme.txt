@@ -249,8 +249,8 @@ SCHRITT 4: FINALE TRIGGER-BOOLEANS
   trigger_lauern_l = radar_state_l UND WPR(4) < 80
   trigger_lauern_s = radar_state_s UND WPR(4) > 20
 
-  trigger_feuer_l  = raw_feuer_l UND vol_feuer_l UND is_correct_zone_l
-  trigger_feuer_s  = raw_feuer_s UND vol_feuer_s UND is_correct_zone_s
+  trigger_feuer_l  = raw_feuer_l UND is_correct_zone_l    (ACHTUNG: V20.7 entfernt Volumen-Zwang!)
+  trigger_feuer_s  = raw_feuer_s UND is_correct_zone_s
 
   trigger_golden_l = raw_feuer_l UND vol_golden_l UND is_correct_zone_l
   trigger_golden_s = raw_feuer_s UND vol_golden_s UND is_correct_zone_s
@@ -290,18 +290,42 @@ Die Statustexte werden in dieser Reihenfolge geprüft (höchste Priorität zuers
 Das Cockpit UI (`header_txt`) und der Pine Screener nutzen die gleiche Mathematik, 
 werten diese aber unterschiedlich aus (Live-Tick vs. Snapshot).
 
-COCKPIT TEXT PRIORITÄTEN (wird auf jedem Live-Tick aktualisiert):
-  1. 💎 AKJ ELITE  (wenn isAKJSignal_l/s == true)
-  2. 🌟 GOLDEN     (wenn trigger_golden_l/s == true)
-  3. 🟢 FEUER FREI (wenn trigger_feuer_l/s == true)
-  4. ⚠️ NO VOLUME  (wenn raw_feuer_l/s == true aber Volumencheck/Zone fehlschlägt)
-  5. 📡 LAUERN     (wenn radar_state erfüllt ist, aber WPR noch NICHT auf Spannung)
-  6. STATUS: NO SIGNAL (Nichts erfüllt)
+COCKPIT TEXT PRIORITÄTEN (Live):
+Das Cockpit prüft von oben nach unten, welcher Status erreicht ist:
+
+  1. 💎 AKJ ELITE  ➔ Sonder-Signal! Extremes Momentum (Scharf-Modus), wir kaufen den Dip blind ohne Volumencheck.
+  2. 🌟 GOLDEN     ➔ Aufwertung! Das FEUER-Signal hat eine massive Stop-Volumen-Mauer (> 3%).
+  3. 🟢 FEUER FREI ➔ Basis-Signal! Trend passt, WPR extrem (> 80), rote Dip-Kerze. (Ohne Volumenzwang)
+  4. 📡 LAUERN     ➔ Radar erfasst die Aktie (Trend passt, Kurs am Band), wir warten auf den WPR-Trigger.
+  5. STATUS: NO SIGNAL ➔ Nichts erfüllt.
 
 ZUSÄTZE IM COCKPIT-TEXT:
-  (ALPHA/DELTA/OMEGA) = Hängt vom aktuellen Risk-Mode (VIX) ab
-  (MOM) = Wenn extremes kurzfristiges Volatilitäts-Momentum vorliegt
-  [Wait: Xs] = Wenn die 30-Sekunden Alarm-Sperre aktiv ist
+  1. Risk-Mode: (ALPHA) / (DELTA) / (OMEGA)
+     Bestimmt vom Tagesschlusskurs des VIX. 
+     • (ALPHA) = VIX < 25.0 (Normalbetrieb, 100% Risiko)
+     • (DELTA) = VIX 25–35 (Short-Bias, stark reduziertes Long-Risiko)
+     • (OMEGA) = VIX > 35.0 (Handel gesperrt, 0% Risiko)
+
+  2. Momentum-Status: (MOM)
+     Wird angehängt, wenn der "Scharf-Modus" aktiv ist (is_momentum == setup_strict).
+     Berechnung Long:  close[1] > Tages-Oberband[1] + (ATR * 0.2) 
+                 UND close[2] > Tages-Oberband[2] + (ATR * 0.2)
+     Effekt: Aktie klebt im massiven Aufwärtstrend am oberen Band. 
+     Der normale Bollinger-Zonen-Check (Kauf im unteren Drittel) wird überschrieben.
+
+  3. Cooldown-Sperre: [Wait: Xs]
+     Berechnung: (timenow - last_Alarm_Zeit) / 1000 = verbleibende Sekunden
+     Sperrt das Signal-System für 3 Minuten nach einem Auslöser (Anti-Spam Filter).
+
+TAGESTREND-ZEILE IM COCKPIT (Angezeigte Modi):
+  • LONG / SHORT (Scharf) 
+    = Der "Scharf-Modus" (starker, anhaltender Trend) ist aktiv.
+      Bedingung (Long): close[1] > d_up[1] + (ATR*0.2) UND close[2] > d_up[2] + (ATR*0.2)
+  • LONG / SHORT (Radar)
+    = Aktie hat das äußere Bollinger Band berührt, aber der Trend ist noch nicht "Scharf" genug.
+      Bedingung (Long): close[1] > d_up[1]
+  • NEUTRAL
+    = Weder Scharf noch Radar aktiv (Kurs bewegt sich innerhalb der Bollinger Bänder).
 
 WARUM KOMMT ES ZU ABWEICHUNGEN (Screener +4, Cockpit LAUERN)?
   - Screener = "Snapshot" (z.B. alle paar Minuten oder auf Kerzenschluss).
@@ -387,8 +411,8 @@ Signal          | weinstein | scharf  | WPR       | Kerze | Vol.Stop | Vol.TP | 
 ----------------|-----------|---------|-----------|-------|----------|--------|--------|-------
 LAUERN LONG     | Stage 2   | oder    | < 80      | -     | -        | -      | -      | NEIN
 LAUERN SHORT    | Stage 4   | oder    | > 20      | -     | -        | -      | -      | NEIN
-FEUER LONG      | Stage 2   | oder    | >= 80     | Bear  | >= 1.5%  | <=15%  | korrekt| JA
-FEUER SHORT     | Stage 4   | oder    | <= 20     | Bull  | >= 1.5%  | <=15%  | korrekt| JA
+FEUER LONG      | Stage 2   | oder    | >= 80     | Bear  | KEIN     | KEIN   | korrekt| JA
+FEUER SHORT     | Stage 4   | oder    | <= 20     | Bull  | KEIN     | KEIN   | korrekt| JA
 GOLDEN LONG     | Stage 2   | oder    | >= 80     | Bear  | >= 3.0%  | <= 8%  | korrekt| JA
 GOLDEN SHORT    | Stage 4   | oder    | <= 20     | Bull  | >= 3.0%  | <= 8%  | korrekt| JA
 AKJ ELITE LONG  | Stage 2   | MUSS!   | >= 80     | !Doji | KEIN     | KEIN   | -      | JA*

@@ -40,6 +40,7 @@ show_stage       = input.bool(true,  "Zeige: 📈 Weinstein Stage",      group=g
 show_wtrend      = input.bool(true,  "Zeige: 📅 Wochentrend",          group=group_cp)
 show_dtrend      = input.bool(true,  "Zeige: ☀️ Tagestrend",           group=group_cp)
 show_riskometer  = input.bool(true,  "Zeige: 📊 Risk-O-Meter (1R)",    group=group_cp)
+show_diagnose    = input.bool(true,  "Zeige: 🔍 Setup Diagnose",       group=group_cp)
 show_riskmode    = input.bool(true,  "Zeige: 🛡️ Risk-Mode (Adaptiv)",  group=group_cp)
 show_anchor      = input.bool(true,  "Zeige: ⚓ Anchor-Info",           group=group_cp)
 show_vacuum      = input.bool(true,  "Zeige: 📐 Vacuum Quality",        group=group_cp)
@@ -288,8 +289,8 @@ bool raw_feuer_s = radar_state_s and short_trigger
 // Nach der perf_diff Berechnung wird rs_ok_for_premium aktualisiert
 var bool rs_ok_for_premium = true  // Default: kein Veto (wird unten überschrieben)
 
-bool trigger_feuer_l  = raw_feuer_l and vol_feuer_l  and is_correct_zone_l
-bool trigger_feuer_s  = raw_feuer_s and vol_feuer_s  and is_correct_zone_s
+bool trigger_feuer_l  = raw_feuer_l and is_correct_zone_l
+bool trigger_feuer_s  = raw_feuer_s and is_correct_zone_s
 
 bool trigger_golden_l = raw_feuer_l and vol_golden_l and is_correct_zone_l and rs_ok_for_premium  // v20.7: RS-Veto
 bool trigger_golden_s = raw_feuer_s and vol_golden_s and is_correct_zone_s and rs_ok_for_premium
@@ -583,12 +584,25 @@ else if trigger_golden_l or trigger_golden_s
 else if trigger_feuer_l or trigger_feuer_s
     header_txt := "🟢 FEUER FREI (" + short_mode + ")" + (trigger_feuer_l ? t_mode_l : t_mode_s)
     header_bg := color.rgb(0, 100, 0)
-else if raw_feuer_l or raw_feuer_s
-    header_txt := "⚠️ NO VOLUME (" + short_mode + ")" + (raw_feuer_l ? t_mode_l : t_mode_s)
-    header_bg := color.rgb(100,0,0)
 else if is_lauern_l or is_lauern_s
     header_txt := "📡 LAUERN (" + short_mode + ")" + (is_lauern_l ? t_mode_l : t_mode_s)
     header_bg := color.rgb(150, 150, 0)
+
+string diagnose_txt = "-"
+color diag_c = color.silver
+if raw_feuer_l or raw_feuer_s
+    if not is_correct_zone_l and not is_correct_zone_s
+        diagnose_txt := "❌ FAILED: Zonen-Check verfehlt"
+        diag_c := color.red
+    else if not vol_golden_l and not vol_golden_s
+        diagnose_txt := "⚠️ MISSING: Golden Volumen (>3%)"
+        diag_c := color.orange
+    else
+        diagnose_txt := "💎 PREMIUM: Alle Checks OK (Golden)"
+        diag_c := color.lime
+else if is_lauern_l or is_lauern_s
+    diagnose_txt := "⏳ WAIT: Warten auf Momentum (WPR)"
+    diag_c := color.yellow
 
 if not cooldown_over and header_txt != "NO SIGNAL"
     header_txt := header_txt + " [Wait:" + str.tostring(math.round(remaining_locked_ms / 1000)) + "s]"
@@ -609,7 +623,7 @@ cp_txt_sep   = cp_size_raw == "Kompakt" ? size.tiny   : size.small
 bool grp_markt  = show_sektor or show_rs or show_stage
 bool grp_trend  = show_wtrend or show_dtrend
 bool grp_sniper = show_riskometer or show_riskmode or show_anchor or show_vacuum
-bool grp_signal = show_wpr or show_kerze or show_stopins or show_tpwid
+bool grp_signal = show_diagnose or show_wpr or show_kerze or show_stopins or show_tpwid
 bool grp_order  = show_sp or show_lp or show_anzahl or show_tp_row or show_sl or show_runner
 bool grp_zusatz = show_bbzone or show_squeeze or show_rsveto
 
@@ -641,6 +655,8 @@ if show_vacuum
     n += 1
 if grp_signal
     n += 1  // Trennlinie SIGNAL-VALIDIERUNG
+if show_diagnose
+    n += 1
 if show_wpr
     n += 1
 if show_kerze
@@ -769,6 +785,10 @@ if barstate.islast
     if grp_signal
         table.cell(cp, 0, r, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=cp_txt_sep, text_halign=text.align_center)
         table.merge_cells(cp, 0, r, 1, r)
+        r += 1
+    if show_diagnose
+        table.cell(cp, 0, r, "🔍 Setup Diagnose", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Live-Prüfung warum das Setup aktuell nicht die nächsthöhere Signalstufe erreicht (z.B. fehlendes Goldenes Volumen).")
+        table.cell(cp, 1, r, diagnose_txt, bgcolor=color.rgb(30,30,30), text_color=diag_c, text_size=cp_txt_main)
         r += 1
     if show_wpr
         table.cell(cp, 0, r, "🕹️ Momentum (WPR)", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Williams %R (4). Kaskade: 70/30 für Radar, 80/20 für Sniper-Einstieg.")
