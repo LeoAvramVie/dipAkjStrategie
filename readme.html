@@ -320,37 +320,36 @@
             </div>
         </div>
 
-        <!-- TEIL 4: v20.6 BUG-FIXES -->
-        <h2 class="section-title">IV. v20.6 Bug-Fixes <span class="fix-badge" style="font-size:0.8rem;">Neu</span></h2>
+        <!-- TEIL 4: COCKPIT STATUSANZEIGE -->
+        <h2 class="section-title">IV. Cockpit Statusanzeige (Logik vs. Screener)</h2>
 
         <div class="glass-card">
-            <h3>3 kritische Logik-Korrekturen</h3>
-            <p>In v20.6 wurden drei Schwachstellen behoben, die zu falschen Signalen in Übergangs- und Konsolidierungsphasen geführt haben.</p>
+            <h3>Cockpit UI und Pine Screener im Vergleich</h3>
+            <p>Beide Systeme nutzen dieselbe Mathematik, werten diese aber methodisch unterschiedlich aus (Live-Tick vs. Interval-Snapshot).</p>
+            
+            <h4 style="color:#fff; margin-top:1.5rem;">COCKPIT TEXT PRIORITÄTEN (Live)</h4>
+            <ol>
+                <li><strong>💎 AKJ ELITE:</strong> wenn isAKJSignal_l/s == true</li>
+                <li><strong>🌟 GOLDEN:</strong> wenn trigger_golden_l/s == true</li>
+                <li><strong>🟢 FEUER FREI:</strong> wenn trigger_feuer_l/s == true</li>
+                <li><strong>⚠️ NO VOLUME:</strong> wenn raw_feuer_l/s == true aber Volumencheck/Zone fehlschlägt</li>
+                <li><strong>📡 LAUERN:</strong> wenn radar_state erfüllt ist, aber WPR noch NICHT auf Spannung</li>
+            </ol>
 
-            <div class="fix-card">
-                <h4>Fix 1 — Wochentrend Midline-Reset</h4>
-                <p><strong>Problem:</strong> <code>w_trend</code> blieb auf BULLISCH, bis der Wochenkurs das <em>untere Band</em> erreichte — das dauert oft Wochen. In dieser Zeit wurden falsche Long-Signale generiert.</p>
-                <p><strong>Lösung:</strong> <code>w_trend</code> wird jetzt auf NEUTRAL gesetzt, sobald der letzte Wochenschlusskurs (<code>w_cl_1</code>) unter die Wochenmittellinie (<code>w_basis_1</code> = SMA 10, Wochenbasis) fällt.</p>
-                <code>else if w_trend == 1 and w_cl_1 &lt; w_basis_1 → w_trend := 0
-else if w_trend == -1 and w_cl_1 &gt; w_basis_1 → w_trend := 0</code>
-            </div>
+            <h4 style="color:#fff; margin-top:1.5rem;">ZUSÄTZE IM TEXT</h4>
+            <ul>
+                <li><code>(ALPHA/DELTA/OMEGA)</code> = Hängt vom Risk-Mode (VIX) ab</li>
+                <li><code>(MOM)</code> = Wenn extremes kurzfristiges Volatilitäts-Momentum vorliegt</li>
+                <li><code>[Wait: Xs]</code> = Wenn die 30-Sekunden Anti-Spam Sperre aktiv ist</li>
+            </ul>
 
-            <div class="fix-card">
-                <h4>Fix 2 — Tages-Scharf Midline-Reset</h4>
-                <p><strong>Problem:</strong> <code>setup_strict_long</code> (Scharf-Modus) blieb aktiv, bis 2 Tageskerzen das <em>untere Bollinger Band</em> durchbrachen. Das System blieb in "Scharf"-Stellung in einer Aktie, die bereits korrigierte.</p>
-                <p><strong>Lösung:</strong> Der Scharf-Modus wird sofort deaktiviert, wenn der gestrige Tagesschlusskurs (<code>close[1]</code>) die Tagesmittellinie (<code>d_basis</code> = SMA 10, Tagesbasis) unterschreitet.</p>
-                <code>if close[1] &lt; d_basis[1] → setup_strict_long := false
-if close[1] &gt; d_basis[1] → setup_strict_short := false</code>
-            </div>
-
-            <div class="fix-card">
-                <h4>Fix 3 — Bollinger Zone-Check im Signal-Flow</h4>
-                <p><strong>Problem:</strong> <code>is_correct_zone_l</code> und <code>is_correct_zone_s</code> wurden zwar korrekt berechnet, aber nie in den eigentlichen Trigger-Booleans (<code>trigger_feuer_l</code>, <code>trigger_golden_l</code>) verwendet — stiller, toter Code.</p>
-                <p><strong>Lösung:</strong> Der Zone-Check ist jetzt Pflichtbedingung für FEUER und GOLDEN Signale. Im Scharf-Modus (<code>setup_strict_long = true</code>) wird er automatisch überbrückt (OR-Logik), um Walking-the-Bands Setups zu erlauben.</p>
-                <code>trigger_feuer_l  = raw_feuer_l and vol_feuer_l  and is_correct_zone_l
-trigger_feuer_s  = raw_feuer_s and vol_feuer_s  and is_correct_zone_s
-trigger_golden_l = raw_feuer_l and vol_golden_l and is_correct_zone_l
-trigger_golden_s = raw_feuer_s and vol_golden_s and is_correct_zone_s</code>
+            <div class="alert-box" style="margin-top: 1.5rem;">
+                <div class="alert-icon">⚡</div>
+                <div class="alert-content">
+                    <p><strong>Warum kommt es zu Abweichungen (Screener +4, Cockpit LAUERN)?</strong><br>
+                    Screener = Snapshot-Berechnung (z.B. alle paar Minuten am Server). Cockpit = Echtzeit-Tick im Chart.<br>
+                    Wenn der WPR z.B. von 80.1 (Snapshot = +4) auf 79.8 (Live-Tick = LAUERN) fällt, siehst du live was unter der Haube flackert. Der Alarm ignoriert dieses Flackern sicher durch seinen Cooldown!</p>
+                </div>
             </div>
         </div>
 
@@ -442,22 +441,6 @@ trigger_golden_s = raw_feuer_s and vol_golden_s and is_correct_zone_s</code>
             <p><strong>Anleitung:</strong> Pine Screener öffnen → Spalte hinzufügen → <em>"Sniper Status (+4=Elite L, -4=Elite S)"</em> auswählen → nach Wert ≥ 2 oder ≤ −2 filtern.</p>
         </div>
 
-        <!-- TEIL 8: RUNNER-LOGIK -->
-        <h2 class="section-title">VIII. Risk-Recycling &amp; Runner-Logik</h2>
-
-        <div class="glass-card">
-            <h3>Das 50/50 System</h3>
-            <ul>
-                <li><strong>TP1 (1:1 CRV):</strong> Sobald der Preis die ATR-Stop-Distanz als Gewinn zurücklegt, werden <strong>50% der Position verkauft</strong>. Der Stop der verbliebenen 50% wandert sofort auf <strong>Break-Even</strong> (zero-loss Modus).</li>
-                <li><strong>TP2 — Runner:</strong> Die 50% Runner-Position läuft weiter bis EINER dieser Exits triggert:
-                    <ul style="margin-top: 0.5rem;">
-                        <li>Tages-Schlusskurs kreuzt <strong>EMA 21</strong> in die entgegengesetzte Richtung.</li>
-                        <li>Wochentrend wechselt auf die Gegenseite.</li>
-                        <li>Zeitbasierter Exit nach <strong>5 Handelstagen</strong> (nur Backtest).</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
 
         <div class="quote success">
             <strong>Der AKJ 2.0 v20.6 Elite Leitgedanke:</strong><br>

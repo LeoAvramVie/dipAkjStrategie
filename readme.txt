@@ -284,6 +284,32 @@ Die Statustexte werden in dieser Reihenfolge geprüft (höchste Priorität zuers
   → AKJ ELITE hat immer Vorrang vor GOLDEN, GOLDEN vor FEUER, etc.
 
 ================================================================================
+  ABSCHNITT 11: COCKPIT STATUSANZEIGE (Logik vs. Screener)
+================================================================================
+
+Das Cockpit UI (`header_txt`) und der Pine Screener nutzen die gleiche Mathematik, 
+werten diese aber unterschiedlich aus (Live-Tick vs. Snapshot).
+
+COCKPIT TEXT PRIORITÄTEN (wird auf jedem Live-Tick aktualisiert):
+  1. 💎 AKJ ELITE  (wenn isAKJSignal_l/s == true)
+  2. 🌟 GOLDEN     (wenn trigger_golden_l/s == true)
+  3. 🟢 FEUER FREI (wenn trigger_feuer_l/s == true)
+  4. ⚠️ NO VOLUME  (wenn raw_feuer_l/s == true aber Volumencheck/Zone fehlschlägt)
+  5. 📡 LAUERN     (wenn radar_state erfüllt ist, aber WPR noch NICHT auf Spannung)
+  6. STATUS: NO SIGNAL (Nichts erfüllt)
+
+ZUSÄTZE IM COCKPIT-TEXT:
+  (ALPHA/DELTA/OMEGA) = Hängt vom aktuellen Risk-Mode (VIX) ab
+  (MOM) = Wenn extremes kurzfristiges Volatilitäts-Momentum vorliegt
+  [Wait: Xs] = Wenn die 30-Sekunden Alarm-Sperre aktiv ist
+
+WARUM KOMMT ES ZU ABWEICHUNGEN (Screener +4, Cockpit LAUERN)?
+  - Screener = "Snapshot" (z.B. alle paar Minuten oder auf Kerzenschluss).
+  - Cockpit = "Echtzeit-Tick"
+  Wenn der WPR z.B. von 80 (Snapshot / +4) auf 79.8 (Tick / LAUERN) fällt, siehst du live 
+  was unter der Haube flackert. Der Alarm schützt durch sein 30s Cooldown vor diesem Flackern!
+
+================================================================================
   ABSCHNITT 11: ALARMSYSTEM — EXAKTE BEDINGUNGEN
 ================================================================================
 
@@ -385,24 +411,5 @@ Export-Variable "Sniper Status" (Werte -4 bis +4):
   +2 = FEUER_LONG         -2 = FEUER_SHORT
   +1 = LAUERN_LONG        -1 = LAUERN_SHORT
    0 = NO SIGNAL
-
-================================================================================
-  ABSCHNITT 15: RUNNER-LOGIK & EXIT-KRITERIEN
-================================================================================
-
-RUNNERS EXIT LONG (nach TP1-Hit):
-  runner_exit = close < EMA(close, 21) ODER w_trend == -1 ODER time_exit
-  time_exit   = (bar_index - entry_bar) >= 5 Tagesbars
-
-RUNNERS EXIT SHORT:
-  runner_exit = close > EMA(close, 21) ODER w_trend == 1 ODER time_exit
-
-STOP-LOSS ANPASSUNG NACH TP1:
-  vt.sl := vt.ep  (Stop auf Break-Even = Einstiegspreis)
-
-PROFIT-BERECHNUNG (R-Vielfaches):
-  TP1-Hälfte:  +0.5 × 1.0 R  (50% der Position zu 1R verkauft)
-  Runner-Rest: +0.5 × exit_r  (50% zum aktuellen Kurs beim Exit)
-  Gesamt-R    = 0.5 × 1.0 + 0.5 × exit_r
 
 ================================================================================
