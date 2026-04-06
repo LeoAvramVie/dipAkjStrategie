@@ -29,6 +29,35 @@ use_auto_etf     = input.bool(true, "Auto-Detect Sektor", group=group_rs)
 user_etf         = input.symbol("SPY", "Manueller Sektor-ETF", group=group_rs)
 
 // ==========================================
+// --- COCKPIT DARSTELLUNG ---
+// ==========================================
+group_cp         = "Cockpit Darstellung"
+cp_size_raw      = input.string("Normal", "Cockpit-Größe", options=["Kompakt", "Normal", "Groß"], group=group_cp, tooltip="Kompakt = size.tiny (Laptop), Normal = size.small (Desktop), Groß = size.normal (großer Monitor)")
+// Zeilen-Sichtbarkeit (alle standardmäßig EIN)
+show_sektor      = input.bool(true,  "Zeige: 🌍 Sektor",              group=group_cp)
+show_rs          = input.bool(true,  "Zeige: 💪 Rel. Stärke",         group=group_cp)
+show_stage       = input.bool(true,  "Zeige: 📈 Weinstein Stage",      group=group_cp)
+show_wtrend      = input.bool(true,  "Zeige: 📅 Wochentrend",          group=group_cp)
+show_dtrend      = input.bool(true,  "Zeige: ☀️ Tagestrend",           group=group_cp)
+show_riskometer  = input.bool(true,  "Zeige: 📊 Risk-O-Meter (1R)",    group=group_cp)
+show_riskmode    = input.bool(true,  "Zeige: 🛡️ Risk-Mode (Adaptiv)",  group=group_cp)
+show_anchor      = input.bool(true,  "Zeige: ⚓ Anchor-Info",           group=group_cp)
+show_vacuum      = input.bool(true,  "Zeige: 📐 Vacuum Quality",        group=group_cp)
+show_wpr         = input.bool(true,  "Zeige: 🕹️ Momentum (WPR)",       group=group_cp)
+show_kerze       = input.bool(true,  "Zeige: 🕯️ Kerzenregel",           group=group_cp)
+show_stopins     = input.bool(true,  "Zeige: 🛡️ Stopversicherung",      group=group_cp)
+show_tpwid       = input.bool(true,  "Zeige: 🚧 TP Widerstand",         group=group_cp)
+show_sp          = input.bool(true,  "Zeige: 🎯 Stoppreis (SP)",        group=group_cp)
+show_lp          = input.bool(true,  "Zeige: 🤝 LimitPreis (LP)",       group=group_cp)
+show_anzahl      = input.bool(true,  "Zeige: 🔢 Anzahl (Stk)",          group=group_cp)
+show_tp_row      = input.bool(true,  "Zeige: 💸 TP (Teilverkauf)",      group=group_cp)
+show_sl          = input.bool(true,  "Zeige: 🏁 Stopp-Loss (SL)",       group=group_cp)
+show_runner      = input.bool(true,  "Zeige: 🏃 Runner-Target",          group=group_cp)
+show_bbzone      = input.bool(true,  "Zeige: 🔭 Bollinger Zone",         group=group_cp)
+show_squeeze     = input.bool(true,  "Zeige: 🗜️ BB Squeeze",            group=group_cp)
+show_rsveto      = input.bool(true,  "Zeige: 💪 RS-Veto Status",         group=group_cp)
+
+// ==========================================
 // --- ATR & Atmendes Risiko-Regime (Asymmetrisch) ---
 // ==========================================
 atr_val = ta.atr(atr_len)
@@ -567,17 +596,70 @@ if not cooldown_over and header_txt != "NO SIGNAL"
 // ==========================================
 // --- 9. COCKPIT UI ---
 // ==========================================
-var table cp = table.new(position.top_right, 2, 35, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
+// Plan B: Dynamische Zeilenzählung — nur sichtbare Zeilen bekommen Platz
+// Textgröße basiert auf Cockpit-Größe Input
 f_p(val) => na(val) ? "-" : str.tostring(val, "#.##")
 
+// Bestimme Textgrößen basierend auf Cockpit-Größe
+cp_txt_main  = cp_size_raw == "Kompakt" ? size.tiny   : (cp_size_raw == "Groß" ? size.normal : size.small)
+cp_txt_hdr   = cp_size_raw == "Kompakt" ? size.small  : (cp_size_raw == "Groß" ? size.large  : size.normal)
+cp_txt_sep   = cp_size_raw == "Kompakt" ? size.tiny   : size.small
+
+// Gruppen-Sichtbarkeit (Trennlinie nur wenn mindestens 1 Zeile der Gruppe sichtbar)
+bool grp_markt  = show_sektor or show_rs or show_stage
+bool grp_trend  = show_wtrend or show_dtrend
+bool grp_sniper = show_riskometer or show_riskmode or show_anchor or show_vacuum
+bool grp_signal = show_wpr or show_kerze or show_stopins or show_tpwid
+bool grp_order  = show_sp or show_lp or show_anzahl or show_tp_row or show_sl or show_runner
+bool grp_zusatz = show_bbzone or show_squeeze or show_rsveto
+
+// Dynamische Zeilenzählung
+int n = 1  // Row 0 = STATUS Header immer da
+if grp_markt
+    n += 1  // Trennlinie MARKT-KONTEXT
+if show_sektor  : n += 1
+if show_rs      : n += 1
+if show_stage   : n += 1
+if grp_trend
+    n += 1  // Trennlinie TREND-ANALYSE
+if show_wtrend  : n += 1
+if show_dtrend  : n += 1
+if grp_sniper
+    n += 1  // Trennlinie SNIPER METRIKEN
+if show_riskometer : n += 1
+if show_riskmode   : n += 1
+if show_anchor     : n += 1
+if show_vacuum     : n += 1
+if grp_signal
+    n += 1  // Trennlinie SIGNAL-VALIDIERUNG
+if show_wpr     : n += 1
+if show_kerze   : n += 1
+if show_stopins : n += 1
+if show_tpwid   : n += 1
+if grp_order
+    n += 1  // Trennlinie ORDER-MATRIX
+if show_sp      : n += 1
+if show_lp      : n += 1
+if show_anzahl  : n += 1
+if show_tp_row  : n += 1
+if show_sl      : n += 1
+if show_runner  : n += 1
+if grp_zusatz
+    n += 1  // Trennlinie ZUSATZ-INFO
+if show_bbzone  : n += 1
+if show_squeeze : n += 1
+if show_rsveto  : n += 1
+
+// Tabelle mit exakt n Zeilen (kein Leerraum!)
+var table cp = table.new(position.top_right, 2, 1, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
+table.delete(cp)
+cp := table.new(position.top_right, 2, n, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
+
 if barstate.islast
-    // Bereite Werte vor, um den Type-Inference Timeout des Pine-Compilers zu vermeiden
     color h_tc = (header_bg == color.yellow or header_bg == color.lime) ? color.black : color.white
     color dt_tc = (dt_bg == color.yellow) ? color.black : color.white
-    
     string rom_str = str.tostring(nz(active_risk_display), "#.##") + " €"
     string anc_str = str.tostring(nz(anchor_bars)) + " Bars ago"
-    
     string wpr_txt = str.tostring(nz(d_wpr), "#.#")
     color wpr_bg = color.rgb(40, 40, 40)
     if w_trend == 1
@@ -585,24 +667,148 @@ if barstate.islast
     else if w_trend == -1
         wpr_bg := nz(d_wpr) <= 20 ? color.red : (nz(d_wpr) <= 30 ? color.yellow : color.rgb(40, 40, 40))
     color wpr_tc = (wpr_bg == color.yellow) ? color.black : color.white
-    
     color s_v_bg = nz(stop_density) >= dyn_min_stop_feuer ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
     string sd_str = str.tostring(nz(stop_density), "#.#") + "%"
-    
     color t_v_bg = vacuum_ok ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
     string tp_str = str.tostring(nz(tp_density), "#.#") + "%"
-    
     string shares_display = nz(shares) > 0 ? str.tostring(nz(shares)) : "Min: 1 (Risk > Budget)"
     color ema_col = w_trend == 1 ? color.blue : (w_trend == -1 ? color.red : color.rgb(80, 80, 80))
     string ema_str = "EMA 21: " + f_p(ema21)
+    string rs_veto_txt = rs_ok_for_premium ? "✅ (Golden/Elite OK)" : "⚠️ VETO (RS SCHWACH — kein Golden/Elite)"
+    color  rs_veto_bg  = rs_ok_for_premium ? color.rgb(10, 50, 10) : color.rgb(70, 20, 0)
 
-    // 0: Status
-    table.cell(cp, 0, 0, " STATUS ", bgcolor=color.black, text_color=color.white, text_size=size.normal)
-    table.cell(cp, 1, 0, header_txt, bgcolor=header_bg, text_color=h_tc, text_size=size.normal)
+    // Laufender Zeilen-Index (r) — wächst nur wenn Zeile sichtbar ist
+    int r = 0
 
-    // 1-4: Markt-Kontext
-    table.cell(cp, 0, 1, "--- MARKT-KONTEXT ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=size.small, text_halign=text.align_center)
-    table.merge_cells(cp, 0, 1, 1, 1)
+    // Row 0: STATUS Header (immer sichtbar)
+    table.cell(cp, 0, r, " STATUS ", bgcolor=color.black, text_color=color.white, text_size=cp_txt_hdr)
+    table.cell(cp, 1, r, header_txt, bgcolor=header_bg, text_color=h_tc, text_size=cp_txt_hdr)
+    r += 1
+
+    // MARKT-KONTEXT Gruppe
+    if grp_markt
+        table.cell(cp, 0, r, "--- MARKT-KONTEXT ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=cp_txt_sep, text_halign=text.align_center)
+        table.merge_cells(cp, 0, r, 1, r)
+        r += 1
+    if show_sektor
+        table.cell(cp, 0, r, "🌍 Sektor", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Der maßgebliche Sektor-ETF der Aktie. Dient zur Bestimmung des Marktumfelds und der relativen Stärke.")
+        table.cell(cp, 1, r, sec_txt, bgcolor=sec_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_rs
+        table.cell(cp, 0, r, "💪 Rel. Stärke", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance und erhöht die Wahrscheinlichkeit für einen erfolgreichen Trade.")
+        table.cell(cp, 1, r, rs_txt, bgcolor=rs_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_stage
+        table.cell(cp, 0, r, "📈 Weinstein Stage", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Strategische Marktphase nach Stan Weinstein. Stage 2 = Institutionelle Akkumulation (Long), Stage 4 = Institutionelle Distribution (Short).")
+        table.cell(cp, 1, r, ws_txt, bgcolor=ws_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+
+    // TREND-ANALYSE Gruppe
+    if grp_trend
+        table.cell(cp, 0, r, "--- TREND-ANALYSE (v20.6) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=cp_txt_sep, text_halign=text.align_center)
+        table.merge_cells(cp, 0, r, 1, r)
+        r += 1
+    if show_wtrend
+        table.cell(cp, 0, r, "📅 Wochentrend", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Taktische Richtung auf Wochenbasis (Sticky). Erfordert 2 Schlusskurse außerhalb der Bollinger Bänder (10/1). Bleibt aktiv, bis die Gegenseite 2 Kerzen erzwingt.")
+        table.cell(cp, 1, r, wt_txt, bgcolor=wt_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_dtrend
+        table.cell(cp, 0, r, "☀️ Tagestrend", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Kurzfristiges Timing-Radar. Nutzt einen dynamischen ATR-Puffer (Hysterese v20.5), um Fehlsignale in volatilen Phasen (VIX > 25) zu filtern.")
+        table.cell(cp, 1, r, dt_txt, bgcolor=dt_bg, text_color=dt_tc, text_size=cp_txt_main)
+        r += 1
+
+    // SNIPER METRIKEN Gruppe
+    if grp_sniper
+        table.cell(cp, 0, r, "--- SNIPER METRIKEN ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=cp_txt_sep, text_halign=text.align_center)
+        table.merge_cells(cp, 0, r, 1, r)
+        r += 1
+    if show_riskometer
+        table.cell(cp, 0, r, "📊 Risk-O-Meter (1R)", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Dynamische Positionsgröße (1R). Passt das Risiko basierend auf der Marktangst (VIX) und der Aktien-Volatilität automatisch an.")
+        table.cell(cp, 1, r, rom_str, bgcolor=color.rgb(30,30,30), text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_riskmode
+        table.cell(cp, 0, r, "🛡️ Risk-Mode (Adaptiv)", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip=rm_tooltip)
+        table.cell(cp, 1, r, risk_mode_txt, bgcolor=risk_mode_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_anchor
+        table.cell(cp, 0, r, "⚓ Anchor-Info", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Startpunkt des Anchored Volume Profile (AVP). Misst das Volumen exakt ab dem letzten Weinstein-Phasenwechsel oder Pivot-Punkt.")
+        table.cell(cp, 1, r, anc_str, bgcolor=color.rgb(30,30,30), text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_vacuum
+        table.cell(cp, 0, r, "📐 Vacuum Quality", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Prüft den historischen Ziel-Widerstand (TP < 8%). Der RLD-Current-Volumen Check blockiert Trades nicht mehr fälschlicherweise bei Breakouts.")
+        table.cell(cp, 1, r, vacuum_qual, bgcolor=vacuum_ok ? color.rgb(0,180,0) : color.rgb(60,10,10), text_color=color.white, text_size=cp_txt_main)
+        r += 1
+
+    // SIGNAL-VALIDIERUNG Gruppe
+    if grp_signal
+        table.cell(cp, 0, r, "--- SIGNAL-VALIDIERUNG ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=cp_txt_sep, text_halign=text.align_center)
+        table.merge_cells(cp, 0, r, 1, r)
+        r += 1
+    if show_wpr
+        table.cell(cp, 0, r, "🕹️ Momentum (WPR)", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Williams %R (4). Kaskade: 70/30 für Radar, 80/20 für Sniper-Einstieg.")
+        table.cell(cp, 1, r, wpr_txt, bgcolor=wpr_bg, text_color=wpr_tc, text_size=cp_txt_main)
+        r += 1
+    if show_kerze
+        table.cell(cp, 0, r, "🕯️ Kerzenregel", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Prüft die Preis-Aktion (Scharf-Kerze) inkl. ATR-basiertem Doji-Filter. OK bedeutet: Die Käufer/Verkäufer haben die Kontrolle übernommen.")
+        table.cell(cp, 1, r, c_txt, bgcolor=c_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_stopins
+        table.cell(cp, 0, r, "🛡️ Stopversicherung", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="v20.7 ATR-norm.: Min. FEUER=" + dyn_feuer_str + " | Min. GOLDEN=" + dyn_golden_str + " (dynamisch je Aktie-Volatilität)")
+        table.cell(cp, 1, r, sd_str, bgcolor=s_v_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_tpwid
+        table.cell(cp, 0, r, "🚧 TP Widerstand", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="Das Volumen-Hindernis (🚧) bis zum Ziel. Gemessen per RLD-Verfahren (v20.5). Zielwert: <8% für einen freien Lauf (Vakuum) zum Take-Profit.")
+        table.cell(cp, 1, r, tp_str, bgcolor=t_v_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+
+    // ORDER-MATRIX Gruppe
+    if grp_order
+        table.cell(cp, 0, r, "--- ORDER-MATRIX ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=cp_txt_sep, text_halign=text.align_center)
+        table.merge_cells(cp, 0, r, 1, r)
+        r += 1
+    if show_sp
+        table.cell(cp, 0, r, "🎯 Stoppreis (SP)", bgcolor=color.rgb(50,50,50), text_color=color.yellow, text_size=cp_txt_main, tooltip="Dein Einstiegs-Preis (Trigger). Platziere hier deine Stop-Buy (Long) oder Stop-Sell (Short) Limit-Order.")
+        table.cell(cp, 1, r, f_p(sp_price), bgcolor=color.rgb(30,30,30), text_color=color.yellow, text_size=cp_txt_main)
+        r += 1
+    if show_lp
+        table.cell(cp, 0, r, "🤝 LimitPreis (LP)", bgcolor=color.rgb(50,50,50), text_color=color.yellow, text_size=cp_txt_main, tooltip="Gap-Schutz für deine Einstiegsorder. Vermeidet Slippage, wenn der Markt extem wild über deinen Preis springt.")
+        table.cell(cp, 1, r, f_p(lp_price), bgcolor=color.rgb(30,30,30), text_color=color.yellow, text_size=cp_txt_main)
+        r += 1
+    if show_anzahl
+        table.cell(cp, 0, r, "🔢 Anzahl (Stk)", bgcolor=color.rgb(50,50,50), text_color=color.white, text_size=cp_txt_main, tooltip="Die Anzahl an Aktien, mit denen du EXAKT dein gewünschtes asymmetrisches (€) 1R Risiko triffst.")
+        table.cell(cp, 1, r, shares_display, bgcolor=color.rgb(30,30,30), text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_tp_row
+        table.cell(cp, 0, r, "💸 TP (Teilverkauf)", bgcolor=color.rgb(50,50,50), text_color=color.lime, text_size=cp_txt_main, tooltip="Das 1:1 CRV Ziel. Verkaufe hier exakt 50% deiner Position (Risk-Recycling) und ziehe den restlichen Stop auf Break-Even.")
+        table.cell(cp, 1, r, f_p(tp_price), bgcolor=color.rgb(30,30,30), text_color=color.lime, text_size=cp_txt_main)
+        r += 1
+    if show_sl
+        table.cell(cp, 0, r, "🏁 Stopp-Loss (SL)", bgcolor=color.rgb(50,50,50), text_color=color.orange, text_size=cp_txt_main, tooltip="Institutioneller Stop-Loss (1.0x ATR). Schützt vor Rauschen und Gaps.")
+        table.cell(cp, 1, r, f_p(sl_price), bgcolor=color.rgb(30,30,30), text_color=color.orange, text_size=cp_txt_main)
+        r += 1
+    if show_runner
+        table.cell(cp, 0, r, "🏃 Runner-Target", bgcolor=color.rgb(50,50,50), text_color=ema_col, text_size=cp_txt_main, tooltip="Dein Trailing-Radar für den 50% Runner. Wenn der heutige Tages-Schlusskurs diese EMA 21 Linie bricht, schließt du den gesamten Rest.")
+        table.cell(cp, 1, r, ema_str, bgcolor=color.rgb(30,30,30), text_color=ema_col, text_size=cp_txt_main)
+        r += 1
+
+    // ZUSATZ-INFO Gruppe
+    if grp_zusatz
+        table.cell(cp, 0, r, "--- ZUSATZ-INFO (v20.7) ---", bgcolor=color.rgb(20,20,20), text_color=color.gray, text_size=cp_txt_sep, text_halign=text.align_center)
+        table.merge_cells(cp, 0, r, 1, r)
+        r += 1
+    if show_bbzone
+        table.cell(cp, 0, r, "🔭 Bollinger Zone", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="14-Punkte-System: LONG ZONE/EXTREME = Long erlaubt, SHORT ZONE/EXTREME = Short erlaubt. Im Scharf-Modus automatisch übergangen.")
+        table.cell(cp, 1, r, bc_txt, bgcolor=bc_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_squeeze
+        table.cell(cp, 0, r, "🗜️ BB Squeeze", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="v20.7: Bollinger Band Breite als % des Kurses. SQUEEZE (<3%) = Energie baut sich auf, guter Dip-Buy Kontext. EXPANSION (>8%) = Vorsicht, Bänder weiten sich, Dip-Buy riskanter.")
+        table.cell(cp, 1, r, squeeze_txt, bgcolor=squeeze_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+    if show_rsveto
+        table.cell(cp, 0, r, "💪 RS-Veto Status", bgcolor=color.rgb(40,40,40), text_color=color.silver, text_size=cp_txt_main, tooltip="v20.7: Relative Stärke als Veto für Golden & AKJ Elite. Wenn Aktie ihren Sektor underperformt (RS = SCHWACH) können nur FEUER-Signale feuern — kein GOLDEN oder ELITE.")
+        table.cell(cp, 1, r, rs_veto_txt, bgcolor=rs_veto_bg, text_color=color.white, text_size=cp_txt_main)
+        r += 1
+        _ = r  // suppress unused variable warning
     table.cell(cp, 0, 2, "🌍 Sektor", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Der maßgebliche Sektor-ETF der Aktie. Dient zur Bestimmung des Marktumfelds und der relativen Stärke.")
     table.cell(cp, 1, 2, sec_txt, bgcolor=sec_bg, text_color=color.white)
     table.cell(cp, 0, 3, "💪 Rel. Stärke", bgcolor=color.rgb(40, 40, 40), text_color=color.silver, tooltip="Vergleicht die Performance der Aktie mit ihrem Sektor über 20 Tage. STARK bedeutet Outperformance und erhöht die Wahrscheinlichkeit für einen erfolgreichen Trade.")
