@@ -278,8 +278,8 @@ bool vol_golden_l = stop_density >= dyn_min_stop_golden and tp_density <= golden
 bool vol_golden_s = stop_density >= dyn_min_stop_golden and tp_density <= golden_tp_density
 
 // --- SYNCHRONIZED TRIGGER BOOLS ---
-bool trigger_lauern_l = radar_state_l and d_wpr < 80
-bool trigger_lauern_s = radar_state_s and d_wpr > 20
+bool trigger_lauern_l = radar_state_l and d_wpr >= 70 and d_wpr < 80
+bool trigger_lauern_s = radar_state_s and d_wpr <= 30 and d_wpr > 20
 
 bool raw_feuer_l = radar_state_l and long_trigger
 bool raw_feuer_s = radar_state_s and short_trigger
@@ -568,9 +568,6 @@ color header_bg = color.black
 bool is_wpr_trig_l = d_wpr >= 80
 bool is_wpr_trig_s = d_wpr <= 20
 
-bool is_lauern_l = radar_state_l and not is_wpr_trig_l
-bool is_lauern_s = radar_state_s and not is_wpr_trig_s
-
 string t_mode_l = is_momentum_l ? " (MOM)" : ""
 string t_mode_s = is_momentum_s ? " (MOM)" : ""
 string short_mode = vix_c < 25.0 ? "ALPHA" : (vix_c <= 35.0 ? "DELTA" : "OMEGA")
@@ -584,8 +581,8 @@ else if trigger_golden_l or trigger_golden_s
 else if trigger_feuer_l or trigger_feuer_s
     header_txt := "🟢 FEUER FREI (" + short_mode + ")" + (trigger_feuer_l ? t_mode_l : t_mode_s)
     header_bg := color.rgb(0, 100, 0)
-else if is_lauern_l or is_lauern_s
-    header_txt := "📡 LAUERN (" + short_mode + ")" + (is_lauern_l ? t_mode_l : t_mode_s)
+else if trigger_lauern_l or trigger_lauern_s
+    header_txt := "📡 LAUERN (" + short_mode + ")" + (trigger_lauern_l ? t_mode_l : t_mode_s)
     header_bg := color.rgb(150, 150, 0)
 
 string diagnose_txt = "-"
@@ -600,7 +597,7 @@ if raw_feuer_l or raw_feuer_s
     else
         diagnose_txt := "💎 PREMIUM: Alle Checks OK (Golden)"
         diag_c := color.lime
-else if is_lauern_l or is_lauern_s
+else if trigger_lauern_l or trigger_lauern_s
     diagnose_txt := "⏳ WAIT: Warten auf Momentum (WPR)"
     diag_c := color.yellow
 

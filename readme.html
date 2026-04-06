@@ -322,16 +322,33 @@
 
         <!-- TEIL 4: COCKPIT STATUSANZEIGE -->
         <h2 class="section-title">IV. Cockpit Statusanzeige (Logik vs. Screener)</h2>
-
         <div class="glass-card">
             <h4 style="color:#fff; margin-top:1.5rem;">COCKPIT TEXT PRIORITÄTEN (Live)</h4>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">Das Cockpit prüft von oben nach unten, welcher Status erreicht ist. Es liest sich wie eine einfache Kaskade:</p>
-            <ol style="margin-bottom: 2rem;">
-                <li style="margin-bottom: 0.5rem;"><strong>💎 AKJ ELITE:</strong> Sonder-Signal! Extremes Momentum (Scharf-Modus), wir kaufen den Dip blind ohne Volumencheck.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>🌟 GOLDEN:</strong> Aufwertung! Das FEUER-Signal hat eine massive Stop-Volumen-Mauer (&gt; 3%).</li>
-                <li style="margin-bottom: 0.5rem;"><strong>🟢 FEUER FREI:</strong> Basis-Signal! Trend passt, WPR extrem (&gt; 80), rote Dip-Kerze. (Ohne Volumenzwang!)</li>
-                <li style="margin-bottom: 0.5rem;"><strong>📡 LAUERN:</strong> Radar erfasst die Aktie (Trend passt, Kurs am Band), wir warten auf den WPR-Trigger.</li>
-                <li style="color:var(--text-muted);"><strong>STATUS: NO SIGNAL:</strong> Nichts erfüllt.</li>
+            <div class="alert-box" style="margin-bottom: 1.5rem;">
+                <div class="alert-icon">ℹ️</div>
+                <div class="alert-content">
+                    <p style="margin: 0;"><strong>Hinweis zu Long / Short:</strong> Der Code berechnet Long- (<code>_l</code>) und Short- (<code>_s</code>) Signale zu 100% identisch und spiegelbildlich. Zur besseren Lesbarkeit sind in den untenstehenden Formeln die <strong>Long-Werte</strong> notiert (z.B. Weinstein 2, rote Kerze, WPR &gt;= 80). Bei Short dreht sich die Logik automatisch um (Weinstein 4, grüne Kerze, WPR &lt;= 20, etc.).</p>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Das Cockpit prüft von oben nach unten, welcher Status erreicht ist. Jede Ebene durchläuft exakte mathematische Checks:</p>
+            <ol style="margin-bottom: 2rem; color: var(--text-muted);">
+                <li style="margin-bottom: 0.8rem;"><strong>💎 AKJ ELITE:</strong> Sonder-Signal! Extremes Momentum (Scharf-Modus).<br>
+                <em>Technisch:</em> <code>weinstein_stage == 2</code> AND <code>setup_strict_long</code> AND <code>wpr >= 80</code> AND <code>low > d_lo</code> AND <code>open != close</code>.<br>
+                <em>Fachlich:</em> Wir befinden uns in einem so massiven Aufwärtstrend (Scharf-Modus), dass wir jeden minimalen Rücksetzer sofort blind kaufen. Kein Doji erlaubt, aber die Kerze hat das untere Bollinger Band nicht einmal berührt (low > d_lo). Komplett ohne Volumencheck!</li>
+
+                <li style="margin-bottom: 0.8rem;"><strong>🌟 GOLDEN:</strong> Das Premium-Setup! Ein FEUER-Signal plus einer massiven Volumen-Mauer.<br>
+                <em>Technisch:</em> <code>raw_feuer_l</code> AND <code>is_correct_zone_l</code> AND <code>vol_golden_l</code> (Stop-Dichte >= 3% & TP-Dichte <= 8%) AND <code>rs_ok_for_premium</code> (Sektor-Veto inaktiv).<br>
+                <em>Fachlich:</em> Das bestmögliche Standardsetup. Die Aktie fällt sauber in die erlaubte Kaufzone (unteres Drittel des Tagesbandes), das Timing stimmt perfekt und — ganz wichtig — das "Anchored Volume Profile" zeigt an, dass direkt unter unserem Entry fettes, massives Groß-Kapital lauert, das unseren Stop schützt.</li>
+
+                <li style="margin-bottom: 0.8rem;"><strong>🟢 FEUER FREI:</strong> Basis-Signal! Reines Chart- & Timing-Setup.<br>
+                <em>Technisch:</em> <code>raw_feuer_l</code> (<code>radar_state</code> AND <code>wpr >= 80</code> AND <code>close < open</code> AND NOT <code>doji</code>) AND <code>is_correct_zone_l</code>.<br>
+                <em>Fachlich:</em> Typisches "Reversion to the Mean" (Rückkehr zum Mittelwert) Setup. Die Aktie korrigiert nach einem Hoch (Radar) in den günstigen "Oversold"-Bereich (WPR > 80), die Dip-Kerze schließt rot, und fällt sauber ins untere Band. Kein Volumenzwang!</li>
+
+                <li style="margin-bottom: 0.8rem;"><strong>📡 LAUERN:</strong> Radar-Zustand erfasst, Warten auf Auslöser.<br>
+                <em>Technisch:</em> <code>radar_state_l</code> (<code>weinstein == 2</code> AND <code>high >= d_up + ATR*0.2</code>) AND (<code>wpr >= 70</code> AND <code>wpr &lt; 80</code>).<br>
+                <em>Fachlich:</em> Die Aktie hat erst kürzlich starke Aufwärtsenergie bewiesen (das Hoch war weit über dem Tagesband), ABER sie ist noch nicht reif für einen Einstieg. Der WPR ist jedoch bereits in der heißen Vorwarn-Zone (70-80). Die Spannung steigt!</li>
+
+                <li><strong>STATUS: NO SIGNAL:</strong> Nichts erfüllt.</li>
             </ol>
 
             <h4 style="color:#fff; margin-top:1.5rem;">ZUSÄTZE IM TEXT (Exakte Berechnung)</h4>
