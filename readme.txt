@@ -234,8 +234,8 @@ SCHRITT 2: RAW-TRIGGER (Kerzenregel + WPR)
   Kerzenregel Long:  Bearische Kerze (close < open), kein Doji, nicht unter unterem Band
   Kerzenregel Short: Bullische Kerze (close > open), kein Doji, nicht über oberem Band
 
-  raw_feuer_l = radar_state_l UND long_trigger
-  raw_feuer_s = radar_state_s UND short_trigger
+  raw_feuer_l = weinstein_stage == 2 UND long_trigger
+  raw_feuer_s = weinstein_stage == 4 UND short_trigger
 
 SCHRITT 3: VOLUMEN-VALIDIERUNG
 
@@ -249,17 +249,17 @@ SCHRITT 4: FINALE TRIGGER-BOOLEANS
   trigger_lauern_l = radar_state_l UND WPR(4) < 80
   trigger_lauern_s = radar_state_s UND WPR(4) > 20
 
-  trigger_feuer_l  = raw_feuer_l UND is_correct_zone_l    (ACHTUNG: V20.7 entfernt Volumen-Zwang!)
-  trigger_feuer_s  = raw_feuer_s UND is_correct_zone_s
+  trigger_feuer_l  = raw_feuer_l
+  trigger_feuer_s  = raw_feuer_s
 
-  trigger_golden_l = raw_feuer_l UND vol_golden_l UND is_correct_zone_l
-  trigger_golden_s = raw_feuer_s UND vol_golden_s UND is_correct_zone_s
+  trigger_golden_l = raw_feuer_l UND vol_golden_l
+  trigger_golden_s = raw_feuer_s UND vol_golden_s
 
 AKJ ELITE SIGNAL (eigene Logik, unabhängig von Volumen):
   isAKJSignal_l = weinstein_stage==2 UND setup_strict_long UND WPR(4)>=80
-                  UND low > d_lo UND open != close
+                  UND low > d_lo UND close < open UND NOT is_doji
   isAKJSignal_s = weinstein_stage==4 UND setup_strict_short UND WPR(4)<=20
-                  UND high < d_up UND open != close
+                  UND high < d_up UND close > open UND NOT is_doji
 
   Besonderheit: KEIN Volumenfilter! AKJ Elite prüft nur Trend + Scharf + WPR + Preiposition.
   Besonderheit: low > d_lo (Kurs über unterem Band) statt close > d_lo beim Feuer-Trigger.
@@ -290,24 +290,24 @@ Die Statustexte werden in dieser Reihenfolge geprüft (höchste Priorität zuers
 Das Cockpit prüft von oben nach unten, welcher Status erreicht ist. Jede Ebene durchläuft exakte mathematische Checks für Long- und Short-Signale:
 
   1. 💎 AKJ ELITE ➔ Sonder-Signal! Extremes Momentum (Scharf-Modus).
-     Technisch LONG: weinstein_stage == 2 UND setup_strict_long UND wpr >= 80 UND low > d_lo UND open != close.
-     Technisch SHORT: weinstein_stage == 4 UND setup_strict_short UND wpr <= 20 UND high < d_up UND open != close.
+     Technisch LONG: weinstein_stage == 2 UND setup_strict_long UND wpr >= 80 UND low > d_lo UND close < open UND NOT is_doji.
+     Technisch SHORT: weinstein_stage == 4 UND setup_strict_short UND wpr <= 20 UND high < d_up UND close > open UND NOT is_doji.
      Fachlich: Wir befinden uns in einem massiven Trend, dass wir jeden minimalen Rücksetzer sofort blind traden. Komplett ohne Volumencheck!
 
   2. 🌟 GOLDEN ➔ Das Premium-Setup! Ein FEUER-Signal plus einer massiven Volumen-Mauer.
-     Technisch LONG: raw_feuer_l UND is_correct_zone_l UND vol_golden_l (Stop-Dichte >= 3% & TP-Dichte <= 8%) UND rs_ok_for_premium.
-     Technisch SHORT: raw_feuer_s UND is_correct_zone_s UND vol_golden_s (Stop-Dichte >= 3% & TP-Dichte <= 8%) UND rs_ok_for_premium.
-     Fachlich: Perfektes Timing, und das Volume Profile zeigt massive Institutionelle Orders direkt hinter dem Entry als Schutz an.
+     Technisch LONG: raw_feuer_l UND vol_golden_l (Stop-Dichte >= 3% & TP-Dichte <= 8%) UND rs_ok_for_premium.
+     Technisch SHORT: raw_feuer_s UND vol_golden_s (Stop-Dichte >= 3% & TP-Dichte <= 8%) UND rs_ok_for_premium.
+     Fachlich: Perfektes Timing, und das Volume Profile zeigt massive Institutionelle Orders direkt hinter dem Entry als Schutz an. Kein Zonen-Check nötig!
 
   3. 🟢 FEUER FREI ➔ Basis-Signal! Reines Chart- & Timing-Setup.
-     Technisch LONG: raw_feuer_l (radar_state UND wpr >= 80 UND rote Kerze UND NOT doji) UND is_correct_zone_l.
-     Technisch SHORT: raw_feuer_s (radar_state UND wpr <= 20 UND grüne Kerze UND NOT doji) UND is_correct_zone_s.
-     Fachlich: Klasisches Pullback Setup ("Reversion to Mean"). Die Aktie ist überverkauft/überkauft an einer relevanten Tagesband-Kante. Kein Volumenzwang!
+     Technisch LONG: raw_feuer_l (weinstein == 2 UND wpr >= 80 UND rote Kerze UND NOT doji).
+     Technisch SHORT: raw_feuer_s (weinstein == 4 UND wpr <= 20 UND grüne Kerze UND NOT doji).
+     Fachlich: Klasisches Pullback Setup ("Reversion to Mean"). Kein Volumenzwang, kein Bollinger-Hysterese Zwang, kein Zonen-Check! Lediglich Weinstein Stage muss stimmen.
 
-  4. 📡 LAUERN ➔ Radar-Zustand erfasst, Warten auf Auslöser.
-     Technisch LONG: radar_state_l (weinstein == 2 UND high >= d_up + ATR*0.2) UND (wpr >= 70 UND wpr < 80).
-     Technisch SHORT: radar_state_s (weinstein == 4 UND low <= d_lo - ATR*0.2) UND (wpr <= 30 UND wpr > 20).
-     Fachlich: Die Trend-Energie ist da, wir warten nur noch bis sich der WPR richtig extrem aufgeladen hat. Vorwarn-Phase!
+  4. 📡 LAUERN ➔ Frühwarn-Radar. 
+     Technisch LONG:  weinstein_stage == 2 UND d_wpr >= 70 UND d_wpr < 80.
+     Technisch SHORT: weinstein_stage == 4 UND d_wpr <= 30 UND d_wpr > 20.
+     Fachlich: Macht uns darauf aufmerksam, dass das Momentum sich bald überladen könnte. Vorwarn-Phase!
 
   5. STATUS: NO SIGNAL ➔ Nichts erfüllt.
 
@@ -407,16 +407,16 @@ Jeder Alarm enthält folgende strukturierte Nachricht:
 
 Signal          | weinstein | scharf  | WPR       | Kerze | Vol.Stop | Vol.TP | Zone   | Alarm?
 ----------------|-----------|---------|-----------|-------|----------|--------|--------|-------
-LAUERN LONG     | Stage 2   | oder    | < 80      | -     | -        | -      | -      | NEIN
-LAUERN SHORT    | Stage 4   | oder    | > 20      | -     | -        | -      | -      | NEIN
-FEUER LONG      | Stage 2   | oder    | >= 80     | Bear  | KEIN     | KEIN   | korrekt| JA
-FEUER SHORT     | Stage 4   | oder    | <= 20     | Bull  | KEIN     | KEIN   | korrekt| JA
-GOLDEN LONG     | Stage 2   | oder    | >= 80     | Bear  | >= 3.0%  | <= 8%  | korrekt| JA
-GOLDEN SHORT    | Stage 4   | oder    | <= 20     | Bull  | >= 3.0%  | <= 8%  | korrekt| JA
-AKJ ELITE LONG  | Stage 2   | MUSS!   | >= 80     | !Doji | KEIN     | KEIN   | -      | JA*
-AKJ ELITE SHORT | Stage 4   | MUSS!   | <= 20     | !Doji | KEIN     | KEIN   | -      | JA*
+LAUERN LONG     | Stage 2   | -       | 70 - 79   | -     | KEIN     | KEIN   | -      | JA
+LAUERN SHORT    | Stage 4   | -       | 21 - 30   | -     | KEIN     | KEIN   | -      | JA
+FEUER LONG      | Stage 2   | -       | >= 80     | Bear  | KEIN     | KEIN   | -      | JA
+FEUER SHORT     | Stage 4   | -       | <= 20     | Bull  | KEIN     | KEIN   | -      | JA
+GOLDEN LONG     | Stage 2   | -       | >= 80     | Bear  | >= 3.0%  | <= 8%  | -      | JA
+GOLDEN SHORT    | Stage 4   | -       | <= 20     | Bull  | >= 3.0%  | <= 8%  | -      | JA
+AKJ ELITE LONG  | Stage 2   | MUSS!   | >= 80     | Bear  | KEIN     | KEIN   | -      | JA
+AKJ ELITE SHORT | Stage 4   | MUSS!   | <= 20     | Bull  | KEIN     | KEIN   | -      | JA
 
-*AKJ ELITE: Alarm nur bei Kerzenschluss (freq_once_per_bar_close)
+
   "oder" bedeutet: radar_state ODER setup_strict genügen für die Radar-Bedingung
   "korrekt" bedeutet: Zone passt ODER Scharf-Modus aktiv (Zone wird dann übergangen)
 

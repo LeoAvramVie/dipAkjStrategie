@@ -293,17 +293,17 @@
                 <div class="signal-card lauern">
                     <span class="signal-icon">📡</span>
                     <div class="signal-name">LAUERN</div>
-                    <div class="signal-desc">Weinstein Stage ✓<br>Bollinger Hysterese berührt ✓<br>WPR ≥ 70 / ≤ 30 ✓<br><br>→ Bereite Limit vor!</div>
+                    <div class="signal-desc">Weinstein Stage ✓<br>WPR ≥ 70 / ≤ 30 ✓<br><br>→ Bereite Limit vor!</div>
                 </div>
                 <div class="signal-card feuer">
                     <span class="signal-icon">🟢</span>
                     <div class="signal-name">FEUER FREI</div>
-                    <div class="signal-desc">+ WPR ≥ 80 / ≤ 20 ✓<br>+ Kerzenregel OK ✓<br>+ Stop ≥ 1.5%, TP ≤ 15% ✓<br>+ Zone OK ✓ <span class="fix-badge">FIX</span></div>
+                    <div class="signal-desc">Weinstein Stage ✓<br>WPR ≥ 80 / ≤ 20 ✓<br>Kerzenregel OK ✓<br>Kein Doji ✓</div>
                 </div>
                 <div class="signal-card golden">
                     <span class="signal-icon">🌟</span>
                     <div class="signal-name">GOLDEN SETUP</div>
-                    <div class="signal-desc">+ Stop ≥ 3.0% ✓<br>+ TP ≤ 8.0% ✓<br>+ Zone OK ✓ <span class="fix-badge">FIX</span><br><br>→ Volle 1R einsetzen!</div>
+                    <div class="signal-desc">+ WPR ≥ 80 / ≤ 20 ✓<br>+ Kerzenregel OK ✓<br>+ Stop ≥ 3.0% ✓<br>+ TP ≤ 8.0% ✓<br><br>→ Volle 1R einsetzen!</div>
                 </div>
                 <div class="signal-card elite">
                     <span class="signal-icon">💎</span>
@@ -327,24 +327,24 @@
             <p style="color: var(--text-muted); font-size: 0.95rem;">Das Cockpit prüft von oben nach unten, welcher Status erreicht ist. Jede Ebene durchläuft exakte mathematische Checks für Long- und Short-Signale:</p>
             <ol style="margin-bottom: 2rem; color: var(--text-muted);">
                 <li style="margin-bottom: 0.8rem;"><strong>💎 AKJ ELITE:</strong> Sonder-Signal! Extremes Momentum (Scharf-Modus).<br>
-                <em>Technisch LONG:</em> <code>weinstein_stage == 2</code> AND <code>setup_strict_long</code> AND <code>wpr >= 80</code> AND <code>low > d_lo</code> AND <code>open != close</code>.<br>
-                <em>Technisch SHORT:</em> <code>weinstein_stage == 4</code> AND <code>setup_strict_short</code> AND <code>wpr <= 20</code> AND <code>high < d_up</code> AND <code>open != close</code>.<br>
-                <em>Fachlich:</em> Wir befinden uns in einem so massiven Trend (Scharf-Modus), dass wir jeden minimalen Rücksetzer sofort blind traden. Kein Doji erlaubt, aber die Kerze hat das Tagesband nicht einmal zurück-berührt. Komplett ohne Volumencheck!</li>
+                <em>Technisch LONG:</em> <code>weinstein_stage == 2</code> AND <code>setup_strict_long</code> AND <code>wpr >= 80</code> AND <code>low > d_lo</code> AND <code>close < open</code> AND NOT <code>is_doji</code>.<br>
+                <em>Technisch SHORT:</em> <code>weinstein_stage == 4</code> AND <code>setup_strict_short</code> AND <code>wpr <= 20</code> AND <code>high < d_up</code> AND <code>close > open</code> AND NOT <code>is_doji</code>.<br>
+                <em>Fachlich:</em> Wir befinden uns in einem so massiven Trend (Scharf-Modus), dass wir jeden minimalen Rücksetzer sofort blind traden. Komplett ohne Volumencheck!</li>
 
                 <li style="margin-bottom: 0.8rem;"><strong>🌟 GOLDEN:</strong> Das Premium-Setup! Ein FEUER-Signal plus einer massiven Volumen-Mauer.<br>
-                <em>Technisch LONG:</em> <code>raw_feuer_l</code> AND <code>is_correct_zone_l</code> AND <code>vol_golden_l</code> (Stop-Dichte >= 3% & TP-Dichte <= 8%) AND <code>rs_ok_for_premium</code>.<br>
-                <em>Technisch SHORT:</em> <code>raw_feuer_s</code> AND <code>is_correct_zone_s</code> AND <code>vol_golden_s</code> (Stop-Dichte >= 3% & TP-Dichte <= 8%) AND <code>rs_ok_for_premium</code>.<br>
-                <em>Fachlich:</em> Das bestmögliche Standardsetup. Die Aktie fällt/steigt sauber in die erlaubte Kauf-/Verkauf-Zone (Drittel des Tagesbandes), das Timing stimmt perfekt und das "Anchored Volume Profile" zeigt an, dass direkt hinter unserem Entry fettes, massives Groß-Kapital lauert, das unseren Stop schützt.</li>
+                <em>Technisch LONG:</em> <code>raw_feuer_l</code> AND <code>vol_golden_l</code> (Stop-Dichte >= 3% & TP-Dichte <= 8%) AND <code>rs_ok_for_premium</code>.<br>
+                <em>Technisch SHORT:</em> <code>raw_feuer_s</code> AND <code>vol_golden_s</code> (Stop-Dichte >= 3% & TP-Dichte <= 8%) AND <code>rs_ok_for_premium</code>.<br>
+                <em>Fachlich:</em> Das bestmögliche Standardsetup. Das Timing stimmt perfekt und das "Anchored Volume Profile" zeigt an, dass direkt hinter unserem Entry fettes, massives Groß-Kapital lauert, das unseren Stop schützt. Kein Zonen-Check nötig!</li>
 
                 <li style="margin-bottom: 0.8rem;"><strong>🟢 FEUER FREI:</strong> Basis-Signal! Reines Chart- & Timing-Setup.<br>
-                <em>Technisch LONG:</em> <code>raw_feuer_l</code> (<code>radar_state_l</code> AND <code>wpr >= 80</code> AND rote Kerze <code>close < open</code> AND NOT <code>doji</code>) AND <code>is_correct_zone_l</code>.<br>
-                <em>Technisch SHORT:</em> <code>raw_feuer_s</code> (<code>radar_state_s</code> AND <code>wpr <= 20</code> AND grüne Kerze <code>close > open</code> AND NOT <code>doji</code>) AND <code>is_correct_zone_s</code>.<br>
-                <em>Fachlich:</em> Typisches "Reversion to the Mean" (Rückkehr zum Mittelwert) Setup. Die Aktie korrigiert nach einem Hoch/Tief (Radar) in den günstigen Extrem-Bereich, die Dip-Kerze schließt korrekt, bricht aber das Band nicht. Kein Volumenzwang!</li>
+                <em>Technisch LONG:</em> <code>raw_feuer_l</code> (<code>weinstein_stage == 2</code> AND <code>wpr >= 80</code> AND rote Kerze <code>close < open</code> AND NOT <code>doji</code>).<br>
+                <em>Technisch SHORT:</em> <code>raw_feuer_s</code> (<code>weinstein_stage == 4</code> AND <code>wpr <= 20</code> AND grüne Kerze <code>close > open</code> AND NOT <code>doji</code>).<br>
+                <em>Fachlich:</em> Typisches "Reversion to the Mean" (Rückkehr zum Mittelwert) Setup. Die Aktie korrigiert nach einem Hoch/Tief in den günstigen Extrem-Bereich. Kein Volumenzwang, keine Bollinger-Hysterese und kein Zonen-Check notwendig!</li>
 
-                <li style="margin-bottom: 0.8rem;"><strong>📡 LAUERN:</strong> Radar-Zustand erfasst, Warten auf Auslöser.<br>
-                <em>Technisch LONG:</em> <code>radar_state_l</code> (<code>weinstein == 2</code> AND <code>high >= d_up + ATR*0.2</code>) AND (<code>wpr >= 70</code> AND <code>wpr &lt; 80</code>).<br>
-                <em>Technisch SHORT:</em> <code>radar_state_s</code> (<code>weinstein == 4</code> AND <code>low <= d_lo - ATR*0.2</code>) AND (<code>wpr <= 30</code> AND <code>wpr &gt; 20</code>).<br>
-                <em>Fachlich:</em> Die Aktie hat erst kürzlich starke Ausbruchsenergie bewiesen (das Tagesband wurde massiv durchstoßen), ABER sie ist noch nicht reif für einen Einstieg. Der WPR ist jedoch bereits in der heißen Vorwarn-Zone (70-80 bzw. 20-30). Die Spannung steigt!</li>
+                <li style="margin-bottom: 0.8rem;"><strong>📡 LAUERN:</strong> Frühwarn-Radar.<br>
+                <em>Technisch LONG:</em> <code>weinstein_stage == 2</code> AND (<code>wpr >= 70</code> AND <code>wpr < 80</code>).<br>
+                <em>Technisch SHORT:</em> <code>weinstein_stage == 4</code> AND (<code>wpr <= 30</code> AND <code>wpr > 20</code>).<br>
+                <em>Fachlich:</em> Macht uns darauf aufmerksam, dass das Momentum sich bald überladen könnte. Vorwarn-Phase!</li>
 
                 <li><strong>STATUS: NO SIGNAL:</strong> Nichts erfüllt.</li>
             </ol>
@@ -361,7 +361,6 @@
             <ul style="color: var(--text-muted); list-style-type: disc; padding-left: 1.5rem;">
                 <li style="margin-bottom: 0.5rem;"><strong>💎 PREMIUM:</strong> Alle Checks OK (Golden Volumen erreicht).</li>
                 <li style="margin-bottom: 0.5rem;"><strong>⚠️ MISSING: Golden Volumen</strong> FEUER ist aktiv, aber Stop-Volumen &lt; 3%. Reicht nicht ganz für Golden.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>❌ FAILED: Zonen-Check</strong> WPR Extrem erreicht, aber Aktie crasht zu tief durch das Tagesband. Risiko für Messergriff zu hoch.</li>
                 <li style="margin-bottom: 0.5rem;"><strong>⏳ WAIT:</strong> Kurs formiert sich im Radar, warte auf WPR &gt; 80.</li>
             </ul>
 
