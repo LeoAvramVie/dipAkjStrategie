@@ -883,7 +883,7 @@ bool is_upgrade_l = (last_tac_txt == "FEUER_LONG" or last_tac_txt == "LAUERN_LON
 bool is_upgrade_s = (last_tac_txt == "FEUER_SHORT" or last_tac_txt == "LAUERN_SHORT") and (tac_txt == "GOLDEN_SHORT" or tac_txt == "AKJ_ELITE_SHORT")
 bool is_upgrade = is_upgrade_l or is_upgrade_s
 
-bool is_action_status = (tac_txt == "AKJ_ELITE_LONG" or tac_txt == "AKJ_ELITE_SHORT" or tac_txt == "FEUER_LONG" or tac_txt == "FEUER_SHORT" or tac_txt == "GOLDEN_LONG" or tac_txt == "GOLDEN_SHORT")
+bool is_action_status = (tac_txt == "AKJ_ELITE_LONG" or tac_txt == "AKJ_ELITE_SHORT" or tac_txt == "FEUER_LONG" or tac_txt == "FEUER_SHORT" or tac_txt == "GOLDEN_LONG" or tac_txt == "GOLDEN_SHORT") // LAUERN Alerts deaktiviert
 bool status_is_new = (tac_txt != last_fired_status)
 
 bool can_alert = barstate.isrealtime and cooldown_over and is_action_status and status_is_new
@@ -970,6 +970,7 @@ if can_alert
         alert(star_p_f + "🟢 FEUER FREI LONG 🟢 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
     else if tac_txt == "FEUER_SHORT"
         alert(star_p_f + "🟢 FEUER FREI SHORT 🟢 " + syminfo.ticker + "\n" + alert_msg, alert.freq_once_per_bar)
+    // LAUERN-Alerts wurden deaktiviert, Status bleibt im Cockpit
 
 if tac_txt != "STATUS: NO SIGNAL"
     last_tac_txt := tac_txt
