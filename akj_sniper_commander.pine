@@ -175,13 +175,13 @@ float r_s = math.max(math.abs(sp_short - sl_short) * syminfo.pointvalue, syminfo
 float tp_short = sp_short - (sl_short - sp_short)
 int shares_s = int(math.floor(active_risk_s / r_s))
 
-float sp_price = w_trend == -1 ? sp_short : sp_long
-float sl_price = w_trend == -1 ? sl_short : sl_long
-int   shares   = w_trend == -1 ? shares_s : shares_l
-float risk_val = w_trend == -1 ? r_s : r_l
-float lp_price = w_trend == -1 ? sp_price * (1 - limit_offset_pct / 100) : sp_price * (1 + limit_offset_pct / 100)
-float tp_price = w_trend == -1 ? sp_price - risk_val : sp_price + risk_val
-float active_risk_display = w_trend == -1 ? active_risk_s : active_risk_l
+float sp_price = weinstein_stage == 4 ? sp_short : sp_long
+float sl_price = weinstein_stage == 4 ? sl_short : sl_long
+int   shares   = weinstein_stage == 4 ? shares_s : shares_l
+float risk_val = weinstein_stage == 4 ? r_s : r_l
+float lp_price = weinstein_stage == 4 ? sp_price * (1 - limit_offset_pct / 100) : sp_price * (1 + limit_offset_pct / 100)
+float tp_price = weinstein_stage == 4 ? sp_price - risk_val : sp_price + risk_val
+float active_risk_display = weinstein_stage == 4 ? active_risk_s : active_risk_l
 
 // ==========================================
 // --- 5. VOLUMEN-STRUKTUR ---
