@@ -678,13 +678,10 @@ if show_rsveto
     n += 1
 
 
-// Tabelle: deklariert als var, wird auf letztem Bar neu erstellt mit exakt n Zeilen
-var table cp = table.new(position.top_right, 2, 29, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
+// Tabelle: deklariert als var, wird mit exakt n Zeilen initialisiert
+var table cp = table.new(position.top_right, 2, n, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
 
 if barstate.islast
-    // Plan B: Tabelle löschen und mit korrekter Zeilenzahl neu erstellen
-    table.delete(cp)
-    cp := table.new(position.top_right, 2, n, border_width=1, border_color=color.new(color.white, 80), frame_width=1, frame_color=color.new(color.white, 80))
     color h_tc = (header_bg == color.yellow or header_bg == color.lime) ? color.black : color.white
     color dt_tc = (dt_bg == color.yellow) ? color.black : color.white
     string rom_str = str.tostring(nz(active_risk_display), "#.##") + " €"
