@@ -89,7 +89,7 @@ string rm_tooltip    = "ALPHA: Volles Risiko. DELTA: Longs gebremst (25% R), Sho
 
 string mode_prefix = vix_eff < 25.0 ? "ALPHA Mode" : (vix_eff <= 35.0 ? "DELTA Mode" : "OMEGA Mode")
 
-d_wpr = math.abs(ta.wpr(wpr_len))
+d_wpr = ta.wpr(wpr_len)
 
 // ==========================================
 // --- 2. WOCHEN-DATA (Sticky & Strict) ---
@@ -267,8 +267,8 @@ bool is_radar_s = low <= d_lo - (atr_val * 0.2)
 bool radar_state_s = weinstein_stage == 4 and (is_radar_s or setup_strict_short)
 
 // Raw Triggers (WPR + Kerzenregel)
-bool long_trigger = d_wpr >= 80 and close < open and not is_doji and close > d_lo
-bool short_trigger = d_wpr <= 20 and close > open and not is_doji and close < d_up
+bool long_trigger = d_wpr <= -80 and close < open and not is_doji and close > d_lo
+bool short_trigger = d_wpr >= -20 and close > open and not is_doji and close < d_up
 
 // Volumen (Wall & Vakuum)
 // v20.7: ATR-normalisierte Schwellenwerte (ticker-agnostisch)
@@ -278,8 +278,8 @@ bool vol_golden_l = stop_density >= dyn_min_stop_golden and tp_density <= golden
 bool vol_golden_s = stop_density >= dyn_min_stop_golden and tp_density <= golden_tp_density
 
 // --- SYNCHRONIZED TRIGGER BOOLS ---
-bool trigger_lauern_l = weinstein_stage == 2 and d_wpr >= 70 and d_wpr < 80
-bool trigger_lauern_s = weinstein_stage == 4 and d_wpr <= 30 and d_wpr > 20
+bool trigger_lauern_l = weinstein_stage == 2 and d_wpr <= -70 and d_wpr > -80
+bool trigger_lauern_s = weinstein_stage == 4 and d_wpr >= -30 and d_wpr < -20
 
 bool raw_feuer_l = weinstein_stage == 2 and long_trigger
 bool raw_feuer_s = weinstein_stage == 4 and short_trigger
@@ -290,8 +290,8 @@ bool trigger_feuer_s  = raw_feuer_s
 bool trigger_golden_l = raw_feuer_l and vol_golden_l
 bool trigger_golden_s = raw_feuer_s and vol_golden_s
 
-bool isAKJSignal_l = weinstein_stage == 2 and setup_strict_long  and d_wpr >= 80 and low  > d_lo and close < open and not is_doji
-bool isAKJSignal_s = weinstein_stage == 4 and setup_strict_short and d_wpr <= 20 and high < d_up and close > open and not is_doji
+bool isAKJSignal_l = weinstein_stage == 2 and setup_strict_long  and d_wpr <= -80 and low  > d_lo and close < open and not is_doji
+bool isAKJSignal_s = weinstein_stage == 4 and setup_strict_short and d_wpr >= -20 and high < d_up and close > open and not is_doji
 bool isAKJSignal = isAKJSignal_l or isAKJSignal_s
 
 type VirtualTrade
@@ -564,8 +564,8 @@ bool cooldown_over = remaining_locked_ms <= 0
 string header_txt = "NO SIGNAL"
 color header_bg = color.black
 // Cockpit UI-Sync (WPR Gatekeeper)
-bool is_wpr_trig_l = d_wpr >= 80
-bool is_wpr_trig_s = d_wpr <= 20
+bool is_wpr_trig_l = d_wpr <= -80
+bool is_wpr_trig_s = d_wpr >= -20
 
 if isAKJSignal_l or isAKJSignal_s
     header_txt := "💎 AKJ ELITE"
@@ -692,9 +692,9 @@ if barstate.islast
     string wpr_txt = str.tostring(nz(d_wpr), "#.#")
     color wpr_bg = color.rgb(40, 40, 40)
     if w_trend == 1
-        wpr_bg := nz(d_wpr) >= 80 ? color.blue : (nz(d_wpr) >= 70 ? color.yellow : color.rgb(40, 40, 40))
+        wpr_bg := nz(d_wpr) <= -80 ? color.blue : (nz(d_wpr) <= -70 ? color.yellow : color.rgb(40, 40, 40))
     else if w_trend == -1
-        wpr_bg := nz(d_wpr) <= 20 ? color.red : (nz(d_wpr) <= 30 ? color.yellow : color.rgb(40, 40, 40))
+        wpr_bg := nz(d_wpr) >= -20 ? color.red : (nz(d_wpr) >= -30 ? color.yellow : color.rgb(40, 40, 40))
     color wpr_tc = (wpr_bg == color.yellow) ? color.black : color.white
     color s_v_bg = nz(stop_density) >= dyn_min_stop_feuer ? color.rgb(10, 60, 10) : color.rgb(60, 10, 10)
     string sd_str = str.tostring(nz(stop_density), "#.#") + "%"
