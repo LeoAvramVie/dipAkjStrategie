@@ -1,0 +1,4138 @@
+Alarm ID,"Ticker, Name",Name,Beschreibung,Zeit,Webhook-Status
+4411955374,"SIX_DLY:NOVN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 NOVN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.6 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-09 10:20:55
+TICKER: NOVN
+AKTUELLER KURS: 120.54
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 126 Bars ago
+Vacuum Quality: High (TP 8.6%)
+Momentum (WPR): 80.6
+Kerzenregel: 
+Stopversicherung: 10.9%
+TP Widerstand: 8.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 121.92
+Limitpreis (LP): 122.16
+Anzahl (Stk): 26
+TP (Teilverkauf): 125.66
+Stopp-Loss (SL): 118.18
+Runner-Target: EMA 21: 120.91
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.2%)
+RS-Veto: OK
+ATR%: 1.96% | Min.Wall FEUER: 1.47% | Min.Wall GOLDEN: 2.94%
+
+--- JSON PAYLOAD ---
+{""ticker"":""NOVN"",""price"":120.54,""signal"":""AKJ_ELITE_LONG"",""sp"":121.92,""sl"":118.18,""tp"":125.66,""shares"":26,""risk_eur"":100,""wpr"":80.6,""stop_wall"":10.9,""tp_resistance"":8.56,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.2%)""}",2026-04-09T10:20:42Z,
+4411955374,"EURONEXT_DLY:SAN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP LONG 🌟 SAN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 92.3 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-09 10:11:04
+TICKER: SAN
+AKTUELLER KURS: 80.53
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 92.3
+Kerzenregel: OK ✅
+Stopversicherung: 100%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 81.52
+Limitpreis (LP): 81.68
+Anzahl (Stk): 35
+TP (Teilverkauf): 84.32
+Stopp-Loss (SL): 78.72
+Runner-Target: EMA 21: 80.03
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.5%)
+RS-Veto: OK
+ATR%: 2.18% | Min.Wall FEUER: 1.63% | Min.Wall GOLDEN: 3.27%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SAN"",""price"":80.53,""signal"":""GOLDEN_LONG"",""sp"":81.52,""sl"":78.72,""tp"":84.32,""shares"":35,""risk_eur"":100,""wpr"":92.3,""stop_wall"":100,""tp_resistance"":0,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.5%)""}",2026-04-09T10:11:04Z,
+4411955374,"SIX_DLY:NESN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 NESN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-09 09:15:55
+TICKER: NESN
+AKTUELLER KURS: 78.44
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 80
+Kerzenregel: 
+Stopversicherung: 100%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 79.29
+Limitpreis (LP): 79.45
+Anzahl (Stk): 43
+TP (Teilverkauf): 81.6
+Stopp-Loss (SL): 76.98
+Runner-Target: EMA 21: 78.29
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.3%)
+RS-Veto: OK
+ATR%: 1.86% | Min.Wall FEUER: 1.39% | Min.Wall GOLDEN: 2.79%
+
+--- JSON PAYLOAD ---
+{""ticker"":""NESN"",""price"":78.44,""signal"":""AKJ_ELITE_LONG"",""sp"":79.29,""sl"":76.98,""tp"":81.6,""shares"":43,""risk_eur"":100,""wpr"":80,""stop_wall"":100,""tp_resistance"":0,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.3%)""}",2026-04-09T09:15:51Z,
+4411955374,"SIX_DLY:KNIN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 KNIN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-09 07:32:37
+TICKER: KNIN
+AKTUELLER KURS: 183
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: S&P 500 (SPY)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 3 Bars ago
+Vacuum Quality: Low (TP 48.1%)
+Momentum (WPR): 80.2
+Kerzenregel: 
+Stopversicherung: 51.9%
+TP Widerstand: 48.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 184.55
+Limitpreis (LP): 184.92
+Anzahl (Stk): 15
+TP (Teilverkauf): 190.96
+Stopp-Loss (SL): 178.14
+Runner-Target: EMA 21: 177.82
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (5.5%)
+RS-Veto: OK
+ATR%: 2.66% | Min.Wall FEUER: 1.99% | Min.Wall GOLDEN: 3.98%
+
+--- JSON PAYLOAD ---
+{""ticker"":""KNIN"",""price"":183,""signal"":""AKJ_ELITE_LONG"",""sp"":184.55,""sl"":178.14,""tp"":190.96,""shares"":15,""risk_eur"":100,""wpr"":80.2,""stop_wall"":51.91,""tp_resistance"":48.09,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (5.5%)""}",2026-04-09T07:32:36Z,
+4411955374,"LSE_DLY:CRDA, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 CRDA
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 82.1 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-09 07:30:21
+TICKER: CRDA
+AKTUELLER KURS: 2919
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Process Industries (XLP)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 3 Bars ago
+Vacuum Quality: Low (TP 20.1%)
+Momentum (WPR): 82.1
+Kerzenregel: 
+Stopversicherung: 31.9%
+TP Widerstand: 20.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 2950
+Limitpreis (LP): 2955.9
+Anzahl (Stk): 0 [HINWEIS] Risiko für 1 Stück aktuell > Budget. Manueller Check nötig.
+TP (Teilverkauf): 3090.71
+Stopp-Loss (SL): 2809.29
+Runner-Target: EMA 21: 2835.64
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.7%)
+RS-Veto: OK
+ATR%: 3.76% | Min.Wall FEUER: 2.82% | Min.Wall GOLDEN: 5.64%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CRDA"",""price"":2919,""signal"":""AKJ_ELITE_LONG"",""sp"":2950,""sl"":2809.29,""tp"":3090.71,""shares"":0,""risk_eur"":100,""wpr"":82.1,""stop_wall"":31.94,""tp_resistance"":20.14,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (3.7%)""}",2026-04-09T07:30:16Z,
+4411955374,"LSE_DLY:SDLF, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 SDLF
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 91.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-09 07:25:23
+TICKER: SDLF
+AKTUELLER KURS: 701
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 91.2
+Kerzenregel: WAIT ⏳
+Stopversicherung: 19.3%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 701
+Limitpreis (LP): 699.6
+Anzahl (Stk): 2
+TP (Teilverkauf): 667.16
+Stopp-Loss (SL): 734.84
+Runner-Target: EMA 21: 697.87
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (6.6%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 3.51% | Min.Wall FEUER: 2.64% | Min.Wall GOLDEN: 5.27%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SDLF"",""price"":701,""signal"":""AKJ_ELITE_LONG"",""sp"":701,""sl"":734.84,""tp"":667.16,""shares"":2,""risk_eur"":100,""wpr"":91.2,""stop_wall"":19.28,""tp_resistance"":0,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (6.6%)""}",2026-04-09T07:25:19Z,
+4411955374,"SIX_DLY:SPSN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 SPSN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 81.1 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-09 07:19:21
+TICKER: SPSN
+AKTUELLER KURS: 136.9
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: NEUTRAL
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 106 Bars ago
+Vacuum Quality: High (TP 10.2%)
+Momentum (WPR): 81.1
+Kerzenregel: 
+Stopversicherung: 7.9%
+TP Widerstand: 10.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 137.8
+Limitpreis (LP): 138.08
+Anzahl (Stk): 29
+TP (Teilverkauf): 141.23
+Stopp-Loss (SL): 134.37
+Runner-Target: EMA 21: 137.24
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.7%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 1.85% | Min.Wall FEUER: 1.39% | Min.Wall GOLDEN: 2.77%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SPSN"",""price"":136.9,""signal"":""FEUER_LONG"",""sp"":137.8,""sl"":134.37,""tp"":141.23,""shares"":29,""risk_eur"":100,""wpr"":81.1,""stop_wall"":7.88,""tp_resistance"":10.16,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (2.7%)""}",2026-04-09T07:19:14Z,
+4087626369,"INDEX:MMFI, 1T",,"MMFI, 1T Kreuzend Horizontale Linie",2026-04-08T21:14:47Z,
+4411955374,"BATS:ABBV, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI SHORT 🟢 ABBV
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 19.9 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 19:55:12
+TICKER: ABBV
+AKTUELLER KURS: 211.99
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 7 Bars ago
+Vacuum Quality: Low (TP 29.8%)
+Momentum (WPR): 19.9
+Kerzenregel: OK ✅
+Stopversicherung: 33.4%
+TP Widerstand: 29.8%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 204.56
+Limitpreis (LP): 204.15
+Anzahl (Stk): 7
+TP (Teilverkauf): 191.33
+Stopp-Loss (SL): 217.79
+Runner-Target: EMA 21: 213.61
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.72% | Min.Wall FEUER: 2.04% | Min.Wall GOLDEN: 4.08%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ABBV"",""price"":211.99,""signal"":""FEUER_SHORT"",""sp"":204.56,""sl"":217.79,""tp"":191.33,""shares"":7,""risk_eur"":100,""wpr"":19.9,""stop_wall"":33.38,""tp_resistance"":29.76,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.3%)""}",2026-04-08T19:55:11Z,
+4411955374,"BATS:DSY, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 DSY
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 19:18:24
+TICKER: DSY
+AKTUELLER KURS: 2.59
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: S&P 500 (SPY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 127 Bars ago
+Vacuum Quality: High (TP 1.3%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 6.7%
+TP Widerstand: 1.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 2.36
+Limitpreis (LP): 2.36
+Anzahl (Stk): 187
+TP (Teilverkauf): 1.83
+Stopp-Loss (SL): 2.89
+Runner-Target: EMA 21: 2.8
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 💥 EXPANSION (13.2%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 11.69% | Min.Wall FEUER: 8.77% | Min.Wall GOLDEN: 17.54%
+
+--- JSON PAYLOAD ---
+{""ticker"":""DSY"",""price"":2.59,""signal"":""AKJ_ELITE_SHORT"",""sp"":2.36,""sl"":2.89,""tp"":1.83,""shares"":187,""risk_eur"":100,""wpr"":0,""stop_wall"":6.69,""tp_resistance"":1.27,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (13.2%)""}",2026-04-08T19:18:19Z,
+4411955374,"BATS:IBRX, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 IBRX
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 83.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 19:09:12
+TICKER: IBRX
+AKTUELLER KURS: 6.84
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 51 Bars ago
+Vacuum Quality: High (TP 10.1%)
+Momentum (WPR): 83.2
+Kerzenregel: 
+Stopversicherung: 11.6%
+TP Widerstand: 10.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 7.42
+Limitpreis (LP): 7.43
+Anzahl (Stk): 68
+TP (Teilverkauf): 8.88
+Stopp-Loss (SL): 5.96
+Runner-Target: EMA 21: 7.63
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 💥 EXPANSION (11%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 12.92% | Min.Wall FEUER: 9.69% | Min.Wall GOLDEN: 19.39%
+
+--- JSON PAYLOAD ---
+{""ticker"":""IBRX"",""price"":6.84,""signal"":""FEUER_LONG"",""sp"":7.42,""sl"":5.96,""tp"":8.88,""shares"":68,""risk_eur"":100,""wpr"":83.2,""stop_wall"":11.61,""tp_resistance"":10.05,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (11%)""}",2026-04-08T19:09:11Z,
+4411955374,"BATS:IMAX, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 IMAX
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.9 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 18:33:31
+TICKER: IMAX
+AKTUELLER KURS: 38.35
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Durables (XLY)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 151 Bars ago
+Vacuum Quality: High (TP 5.7%)
+Momentum (WPR): 80.9
+Kerzenregel: 
+Stopversicherung: 14.8%
+TP Widerstand: 5.7%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 40
+Limitpreis (LP): 40.08
+Anzahl (Stk): 31
+TP (Teilverkauf): 43.13
+Stopp-Loss (SL): 36.87
+Runner-Target: EMA 21: 38.44
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (4.9%)
+RS-Veto: OK
+ATR%: 3.87% | Min.Wall FEUER: 2.9% | Min.Wall GOLDEN: 5.81%
+
+--- JSON PAYLOAD ---
+{""ticker"":""IMAX"",""price"":38.35,""signal"":""AKJ_ELITE_LONG"",""sp"":40,""sl"":36.87,""tp"":43.13,""shares"":31,""risk_eur"":100,""wpr"":80.9,""stop_wall"":14.75,""tp_resistance"":5.74,""rs_status"":""MITTEL"",""bb_squeeze"":""NORMAL (4.9%)""}",2026-04-08T18:33:25Z,
+4411955374,"BATS:AG, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 AG
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.1 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 18:24:51
+TICKER: AG
+AKTUELLER KURS: 21.04
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Non-Energy Minerals (XLB)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 204 Bars ago
+Vacuum Quality: High (TP 9.5%)
+Momentum (WPR): 80.1
+Kerzenregel: 
+Stopversicherung: 9.4%
+TP Widerstand: 9.5%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 23.3
+Limitpreis (LP): 23.35
+Anzahl (Stk): 25
+TP (Teilverkauf): 27.24
+Stopp-Loss (SL): 19.36
+Runner-Target: EMA 21: 21.83
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 💥 EXPANSION (8.2%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 7.98% | Min.Wall FEUER: 5.99% | Min.Wall GOLDEN: 11.98%
+
+--- JSON PAYLOAD ---
+{""ticker"":""AG"",""price"":21.04,""signal"":""AKJ_ELITE_LONG"",""sp"":23.3,""sl"":19.36,""tp"":27.24,""shares"":25,""risk_eur"":100,""wpr"":80.1,""stop_wall"":9.37,""tp_resistance"":9.45,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (8.2%)""}",2026-04-08T18:24:42Z,
+4411955374,"BATS:VRE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 VRE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 92.6 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 17:47:30
+TICKER: VRE
+AKTUELLER KURS: 18.91
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 41 Bars ago
+Vacuum Quality: High (TP 12.4%)
+Momentum (WPR): 92.6
+Kerzenregel: OK ✅
+Stopversicherung: 31.5%
+TP Widerstand: 12.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 18.93
+Limitpreis (LP): 18.97
+Anzahl (Stk): 768
+TP (Teilverkauf): 19.06
+Stopp-Loss (SL): 18.8
+Runner-Target: EMA 21: 18.76
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (0.3%)
+RS-Veto: OK
+ATR%: 0.5% | Min.Wall FEUER: 0.38% | Min.Wall GOLDEN: 0.75%
+
+--- JSON PAYLOAD ---
+{""ticker"":""VRE"",""price"":18.91,""signal"":""FEUER_LONG"",""sp"":18.93,""sl"":18.8,""tp"":19.06,""shares"":768,""risk_eur"":100,""wpr"":92.6,""stop_wall"":31.5,""tp_resistance"":12.4,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (0.3%)""}",2026-04-08T17:47:25Z,
+4411955374,"BATS:FIVE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 FIVE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 93.3 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 17:30:14
+TICKER: FIVE
+AKTUELLER KURS: 225.03
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Retail Trade (XLY)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: NEUTRAL
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 218 Bars ago
+Vacuum Quality: High (TP 3.6%)
+Momentum (WPR): 93.3
+Kerzenregel: OK ✅
+Stopversicherung: 5.3%
+TP Widerstand: 3.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 237.24
+Limitpreis (LP): 237.71
+Anzahl (Stk): 4
+TP (Teilverkauf): 258.93
+Stopp-Loss (SL): 215.55
+Runner-Target: EMA 21: 225.31
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (4.7%)
+RS-Veto: OK
+ATR%: 4.2% | Min.Wall FEUER: 3.15% | Min.Wall GOLDEN: 6.3%
+
+--- JSON PAYLOAD ---
+{""ticker"":""FIVE"",""price"":225.03,""signal"":""FEUER_LONG"",""sp"":237.24,""sl"":215.55,""tp"":258.93,""shares"":4,""risk_eur"":100,""wpr"":93.3,""stop_wall"":5.25,""tp_resistance"":3.65,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (4.7%)""}",2026-04-08T17:29:00Z,
+4411955374,"BATS:PM, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 PM
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 20 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 17:18:13
+TICKER: PM
+AKTUELLER KURS: 159.94
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 7 Bars ago
+Vacuum Quality: High (TP 10.6%)
+Momentum (WPR): 20
+Kerzenregel: OK ✅
+Stopversicherung: 70.8%
+TP Widerstand: 10.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 155.14
+Limitpreis (LP): 154.83
+Anzahl (Stk): 10
+TP (Teilverkauf): 145.78
+Stopp-Loss (SL): 164.5
+Runner-Target: EMA 21: 165.05
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (3.8%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.85% | Min.Wall FEUER: 2.14% | Min.Wall GOLDEN: 4.27%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PM"",""price"":159.94,""signal"":""AKJ_ELITE_SHORT"",""sp"":155.14,""sl"":164.5,""tp"":145.78,""shares"":10,""risk_eur"":100,""wpr"":20,""stop_wall"":70.84,""tp_resistance"":10.61,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.8%)""}",2026-04-08T17:18:09Z,
+4411955374,"BATS:AHT, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL SHORT 💎 AHT
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 13.3 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 15:16:40
+TICKER: AHT
+AKTUELLER KURS: 2.63
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 176 Bars ago
+Vacuum Quality: High (TP 0.1%)
+Momentum (WPR): 13.3
+Kerzenregel: OK ✅
+Stopversicherung: 0.6%
+TP Widerstand: 0.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 2.61
+Limitpreis (LP): 2.6
+Anzahl (Stk): 546
+TP (Teilverkauf): 2.43
+Stopp-Loss (SL): 2.79
+Runner-Target: EMA 21: 2.86
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 💥 EXPANSION (8.3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 6.19% | Min.Wall FEUER: 4.64% | Min.Wall GOLDEN: 9.29%
+
+--- JSON PAYLOAD ---
+{""ticker"":""AHT"",""price"":2.63,""signal"":""AKJ_ELITE_SHORT"",""sp"":2.61,""sl"":2.79,""tp"":2.43,""shares"":546,""risk_eur"":100,""wpr"":13.3,""stop_wall"":0.58,""tp_resistance"":0.14,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (8.3%)""}",2026-04-08T15:16:35Z,
+4411955374,"BATS:FIVE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP LONG 🌟 FIVE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 81 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 14:57:13
+TICKER: FIVE
+AKTUELLER KURS: 226.79
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Retail Trade (XLY)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: NEUTRAL
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 218 Bars ago
+Vacuum Quality: High (TP 0.2%)
+Momentum (WPR): 81
+Kerzenregel: OK ✅
+Stopversicherung: 11.1%
+TP Widerstand: 0.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 237.24
+Limitpreis (LP): 237.71
+Anzahl (Stk): 5
+TP (Teilverkauf): 257.03
+Stopp-Loss (SL): 217.45
+Runner-Target: EMA 21: 225.47
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (4.6%)
+RS-Veto: OK
+ATR%: 4.12% | Min.Wall FEUER: 3.09% | Min.Wall GOLDEN: 6.18%
+
+--- JSON PAYLOAD ---
+{""ticker"":""FIVE"",""price"":226.79,""signal"":""GOLDEN_LONG"",""sp"":237.24,""sl"":217.45,""tp"":257.03,""shares"":5,""risk_eur"":100,""wpr"":81,""stop_wall"":11.09,""tp_resistance"":0.2,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (4.6%)""}",2026-04-08T14:56:58Z,
+4411955374,"BATS:AKAM, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 AKAM
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 14:35:35
+TICKER: AKAM
+AKTUELLER KURS: 113.33
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Technology Services (XLK)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 97 Bars ago
+Vacuum Quality: High (TP 3.9%)
+Momentum (WPR): 80
+Kerzenregel: OK ✅
+Stopversicherung: 14.8%
+TP Widerstand: 3.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 117.35
+Limitpreis (LP): 117.59
+Anzahl (Stk): 11
+TP (Teilverkauf): 126.25
+Stopp-Loss (SL): 108.45
+Runner-Target: EMA 21: 111.54
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (4.2%)
+RS-Veto: OK
+ATR%: 4.27% | Min.Wall FEUER: 3.2% | Min.Wall GOLDEN: 6.41%
+
+--- JSON PAYLOAD ---
+{""ticker"":""AKAM"",""price"":113.33,""signal"":""AKJ_ELITE_LONG"",""sp"":117.35,""sl"":108.45,""tp"":126.25,""shares"":11,""risk_eur"":100,""wpr"":80,""stop_wall"":14.78,""tp_resistance"":3.93,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (4.2%)""}",2026-04-08T14:35:27Z,
+4411955374,"BATS:PG, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP SHORT 🌟 PG
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 13.1 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 14:29:06
+TICKER: PG
+AKTUELLER KURS: 143.87
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 12 Bars ago
+Vacuum Quality: High (TP 4%)
+Momentum (WPR): 13.1
+Kerzenregel: OK ✅
+Stopversicherung: 95.1%
+TP Widerstand: 4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 141.87
+Limitpreis (LP): 141.59
+Anzahl (Stk): 19
+TP (Teilverkauf): 136.8
+Stopp-Loss (SL): 146.94
+Runner-Target: EMA 21: 146.38
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (1.4%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 1.81% | Min.Wall FEUER: 1.36% | Min.Wall GOLDEN: 2.71%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PG"",""price"":143.87,""signal"":""GOLDEN_SHORT"",""sp"":141.87,""sl"":146.94,""tp"":136.8,""shares"":19,""risk_eur"":100,""wpr"":13.1,""stop_wall"":95.1,""tp_resistance"":3.98,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (1.4%)""}",2026-04-08T14:29:01Z,
+4411955374,"BATS:EXPD, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL LONG 💎 EXPD
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 83.3 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 14:19:30
+TICKER: EXPD
+AKTUELLER KURS: 144
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: S&P 500 (SPY)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 83.3
+Kerzenregel: WAIT ⏳
+Stopversicherung: 100%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 144
+Limitpreis (LP): 143.71
+Anzahl (Stk): 15
+TP (Teilverkauf): 137.7
+Stopp-Loss (SL): 150.3
+Runner-Target: EMA 21: 144.42
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2%)
+RS-Veto: OK
+ATR%: 2.52% | Min.Wall FEUER: 1.89% | Min.Wall GOLDEN: 3.77%
+
+--- JSON PAYLOAD ---
+{""ticker"":""EXPD"",""price"":144,""signal"":""AKJ_ELITE_LONG"",""sp"":144,""sl"":150.3,""tp"":137.7,""shares"":15,""risk_eur"":100,""wpr"":83.3,""stop_wall"":100,""tp_resistance"":0,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2%)""}",2026-04-08T14:19:17Z,
+4411955374,"BATS:CMCSA, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 CMCSA
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 18.8 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 14:07:02
+TICKER: CMCSA
+AKTUELLER KURS: 28.04
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Services (XLY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 3 Bars ago
+Vacuum Quality: Low (TP 29.3%)
+Momentum (WPR): 18.8
+Kerzenregel: OK ✅
+Stopversicherung: 70.7%
+TP Widerstand: 29.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 27.66
+Limitpreis (LP): 27.6
+Anzahl (Stk): 90
+TP (Teilverkauf): 26.56
+Stopp-Loss (SL): 28.76
+Runner-Target: EMA 21: 28.93
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.56% | Min.Wall FEUER: 1.92% | Min.Wall GOLDEN: 3.85%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CMCSA"",""price"":28.04,""signal"":""AKJ_ELITE_SHORT"",""sp"":27.66,""sl"":28.76,""tp"":26.56,""shares"":90,""risk_eur"":100,""wpr"":18.8,""stop_wall"":70.72,""tp_resistance"":29.28,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3%)""}",2026-04-08T14:07:02Z,
+4411955374,"BATS:VRE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 VRE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 92.3 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:51:12
+TICKER: VRE
+AKTUELLER KURS: 18.91
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 41 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 92.3
+Kerzenregel: OK ✅
+Stopversicherung: 28.8%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 18.93
+Limitpreis (LP): 18.97
+Anzahl (Stk): 871
+TP (Teilverkauf): 19.04
+Stopp-Loss (SL): 18.82
+Runner-Target: EMA 21: 18.77
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (0.3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 0.5% | Min.Wall FEUER: 0.38% | Min.Wall GOLDEN: 0.75%
+
+--- JSON PAYLOAD ---
+{""ticker"":""VRE"",""price"":18.91,""signal"":""AKJ_ELITE_LONG"",""sp"":18.93,""sl"":18.82,""tp"":19.04,""shares"":871,""risk_eur"":100,""wpr"":92.3,""stop_wall"":28.83,""tp_resistance"":0,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (0.3%)""}",2026-04-08T13:51:12Z,
+4411955374,"XETR_DLY:RWE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 RWE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:51:10
+TICKER: RWE
+AKTUELLER KURS: 57.9
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 240 Bars ago
+Vacuum Quality: High (TP 2.2%)
+Momentum (WPR): 80
+Kerzenregel: OK ✅
+Stopversicherung: 6.8%
+TP Widerstand: 2.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 59.26
+Limitpreis (LP): 59.38
+Anzahl (Stk): 30
+TP (Teilverkauf): 62.58
+Stopp-Loss (SL): 55.94
+Runner-Target: EMA 21: 56.51
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (5.1%)
+RS-Veto: OK
+ATR%: 2.79% | Min.Wall FEUER: 2.09% | Min.Wall GOLDEN: 4.19%
+
+--- JSON PAYLOAD ---
+{""ticker"":""RWE"",""price"":57.9,""signal"":""AKJ_ELITE_LONG"",""sp"":59.26,""sl"":55.94,""tp"":62.58,""shares"":30,""risk_eur"":100,""wpr"":80,""stop_wall"":6.76,""tp_resistance"":2.18,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (5.1%)""}",2026-04-08T13:51:06Z,
+4411955374,"SIX_DLY:NOVN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 NOVN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.1 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:50:35
+TICKER: NOVN
+AKTUELLER KURS: 120.56
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 125 Bars ago
+Vacuum Quality: High (TP 8.4%)
+Momentum (WPR): 80.1
+Kerzenregel: 
+Stopversicherung: 11.4%
+TP Widerstand: 8.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 123.42
+Limitpreis (LP): 123.67
+Anzahl (Stk): 18
+TP (Teilverkauf): 128.73
+Stopp-Loss (SL): 118.11
+Runner-Target: EMA 21: 120.89
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.7%)
+RS-Veto: OK
+ATR%: 2.02% | Min.Wall FEUER: 1.51% | Min.Wall GOLDEN: 3.03%
+
+--- JSON PAYLOAD ---
+{""ticker"":""NOVN"",""price"":120.56,""signal"":""AKJ_ELITE_LONG"",""sp"":123.42,""sl"":118.11,""tp"":128.73,""shares"":18,""risk_eur"":100,""wpr"":80.1,""stop_wall"":11.37,""tp_resistance"":8.39,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.7%)""}",2026-04-08T13:50:34Z,
+4411955374,"BATS:PFE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 PFE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:49:14
+TICKER: PFE
+AKTUELLER KURS: 27.17
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 102 Bars ago
+Vacuum Quality: High (TP 10.3%)
+Momentum (WPR): 80.2
+Kerzenregel: 
+Stopversicherung: 22.4%
+TP Widerstand: 10.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 27.36
+Limitpreis (LP): 27.41
+Anzahl (Stk): 102
+TP (Teilverkauf): 28.34
+Stopp-Loss (SL): 26.38
+Runner-Target: EMA 21: 27.4
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (3.6%)
+RS-Veto: OK
+ATR%: 2.31% | Min.Wall FEUER: 1.73% | Min.Wall GOLDEN: 3.47%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PFE"",""price"":27.17,""signal"":""FEUER_LONG"",""sp"":27.36,""sl"":26.38,""tp"":28.34,""shares"":102,""risk_eur"":100,""wpr"":80.2,""stop_wall"":22.38,""tp_resistance"":10.31,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (3.6%)""}",2026-04-08T13:49:09Z,
+4411955374,"LSE_DLY:HLN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP LONG 🌟 HLN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 86.7 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:47:00
+TICKER: HLN
+AKTUELLER KURS: 368.6
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 86.7
+Kerzenregel: 
+Stopversicherung: 100%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 375.7
+Limitpreis (LP): 376.45
+Anzahl (Stk): 6
+TP (Teilverkauf): 391.34
+Stopp-Loss (SL): 360.06
+Runner-Target: EMA 21: 374.49
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.8%)
+RS-Veto: OK
+ATR%: 2.29% | Min.Wall FEUER: 1.72% | Min.Wall GOLDEN: 3.44%
+
+--- JSON PAYLOAD ---
+{""ticker"":""HLN"",""price"":368.6,""signal"":""GOLDEN_LONG"",""sp"":375.7,""sl"":360.06,""tp"":391.34,""shares"":6,""risk_eur"":100,""wpr"":86.7,""stop_wall"":100,""tp_resistance"":0,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.8%)""}",2026-04-08T13:46:59Z,
+4411955374,"BATS:NYT, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 NYT
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:46:52
+TICKER: NYT
+AKTUELLER KURS: 85.16
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Services (XLY)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 112 Bars ago
+Vacuum Quality: High (TP 0.6%)
+Momentum (WPR): 80.2
+Kerzenregel: OK ✅
+Stopversicherung: 3.7%
+TP Widerstand: 0.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 85.99
+Limitpreis (LP): 86.16
+Anzahl (Stk): 38
+TP (Teilverkauf): 88.57
+Stopp-Loss (SL): 83.41
+Runner-Target: EMA 21: 82.75
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.7%)
+RS-Veto: OK
+ATR%: 2% | Min.Wall FEUER: 1.5% | Min.Wall GOLDEN: 3%
+
+--- JSON PAYLOAD ---
+{""ticker"":""NYT"",""price"":85.16,""signal"":""AKJ_ELITE_LONG"",""sp"":85.99,""sl"":83.41,""tp"":88.57,""shares"":38,""risk_eur"":100,""wpr"":80.2,""stop_wall"":3.74,""tp_resistance"":0.59,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.7%)""}",2026-04-08T13:46:47Z,
+4087620886,"CBOE_DLY:VXN, 1T",,"VXN, 1T Kreuzend Horizontale Linie",2026-04-08T13:46:01Z,
+4411955374,"OSL_DLY:BWLPG, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 BWLPG
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:45:11
+TICKER: BWLPG
+AKTUELLER KURS: 164.9
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: S&P 500 (SPY)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 2 Bars ago
+Vacuum Quality: Low (TP 36.8%)
+Momentum (WPR): 80.2
+Kerzenregel: 
+Stopversicherung: 63.2%
+TP Widerstand: 36.8%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 170.8
+Limitpreis (LP): 171.14
+Anzahl (Stk): 6
+TP (Teilverkauf): 186.61
+Stopp-Loss (SL): 154.99
+Runner-Target: EMA 21: 161.54
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (5.4%)
+RS-Veto: OK
+ATR%: 4.43% | Min.Wall FEUER: 3.32% | Min.Wall GOLDEN: 6.65%
+
+--- JSON PAYLOAD ---
+{""ticker"":""BWLPG"",""price"":164.9,""signal"":""AKJ_ELITE_LONG"",""sp"":170.8,""sl"":154.99,""tp"":186.61,""shares"":6,""risk_eur"":100,""wpr"":80.2,""stop_wall"":63.23,""tp_resistance"":36.77,""rs_status"":""MITTEL"",""bb_squeeze"":""NORMAL (5.4%)""}",2026-04-08T13:45:09Z,
+4411955374,"BATS:TME, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 TME
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0.8 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:42:29
+TICKER: TME
+AKTUELLER KURS: 9.42
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Technology Services (XLK)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 60 Bars ago
+Vacuum Quality: High (TP 9.3%)
+Momentum (WPR): 0.8
+Kerzenregel: OK ✅
+Stopversicherung: 8.4%
+TP Widerstand: 9.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 9.34
+Limitpreis (LP): 9.32
+Anzahl (Stk): 162
+TP (Teilverkauf): 8.73
+Stopp-Loss (SL): 9.95
+Runner-Target: EMA 21: 10.59
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (4.6%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 5.67% | Min.Wall FEUER: 4.25% | Min.Wall GOLDEN: 8.51%
+
+--- JSON PAYLOAD ---
+{""ticker"":""TME"",""price"":9.42,""signal"":""AKJ_ELITE_SHORT"",""sp"":9.34,""sl"":9.95,""tp"":8.73,""shares"":162,""risk_eur"":100,""wpr"":0.8,""stop_wall"":8.42,""tp_resistance"":9.29,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (4.6%)""}",2026-04-08T13:42:26Z,
+4411955374,"BATS:PAM, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 PAM
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 94.4 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:40:42
+TICKER: PAM
+AKTUELLER KURS: 85.06
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 102 Bars ago
+Vacuum Quality: Low (TP 30.2%)
+Momentum (WPR): 94.4
+Kerzenregel: 
+Stopversicherung: 26.5%
+TP Widerstand: 30.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 85.94
+Limitpreis (LP): 86.11
+Anzahl (Stk): 21
+TP (Teilverkauf): 90.54
+Stopp-Loss (SL): 81.34
+Runner-Target: EMA 21: 85.25
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (4.1%)
+RS-Veto: OK
+ATR%: 4.03% | Min.Wall FEUER: 3.02% | Min.Wall GOLDEN: 6.05%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PAM"",""price"":85.06,""signal"":""FEUER_LONG"",""sp"":85.94,""sl"":81.34,""tp"":90.54,""shares"":21,""risk_eur"":100,""wpr"":94.4,""stop_wall"":26.49,""tp_resistance"":30.23,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (4.1%)""}",2026-04-08T13:40:41Z,
+4411955374,"BATS:ED, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 ED
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 99.6 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:38:16
+TICKER: ED
+AKTUELLER KURS: 111.3
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 51 Bars ago
+Vacuum Quality: High (TP 8.9%)
+Momentum (WPR): 99.6
+Kerzenregel: OK ✅
+Stopversicherung: 68.3%
+TP Widerstand: 8.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 114.43
+Limitpreis (LP): 114.66
+Anzahl (Stk): 18
+TP (Teilverkauf): 119.69
+Stopp-Loss (SL): 109.17
+Runner-Target: EMA 21: 112.5
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.9%)
+RS-Veto: OK
+ATR%: 1.9% | Min.Wall FEUER: 1.42% | Min.Wall GOLDEN: 2.85%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ED"",""price"":111.3,""signal"":""FEUER_LONG"",""sp"":114.43,""sl"":109.17,""tp"":119.69,""shares"":18,""risk_eur"":100,""wpr"":99.6,""stop_wall"":68.32,""tp_resistance"":8.86,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.9%)""}",2026-04-08T13:38:16Z,
+4411955374,"BATS:LEN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI SHORT 🟢 LEN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 1.3 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:37:39
+TICKER: LEN
+AKTUELLER KURS: 90.77
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Durables (XLY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 22 Bars ago
+Vacuum Quality: Low (TP 33.4%)
+Momentum (WPR): 1.3
+Kerzenregel: OK ✅
+Stopversicherung: 26.4%
+TP Widerstand: 33.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 88.9
+Limitpreis (LP): 88.72
+Anzahl (Stk): 17
+TP (Teilverkauf): 83.09
+Stopp-Loss (SL): 94.7
+Runner-Target: EMA 21: 92.62
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (5.8%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 4.22% | Min.Wall FEUER: 3.16% | Min.Wall GOLDEN: 6.33%
+
+--- JSON PAYLOAD ---
+{""ticker"":""LEN"",""price"":90.77,""signal"":""FEUER_SHORT"",""sp"":88.9,""sl"":94.7,""tp"":83.09,""shares"":17,""risk_eur"":100,""wpr"":1.3,""stop_wall"":26.36,""tp_resistance"":33.41,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (5.8%)""}",2026-04-08T13:37:36Z,
+4411955374,"BATS:RH, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 RH
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:36:41
+TICKER: RH
+AKTUELLER KURS: 124
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Retail Trade (XLY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 22 Bars ago
+Vacuum Quality: Low (TP 42%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 9.1%
+TP Widerstand: 42%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 119.5
+Limitpreis (LP): 119.26
+Anzahl (Stk): 6
+TP (Teilverkauf): 104.93
+Stopp-Loss (SL): 134.07
+Runner-Target: EMA 21: 133.01
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 💥 EXPANSION (15.4%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 8.12% | Min.Wall FEUER: 6.09% | Min.Wall GOLDEN: 12.19%
+
+--- JSON PAYLOAD ---
+{""ticker"":""RH"",""price"":124,""signal"":""AKJ_ELITE_SHORT"",""sp"":119.5,""sl"":134.07,""tp"":104.93,""shares"":6,""risk_eur"":100,""wpr"":0,""stop_wall"":9.13,""tp_resistance"":41.98,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (15.4%)""}",2026-04-08T13:36:41Z,
+4411955374,"BATS:CTAS, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL SHORT 💎 CTAS
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 15.4 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:36:36
+TICKER: CTAS
+AKTUELLER KURS: 174.3
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Commercial Services (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 12 Bars ago
+Vacuum Quality: Low (TP 41.4%)
+Momentum (WPR): 15.4
+Kerzenregel: OK ✅
+Stopversicherung: 39%
+TP Widerstand: 41.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 171.02
+Limitpreis (LP): 170.68
+Anzahl (Stk): 11
+TP (Teilverkauf): 162.61
+Stopp-Loss (SL): 179.43
+Runner-Target: EMA 21: 178.9
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.7%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.93% | Min.Wall FEUER: 2.2% | Min.Wall GOLDEN: 4.4%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CTAS"",""price"":174.3,""signal"":""AKJ_ELITE_SHORT"",""sp"":171.02,""sl"":179.43,""tp"":162.61,""shares"":11,""risk_eur"":100,""wpr"":15.4,""stop_wall"":39.02,""tp_resistance"":41.35,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.7%)""}",2026-04-08T13:36:33Z,
+4411955374,"BATS:CTAS, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI SHORT 🟢 CTAS
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 19.4 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:36:23
+TICKER: CTAS
+AKTUELLER KURS: 174.05
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Commercial Services (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 12 Bars ago
+Vacuum Quality: Low (TP 41.4%)
+Momentum (WPR): 19.4
+Kerzenregel: OK ✅
+Stopversicherung: 39%
+TP Widerstand: 41.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 171.02
+Limitpreis (LP): 170.68
+Anzahl (Stk): 11
+TP (Teilverkauf): 162.61
+Stopp-Loss (SL): 179.43
+Runner-Target: EMA 21: 178.87
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.7%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.94% | Min.Wall FEUER: 2.2% | Min.Wall GOLDEN: 4.41%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CTAS"",""price"":174.05,""signal"":""FEUER_SHORT"",""sp"":171.02,""sl"":179.43,""tp"":162.61,""shares"":11,""risk_eur"":100,""wpr"":19.4,""stop_wall"":39.01,""tp_resistance"":41.36,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.7%)""}",2026-04-08T13:36:21Z,
+4411955374,"BATS:SO, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 SO
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 98.5 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:36:11
+TICKER: SO
+AKTUELLER KURS: 95.38
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 3 Bars ago
+Vacuum Quality: Low (TP 91.9%)
+Momentum (WPR): 98.5
+Kerzenregel: OK ✅
+Stopversicherung: 8.1%
+TP Widerstand: 91.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 96.72
+Limitpreis (LP): 96.91
+Anzahl (Stk): 34
+TP (Teilverkauf): 99.64
+Stopp-Loss (SL): 93.79
+Runner-Target: EMA 21: 96.05
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (1.8%)
+RS-Veto: OK
+ATR%: 1.63% | Min.Wall FEUER: 1.22% | Min.Wall GOLDEN: 2.44%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SO"",""price"":95.38,""signal"":""FEUER_LONG"",""sp"":96.72,""sl"":93.79,""tp"":99.64,""shares"":34,""risk_eur"":100,""wpr"":98.5,""stop_wall"":8.13,""tp_resistance"":91.87,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (1.8%)""}",2026-04-08T13:36:10Z,
+4411955374,"BATS:CNP, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 CNP
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:35:40
+TICKER: CNP
+AKTUELLER KURS: 43.13
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 51 Bars ago
+Vacuum Quality: High (TP 6.5%)
+Momentum (WPR): 100
+Kerzenregel: OK ✅
+Stopversicherung: 42.1%
+TP Widerstand: 6.5%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 43.73
+Limitpreis (LP): 43.81
+Anzahl (Stk): 76
+TP (Teilverkauf): 45.03
+Stopp-Loss (SL): 42.42
+Runner-Target: EMA 21: 42.99
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.6%)
+RS-Veto: OK
+ATR%: 1.64% | Min.Wall FEUER: 1.23% | Min.Wall GOLDEN: 2.46%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CNP"",""price"":43.13,""signal"":""AKJ_ELITE_LONG"",""sp"":43.73,""sl"":42.42,""tp"":45.03,""shares"":76,""risk_eur"":100,""wpr"":100,""stop_wall"":42.14,""tp_resistance"":6.54,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.6%)""}",2026-04-08T13:35:34Z,
+4411955374,"BATS:D, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 D
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:35:37
+TICKER: D
+AKTUELLER KURS: 61.8
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 100
+Kerzenregel: 
+Stopversicherung: 100%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 62.85
+Limitpreis (LP): 62.98
+Anzahl (Stk): 44
+TP (Teilverkauf): 65.08
+Stopp-Loss (SL): 60.62
+Runner-Target: EMA 21: 61.97
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.3%)
+RS-Veto: OK
+ATR%: 1.91% | Min.Wall FEUER: 1.43% | Min.Wall GOLDEN: 2.86%
+
+--- JSON PAYLOAD ---
+{""ticker"":""D"",""price"":61.8,""signal"":""AKJ_ELITE_LONG"",""sp"":62.85,""sl"":60.62,""tp"":65.08,""shares"":44,""risk_eur"":100,""wpr"":100,""stop_wall"":100,""tp_resistance"":0,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.3%)""}",2026-04-08T13:35:30Z,
+4411955374,"BATS:NEE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP LONG 🌟 NEE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:35:29
+TICKER: NEE
+AKTUELLER KURS: 92.58
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Radar)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 127 Bars ago
+Vacuum Quality: High (TP 3.9%)
+Momentum (WPR): 80.2
+Kerzenregel: 
+Stopversicherung: 18.7%
+TP Widerstand: 3.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 93.71
+Limitpreis (LP): 93.89
+Anzahl (Stk): 33
+TP (Teilverkauf): 96.66
+Stopp-Loss (SL): 90.75
+Runner-Target: EMA 21: 92.13
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (1.8%)
+RS-Veto: OK
+ATR%: 1.96% | Min.Wall FEUER: 1.47% | Min.Wall GOLDEN: 2.95%
+
+--- JSON PAYLOAD ---
+{""ticker"":""NEE"",""price"":92.58,""signal"":""GOLDEN_LONG"",""sp"":93.71,""sl"":90.75,""tp"":96.66,""shares"":33,""risk_eur"":100,""wpr"":80.2,""stop_wall"":18.72,""tp_resistance"":3.88,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (1.8%)""}",2026-04-08T13:35:27Z,
+4411955374,"BATS:PAM, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 PAM
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:35:23
+TICKER: PAM
+AKTUELLER KURS: 85.3
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 102 Bars ago
+Vacuum Quality: Low (TP 24.3%)
+Momentum (WPR): 100
+Kerzenregel: 
+Stopversicherung: 21.5%
+TP Widerstand: 24.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 85.94
+Limitpreis (LP): 86.11
+Anzahl (Stk): 24
+TP (Teilverkauf): 89.97
+Stopp-Loss (SL): 81.91
+Runner-Target: EMA 21: 85.28
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (4.1%)
+RS-Veto: OK
+ATR%: 3.98% | Min.Wall FEUER: 2.98% | Min.Wall GOLDEN: 5.96%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PAM"",""price"":85.3,""signal"":""AKJ_ELITE_LONG"",""sp"":85.94,""sl"":81.91,""tp"":89.97,""shares"":24,""risk_eur"":100,""wpr"":100,""stop_wall"":21.51,""tp_resistance"":24.31,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (4.1%)""}",2026-04-08T13:35:22Z,
+4411955374,"BATS:ETR, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 ETR
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 94.3 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:35:21
+TICKER: ETR
+AKTUELLER KURS: 113.15
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 176 Bars ago
+Vacuum Quality: High (TP 1.7%)
+Momentum (WPR): 94.3
+Kerzenregel: OK ✅
+Stopversicherung: 1.6%
+TP Widerstand: 1.7%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 114.18
+Limitpreis (LP): 114.41
+Anzahl (Stk): 29
+TP (Teilverkauf): 117.58
+Stopp-Loss (SL): 110.78
+Runner-Target: EMA 21: 108.61
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (7.7%)
+RS-Veto: OK
+ATR%: 2.09% | Min.Wall FEUER: 1.57% | Min.Wall GOLDEN: 3.14%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ETR"",""price"":113.15,""signal"":""AKJ_ELITE_LONG"",""sp"":114.18,""sl"":110.78,""tp"":117.58,""shares"":29,""risk_eur"":100,""wpr"":94.3,""stop_wall"":1.64,""tp_resistance"":1.66,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (7.7%)""}",2026-04-08T13:35:09Z,
+4411955374,"BATS:ATO, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 ATO
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 81.9 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:35:06
+TICKER: ATO
+AKTUELLER KURS: 186.17
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 36 Bars ago
+Vacuum Quality: High (TP 11.2%)
+Momentum (WPR): 81.9
+Kerzenregel: OK ✅
+Stopversicherung: 46.4%
+TP Widerstand: 11.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 187.73
+Limitpreis (LP): 188.1
+Anzahl (Stk): 22
+TP (Teilverkauf): 192.18
+Stopp-Loss (SL): 183.27
+Runner-Target: EMA 21: 184.89
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.5%)
+RS-Veto: OK
+ATR%: 1.56% | Min.Wall FEUER: 1.17% | Min.Wall GOLDEN: 2.34%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ATO"",""price"":186.17,""signal"":""AKJ_ELITE_LONG"",""sp"":187.73,""sl"":183.27,""tp"":192.18,""shares"":22,""risk_eur"":100,""wpr"":81.9,""stop_wall"":46.36,""tp_resistance"":11.18,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.5%)""}",2026-04-08T13:35:03Z,
+4411955374,"BATS:WEC, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 WEC
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 98.9 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:35:04
+TICKER: WEC
+AKTUELLER KURS: 115.49
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 41 Bars ago
+Vacuum Quality: High (TP 5.1%)
+Momentum (WPR): 98.9
+Kerzenregel: 
+Stopversicherung: 68.8%
+TP Widerstand: 5.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 117.5
+Limitpreis (LP): 117.74
+Anzahl (Stk): 25
+TP (Teilverkauf): 121.47
+Stopp-Loss (SL): 113.53
+Runner-Target: EMA 21: 115.37
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.4%)
+RS-Veto: OK
+ATR%: 1.68% | Min.Wall FEUER: 1.26% | Min.Wall GOLDEN: 2.51%
+
+--- JSON PAYLOAD ---
+{""ticker"":""WEC"",""price"":115.49,""signal"":""AKJ_ELITE_LONG"",""sp"":117.5,""sl"":113.53,""tp"":121.47,""shares"":25,""risk_eur"":100,""wpr"":98.9,""stop_wall"":68.78,""tp_resistance"":5.15,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.4%)""}",2026-04-08T13:35:02Z,
+4411955374,"BATS:CTVA, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP LONG 🌟 CTVA
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 93.9 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:35:00
+TICKER: CTVA
+AKTUELLER KURS: 82.4
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Process Industries (XLP)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 32 Bars ago
+Vacuum Quality: High (TP 3%)
+Momentum (WPR): 93.9
+Kerzenregel: OK ✅
+Stopversicherung: 25.2%
+TP Widerstand: 3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 84.78
+Limitpreis (LP): 84.95
+Anzahl (Stk): 22
+TP (Teilverkauf): 89.24
+Stopp-Loss (SL): 80.32
+Runner-Target: EMA 21: 81.49
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.9%)
+RS-Veto: OK
+ATR%: 2.27% | Min.Wall FEUER: 1.7% | Min.Wall GOLDEN: 3.4%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CTVA"",""price"":82.4,""signal"":""GOLDEN_LONG"",""sp"":84.78,""sl"":80.32,""tp"":89.24,""shares"":22,""risk_eur"":100,""wpr"":93.9,""stop_wall"":25.17,""tp_resistance"":2.97,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.9%)""}",2026-04-08T13:34:58Z,
+4411955374,"BATS:ED, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 ED
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:34:54
+TICKER: ED
+AKTUELLER KURS: 111.88
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 51 Bars ago
+Vacuum Quality: High (TP 8.9%)
+Momentum (WPR): 100
+Kerzenregel: OK ✅
+Stopversicherung: 59.4%
+TP Widerstand: 8.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 114.43
+Limitpreis (LP): 114.66
+Anzahl (Stk): 21
+TP (Teilverkauf): 119.05
+Stopp-Loss (SL): 109.81
+Runner-Target: EMA 21: 112.55
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.8%)
+RS-Veto: OK
+ATR%: 1.85% | Min.Wall FEUER: 1.39% | Min.Wall GOLDEN: 2.78%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ED"",""price"":111.88,""signal"":""AKJ_ELITE_LONG"",""sp"":114.43,""sl"":109.81,""tp"":119.05,""shares"":21,""risk_eur"":100,""wpr"":100,""stop_wall"":59.39,""tp_resistance"":8.86,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.8%)""}",2026-04-08T13:34:42Z,
+4411955374,"BATS:FOUR, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI SHORT 🟢 FOUR
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 11.8 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:34:32
+TICKER: FOUR
+AKTUELLER KURS: 43.45
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Commercial Services (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 161 Bars ago
+Vacuum Quality: High (TP 1.8%)
+Momentum (WPR): 11.8
+Kerzenregel: OK ✅
+Stopversicherung: 6%
+TP Widerstand: 1.8%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 42.5
+Limitpreis (LP): 42.42
+Anzahl (Stk): 24
+TP (Teilverkauf): 38.45
+Stopp-Loss (SL): 46.55
+Runner-Target: EMA 21: 45.17
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 💥 EXPANSION (11.5%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 7.12% | Min.Wall FEUER: 5.34% | Min.Wall GOLDEN: 10.69%
+
+--- JSON PAYLOAD ---
+{""ticker"":""FOUR"",""price"":43.45,""signal"":""FEUER_SHORT"",""sp"":42.5,""sl"":46.55,""tp"":38.45,""shares"":24,""risk_eur"":100,""wpr"":11.8,""stop_wall"":6.02,""tp_resistance"":1.82,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (11.5%)""}",2026-04-08T13:34:28Z,
+4411955374,"BATS:PNW, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 PNW
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:34:26
+TICKER: PNW
+AKTUELLER KURS: 101.33
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 51 Bars ago
+Vacuum Quality: High (TP 13.3%)
+Momentum (WPR): 100
+Kerzenregel: 
+Stopversicherung: 30.1%
+TP Widerstand: 13.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 102.35
+Limitpreis (LP): 102.55
+Anzahl (Stk): 36
+TP (Teilverkauf): 105.07
+Stopp-Loss (SL): 99.63
+Runner-Target: EMA 21: 100.58
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.2%)
+RS-Veto: OK
+ATR%: 1.68% | Min.Wall FEUER: 1.26% | Min.Wall GOLDEN: 2.52%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PNW"",""price"":101.33,""signal"":""AKJ_ELITE_LONG"",""sp"":102.35,""sl"":99.63,""tp"":105.07,""shares"":36,""risk_eur"":100,""wpr"":100,""stop_wall"":30.11,""tp_resistance"":13.28,""rs_status"":""MITTEL"",""bb_squeeze"":""NORMAL (3.2%)""}",2026-04-08T13:34:21Z,
+4411955374,"MIL_LS:TRN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 TRN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 81.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:33:37
+TICKER: TRN
+AKTUELLER KURS: 9.97
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 66 Bars ago
+Vacuum Quality: High (TP 11.4%)
+Momentum (WPR): 81.2
+Kerzenregel: 
+Stopversicherung: 22.6%
+TP Widerstand: 11.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 10.27
+Limitpreis (LP): 10.29
+Anzahl (Stk): 184
+TP (Teilverkauf): 10.81
+Stopp-Loss (SL): 9.72
+Runner-Target: EMA 21: 9.83
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (4.4%)
+RS-Veto: OK
+ATR%: 2% | Min.Wall FEUER: 1.5% | Min.Wall GOLDEN: 3.01%
+
+--- JSON PAYLOAD ---
+{""ticker"":""TRN"",""price"":9.97,""signal"":""AKJ_ELITE_LONG"",""sp"":10.27,""sl"":9.72,""tp"":10.81,""shares"":184,""risk_eur"":100,""wpr"":81.2,""stop_wall"":22.65,""tp_resistance"":11.38,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (4.4%)""}",2026-04-08T13:33:37Z,
+4411955374,"MIL_LS:SRG, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 SRG
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 81.7 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:33:32
+TICKER: SRG
+AKTUELLER KURS: 6.58
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 297 Bars ago
+Vacuum Quality: High (TP 1.6%)
+Momentum (WPR): 81.7
+Kerzenregel: OK ✅
+Stopversicherung: 9%
+TP Widerstand: 1.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 6.87
+Limitpreis (LP): 6.88
+Anzahl (Stk): 239
+TP (Teilverkauf): 7.29
+Stopp-Loss (SL): 6.45
+Runner-Target: EMA 21: 6.48
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (4.2%)
+RS-Veto: OK
+ATR%: 1.99% | Min.Wall FEUER: 1.49% | Min.Wall GOLDEN: 2.98%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SRG"",""price"":6.58,""signal"":""AKJ_ELITE_LONG"",""sp"":6.87,""sl"":6.45,""tp"":7.29,""shares"":239,""risk_eur"":100,""wpr"":81.7,""stop_wall"":8.98,""tp_resistance"":1.62,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (4.2%)""}",2026-04-08T13:33:31Z,
+4411955374,"BATS:LEN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL SHORT 💎 LEN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:17
+TICKER: LEN
+AKTUELLER KURS: 89.61
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Durables (XLY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 22 Bars ago
+Vacuum Quality: Low (TP 26.6%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 17.9%
+TP Widerstand: 26.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 88.93
+Limitpreis (LP): 88.75
+Anzahl (Stk): 22
+TP (Teilverkauf): 84.51
+Stopp-Loss (SL): 93.35
+Runner-Target: EMA 21: 92.52
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (5.6%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 4.17% | Min.Wall FEUER: 3.13% | Min.Wall GOLDEN: 6.26%
+
+--- JSON PAYLOAD ---
+{""ticker"":""LEN"",""price"":89.61,""signal"":""AKJ_ELITE_SHORT"",""sp"":88.93,""sl"":93.35,""tp"":84.51,""shares"":22,""risk_eur"":100,""wpr"":0,""stop_wall"":17.93,""tp_resistance"":26.57,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (5.6%)""}",2026-04-08T13:30:16Z,
+4411955374,"BATS:KO, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 KO
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 98.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:33:12
+TICKER: KO
+AKTUELLER KURS: 75.66
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 51 Bars ago
+Vacuum Quality: Low (TP 20.4%)
+Momentum (WPR): 98.2
+Kerzenregel: 
+Stopversicherung: 14.6%
+TP Widerstand: 20.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 76.07
+Limitpreis (LP): 76.22
+Anzahl (Stk): 60
+TP (Teilverkauf): 77.73
+Stopp-Loss (SL): 74.41
+Runner-Target: EMA 21: 76.38
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (1.8%)
+RS-Veto: OK
+ATR%: 1.61% | Min.Wall FEUER: 1.21% | Min.Wall GOLDEN: 2.41%
+
+--- JSON PAYLOAD ---
+{""ticker"":""KO"",""price"":75.66,""signal"":""AKJ_ELITE_LONG"",""sp"":76.07,""sl"":74.41,""tp"":77.73,""shares"":60,""risk_eur"":100,""wpr"":98.2,""stop_wall"":14.63,""tp_resistance"":20.38,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (1.8%)""}",2026-04-08T13:33:11Z,
+4411955374,"BATS:SRE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 SRE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 89.4 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:32:58
+TICKER: SRE
+AKTUELLER KURS: 97.26
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 32 Bars ago
+Vacuum Quality: High (TP 3.1%)
+Momentum (WPR): 89.4
+Kerzenregel: OK ✅
+Stopversicherung: 25%
+TP Widerstand: 3.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 98.5
+Limitpreis (LP): 98.69
+Anzahl (Stk): 31
+TP (Teilverkauf): 101.64
+Stopp-Loss (SL): 95.35
+Runner-Target: EMA 21: 95.97
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.5%)
+RS-Veto: OK
+ATR%: 1.97% | Min.Wall FEUER: 1.48% | Min.Wall GOLDEN: 2.95%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SRE"",""price"":97.26,""signal"":""AKJ_ELITE_LONG"",""sp"":98.5,""sl"":95.35,""tp"":101.64,""shares"":31,""risk_eur"":100,""wpr"":89.4,""stop_wall"":25.02,""tp_resistance"":3.14,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.5%)""}",2026-04-08T13:32:57Z,
+4411955374,"BATS:TJX, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 TJX
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 87.8 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:22
+TICKER: TJX
+AKTUELLER KURS: 158.03
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Retail Trade (XLY)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 171 Bars ago
+Vacuum Quality: High (TP 7.6%)
+Momentum (WPR): 87.8
+Kerzenregel: 
+Stopversicherung: 20.5%
+TP Widerstand: 7.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 159.31
+Limitpreis (LP): 159.62
+Anzahl (Stk): 23
+TP (Teilverkauf): 163.64
+Stopp-Loss (SL): 154.97
+Runner-Target: EMA 21: 158.1
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.9%)
+RS-Veto: OK
+ATR%: 1.94% | Min.Wall FEUER: 1.45% | Min.Wall GOLDEN: 2.91%
+
+--- JSON PAYLOAD ---
+{""ticker"":""TJX"",""price"":158.03,""signal"":""AKJ_ELITE_LONG"",""sp"":159.31,""sl"":154.97,""tp"":163.64,""shares"":23,""risk_eur"":100,""wpr"":87.8,""stop_wall"":20.5,""tp_resistance"":7.59,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.9%)""}",2026-04-08T13:30:20Z,
+4411955374,"BATS:ELF, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI SHORT 🟢 ELF
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 9.7 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:32:42
+TICKER: ELF
+AKTUELLER KURS: 66.18
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 73 Bars ago
+Vacuum Quality: High (TP 6.5%)
+Momentum (WPR): 9.7
+Kerzenregel: OK ✅
+Stopversicherung: 3.3%
+TP Widerstand: 6.5%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 65.61
+Limitpreis (LP): 65.48
+Anzahl (Stk): 17
+TP (Teilverkauf): 59.93
+Stopp-Loss (SL): 71.29
+Runner-Target: EMA 21: 68.38
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 💥 EXPANSION (10%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 6.49% | Min.Wall FEUER: 4.87% | Min.Wall GOLDEN: 9.73%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ELF"",""price"":66.18,""signal"":""FEUER_SHORT"",""sp"":65.61,""sl"":71.29,""tp"":59.93,""shares"":17,""risk_eur"":100,""wpr"":9.7,""stop_wall"":3.32,""tp_resistance"":6.55,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (10%)""}",2026-04-08T13:32:40Z,
+4411955374,"BATS:NKE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 NKE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 12.4 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:36
+TICKER: NKE
+AKTUELLER KURS: 44.13
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 46 Bars ago
+Vacuum Quality: High (TP 7.5%)
+Momentum (WPR): 12.4
+Kerzenregel: OK ✅
+Stopversicherung: 11.1%
+TP Widerstand: 7.5%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 43.84
+Limitpreis (LP): 43.75
+Anzahl (Stk): 42
+TP (Teilverkauf): 41.46
+Stopp-Loss (SL): 46.21
+Runner-Target: EMA 21: 50.66
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 💥 EXPANSION (17.2%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 4.32% | Min.Wall FEUER: 3.24% | Min.Wall GOLDEN: 6.48%
+
+--- JSON PAYLOAD ---
+{""ticker"":""NKE"",""price"":44.13,""signal"":""AKJ_ELITE_SHORT"",""sp"":43.84,""sl"":46.21,""tp"":41.46,""shares"":42,""risk_eur"":100,""wpr"":12.4,""stop_wall"":11.08,""tp_resistance"":7.47,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (17.2%)""}",2026-04-08T13:30:35Z,
+4411955374,"BATS:TSCO, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 TSCO
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 14.7 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:32:39
+TICKER: TSCO
+AKTUELLER KURS: 45.12
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Retail Trade (XLY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 41 Bars ago
+Vacuum Quality: High (TP 6.1%)
+Momentum (WPR): 14.7
+Kerzenregel: OK ✅
+Stopversicherung: 22.6%
+TP Widerstand: 6.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 44.42
+Limitpreis (LP): 44.33
+Anzahl (Stk): 46
+TP (Teilverkauf): 42.25
+Stopp-Loss (SL): 46.58
+Runner-Target: EMA 21: 46.35
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (3.3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 3.23% | Min.Wall FEUER: 2.42% | Min.Wall GOLDEN: 4.85%
+
+--- JSON PAYLOAD ---
+{""ticker"":""TSCO"",""price"":45.12,""signal"":""AKJ_ELITE_SHORT"",""sp"":44.42,""sl"":46.58,""tp"":42.25,""shares"":46,""risk_eur"":100,""wpr"":14.7,""stop_wall"":22.6,""tp_resistance"":6.09,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.3%)""}",2026-04-08T13:32:39Z,
+4411955374,"BATS:PG, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 PG
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 3.7 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:32:37
+TICKER: PG
+AKTUELLER KURS: 144.08
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 12 Bars ago
+Vacuum Quality: High (TP 4.1%)
+Momentum (WPR): 3.7
+Kerzenregel: OK ✅
+Stopversicherung: 91%
+TP Widerstand: 4.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 141.71
+Limitpreis (LP): 141.43
+Anzahl (Stk): 20
+TP (Teilverkauf): 136.76
+Stopp-Loss (SL): 146.66
+Runner-Target: EMA 21: 146.4
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (1.4%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 1.79% | Min.Wall FEUER: 1.34% | Min.Wall GOLDEN: 2.69%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PG"",""price"":144.08,""signal"":""AKJ_ELITE_SHORT"",""sp"":141.71,""sl"":146.66,""tp"":136.76,""shares"":20,""risk_eur"":100,""wpr"":3.7,""stop_wall"":91.02,""tp_resistance"":4.1,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (1.4%)""}",2026-04-08T13:32:37Z,
+4411955374,"BATS:FRO, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 FRO
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 93.7 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:01
+TICKER: FRO
+AKTUELLER KURS: 34.52
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: S&P 500 (SPY)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 55 Bars ago
+Vacuum Quality: High (TP 14.5%)
+Momentum (WPR): 93.7
+Kerzenregel: 
+Stopversicherung: 12.9%
+TP Widerstand: 14.5%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 34.71
+Limitpreis (LP): 34.78
+Anzahl (Stk): 58
+TP (Teilverkauf): 36.43
+Stopp-Loss (SL): 32.99
+Runner-Target: EMA 21: 34.22
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (6.3%)
+RS-Veto: OK
+ATR%: 4.44% | Min.Wall FEUER: 3.33% | Min.Wall GOLDEN: 6.66%
+
+--- JSON PAYLOAD ---
+{""ticker"":""FRO"",""price"":34.52,""signal"":""AKJ_ELITE_LONG"",""sp"":34.71,""sl"":32.99,""tp"":36.43,""shares"":58,""risk_eur"":100,""wpr"":93.7,""stop_wall"":12.91,""tp_resistance"":14.49,""rs_status"":""MITTEL"",""bb_squeeze"":""NORMAL (6.3%)""}",2026-04-08T13:30:01Z,
+4411955374,"BATS:AMP, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI SHORT 🟢 AMP
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 12.1 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:32:01
+TICKER: AMP
+AKTUELLER KURS: 445.79
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Radar)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 32 Bars ago
+Vacuum Quality: Low (TP 35.7%)
+Momentum (WPR): 12.1
+Kerzenregel: OK ✅
+Stopversicherung: 29.4%
+TP Widerstand: 35.7%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 442.75
+Limitpreis (LP): 441.86
+Anzahl (Stk): 5
+TP (Teilverkauf): 423.01
+Stopp-Loss (SL): 462.49
+Runner-Target: EMA 21: 444.93
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.1%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 3.03% | Min.Wall FEUER: 2.27% | Min.Wall GOLDEN: 4.54%
+
+--- JSON PAYLOAD ---
+{""ticker"":""AMP"",""price"":445.79,""signal"":""FEUER_SHORT"",""sp"":442.75,""sl"":462.49,""tp"":423.01,""shares"":5,""risk_eur"":100,""wpr"":12.1,""stop_wall"":29.39,""tp_resistance"":35.73,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.1%)""}",2026-04-08T13:31:55Z,
+4411955374,"BATS:ORLY, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI SHORT 🟢 ORLY
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 18.3 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:31:50
+TICKER: ORLY
+AKTUELLER KURS: 91.99
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Retail Trade (XLY)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 27 Bars ago
+Vacuum Quality: Low (TP 15.6%)
+Momentum (WPR): 18.3
+Kerzenregel: OK ✅
+Stopversicherung: 29.7%
+TP Widerstand: 15.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 91.2
+Limitpreis (LP): 91.02
+Anzahl (Stk): 35
+TP (Teilverkauf): 88.41
+Stopp-Loss (SL): 93.99
+Runner-Target: EMA 21: 91.55
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (1.4%)
+RS-Veto: OK
+ATR%: 2.15% | Min.Wall FEUER: 1.61% | Min.Wall GOLDEN: 3.22%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ORLY"",""price"":91.99,""signal"":""FEUER_SHORT"",""sp"":91.2,""sl"":93.99,""tp"":88.41,""shares"":35,""risk_eur"":100,""wpr"":18.3,""stop_wall"":29.73,""tp_resistance"":15.59,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (1.4%)""}",2026-04-08T13:31:49Z,
+4411955374,"BATS:LNT, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 LNT
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 83.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:31:40
+TICKER: LNT
+AKTUELLER KURS: 72.1
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 36 Bars ago
+Vacuum Quality: High (TP 9.5%)
+Momentum (WPR): 83.2
+Kerzenregel: 
+Stopversicherung: 43.6%
+TP Widerstand: 9.5%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 72.35
+Limitpreis (LP): 72.49
+Anzahl (Stk): 71
+TP (Teilverkauf): 73.75
+Stopp-Loss (SL): 70.95
+Runner-Target: EMA 21: 71.41
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.8%)
+RS-Veto: OK
+ATR%: 1.6% | Min.Wall FEUER: 1.2% | Min.Wall GOLDEN: 2.4%
+
+--- JSON PAYLOAD ---
+{""ticker"":""LNT"",""price"":72.1,""signal"":""AKJ_ELITE_LONG"",""sp"":72.35,""sl"":70.95,""tp"":73.75,""shares"":71,""risk_eur"":100,""wpr"":83.2,""stop_wall"":43.62,""tp_resistance"":9.52,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.8%)""}",2026-04-08T13:31:39Z,
+4411955374,"BATS:INSW, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 INSW
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 86 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:19
+TICKER: INSW
+AKTUELLER KURS: 71.5
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: S&P 500 (SPY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 186 Bars ago
+Vacuum Quality: High (TP 4.6%)
+Momentum (WPR): 86
+Kerzenregel: OK ✅
+Stopversicherung: 6%
+TP Widerstand: 4.6%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 71.97
+Limitpreis (LP): 72.11
+Anzahl (Stk): 28
+TP (Teilverkauf): 75.45
+Stopp-Loss (SL): 68.49
+Runner-Target: EMA 21: 71.47
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (5.3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 4.22% | Min.Wall FEUER: 3.16% | Min.Wall GOLDEN: 6.32%
+
+--- JSON PAYLOAD ---
+{""ticker"":""INSW"",""price"":71.5,""signal"":""AKJ_ELITE_LONG"",""sp"":71.97,""sl"":68.49,""tp"":75.45,""shares"":28,""risk_eur"":100,""wpr"":86,""stop_wall"":5.98,""tp_resistance"":4.62,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (5.3%)""}",2026-04-08T13:30:18Z,
+4411955374,"BATS:NE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL LONG 💎 NE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:31:25
+TICKER: NE
+AKTUELLER KURS: 48.86
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Industrial Services (XLI)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 60 Bars ago
+Vacuum Quality: High (TP 8.3%)
+Momentum (WPR): 100
+Kerzenregel: OK ✅
+Stopversicherung: 5.1%
+TP Widerstand: 8.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 49.19
+Limitpreis (LP): 49.29
+Anzahl (Stk): 46
+TP (Teilverkauf): 51.36
+Stopp-Loss (SL): 47.02
+Runner-Target: EMA 21: 48.09
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.5%)
+RS-Veto: OK
+ATR%: 3.77% | Min.Wall FEUER: 2.83% | Min.Wall GOLDEN: 5.66%
+
+--- JSON PAYLOAD ---
+{""ticker"":""NE"",""price"":48.86,""signal"":""AKJ_ELITE_LONG"",""sp"":49.19,""sl"":47.02,""tp"":51.36,""shares"":46,""risk_eur"":100,""wpr"":100,""stop_wall"":5.09,""tp_resistance"":8.33,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.5%)""}",2026-04-08T13:31:24Z,
+4411955374,"BATS:AXON, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 AXON
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 18.6 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:23
+TICKER: AXON
+AKTUELLER KURS: 411.48
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Rüstung & Aero (ITA)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 92 Bars ago
+Vacuum Quality: Low (TP 15.3%)
+Momentum (WPR): 18.6
+Kerzenregel: 
+Stopversicherung: 3.5%
+TP Widerstand: 15.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 411.48
+Limitpreis (LP): 412.3
+Anzahl (Stk): 2
+TP (Teilverkauf): 449.25
+Stopp-Loss (SL): 373.71
+Runner-Target: EMA 21: 451.01
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 💥 EXPANSION (10.7%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 6.39% | Min.Wall FEUER: 4.79% | Min.Wall GOLDEN: 9.58%
+
+--- JSON PAYLOAD ---
+{""ticker"":""AXON"",""price"":411.48,""signal"":""AKJ_ELITE_SHORT"",""sp"":411.48,""sl"":373.71,""tp"":449.25,""shares"":2,""risk_eur"":100,""wpr"":18.6,""stop_wall"":3.49,""tp_resistance"":15.29,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (10.7%)""}",2026-04-08T13:30:23Z,
+4411955374,"BATS:CMS, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 CMS
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 93.5 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:31:03
+TICKER: CMS
+AKTUELLER KURS: 77.91
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 36 Bars ago
+Vacuum Quality: High (TP 12%)
+Momentum (WPR): 93.5
+Kerzenregel: 
+Stopversicherung: 33.7%
+TP Widerstand: 12%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 78.2
+Limitpreis (LP): 78.36
+Anzahl (Stk): 66
+TP (Teilverkauf): 79.7
+Stopp-Loss (SL): 76.7
+Runner-Target: EMA 21: 77.12
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.7%)
+RS-Veto: OK
+ATR%: 1.56% | Min.Wall FEUER: 1.17% | Min.Wall GOLDEN: 2.34%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CMS"",""price"":77.91,""signal"":""AKJ_ELITE_LONG"",""sp"":78.2,""sl"":76.7,""tp"":79.7,""shares"":66,""risk_eur"":100,""wpr"":93.5,""stop_wall"":33.73,""tp_resistance"":12.01,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.7%)""}",2026-04-08T13:30:59Z,
+4411955374,"BATS:WM, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP LONG 🌟 WM
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 94.7 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:18
+TICKER: WM
+AKTUELLER KURS: 226.11
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Industrial Services (XLI)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 94.7
+Kerzenregel: 
+Stopversicherung: 100%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 232
+Limitpreis (LP): 232.46
+Anzahl (Stk): 8
+TP (Teilverkauf): 243.21
+Stopp-Loss (SL): 220.79
+Runner-Target: EMA 21: 231.69
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (3.2%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.11% | Min.Wall FEUER: 1.58% | Min.Wall GOLDEN: 3.16%
+
+--- JSON PAYLOAD ---
+{""ticker"":""WM"",""price"":226.11,""signal"":""GOLDEN_LONG"",""sp"":232,""sl"":220.79,""tp"":243.21,""shares"":8,""risk_eur"":100,""wpr"":94.7,""stop_wall"":100,""tp_resistance"":0,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.2%)""}",2026-04-08T13:30:18Z,
+4411955374,"BATS:GPN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL SHORT 💎 GPN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:14
+TICKER: GPN
+AKTUELLER KURS: 66.43
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Commercial Services (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 22 Bars ago
+Vacuum Quality: High (TP 13.8%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 22%
+TP Widerstand: 13.8%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 66
+Limitpreis (LP): 65.87
+Anzahl (Stk): 28
+TP (Teilverkauf): 62.43
+Stopp-Loss (SL): 69.57
+Runner-Target: EMA 21: 68.41
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (7.1%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 4.72% | Min.Wall FEUER: 3.54% | Min.Wall GOLDEN: 7.08%
+
+--- JSON PAYLOAD ---
+{""ticker"":""GPN"",""price"":66.43,""signal"":""AKJ_ELITE_SHORT"",""sp"":66,""sl"":69.57,""tp"":62.43,""shares"":28,""risk_eur"":100,""wpr"":0,""stop_wall"":22.01,""tp_resistance"":13.84,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (7.1%)""}",2026-04-08T13:30:13Z,
+4411955374,"BATS:KDP, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 KDP
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 7.9 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:30
+TICKER: KDP
+AKTUELLER KURS: 25.69
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 17 Bars ago
+Vacuum Quality: High (TP 12.1%)
+Momentum (WPR): 7.9
+Kerzenregel: OK ✅
+Stopversicherung: 12.7%
+TP Widerstand: 12.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 25.57
+Limitpreis (LP): 25.52
+Anzahl (Stk): 134
+TP (Teilverkauf): 24.83
+Stopp-Loss (SL): 26.31
+Runner-Target: EMA 21: 26.58
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (3.1%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.43% | Min.Wall FEUER: 1.82% | Min.Wall GOLDEN: 3.64%
+
+--- JSON PAYLOAD ---
+{""ticker"":""KDP"",""price"":25.69,""signal"":""AKJ_ELITE_SHORT"",""sp"":25.57,""sl"":26.31,""tp"":24.83,""shares"":134,""risk_eur"":100,""wpr"":7.9,""stop_wall"":12.72,""tp_resistance"":12.08,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.1%)""}",2026-04-08T13:30:29Z,
+4411955374,"BATS:OKLO, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL SHORT 💎 OKLO
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:08
+TICKER: OKLO
+AKTUELLER KURS: 51.07
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Producer Manufacturing (XLI)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 32 Bars ago
+Vacuum Quality: High (TP 9.9%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 6.5%
+TP Widerstand: 9.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 50.52
+Limitpreis (LP): 50.42
+Anzahl (Stk): 20
+TP (Teilverkauf): 45.71
+Stopp-Loss (SL): 55.33
+Runner-Target: EMA 21: 53.64
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 💥 EXPANSION (10.7%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 8.34% | Min.Wall FEUER: 6.26% | Min.Wall GOLDEN: 12.51%
+
+--- JSON PAYLOAD ---
+{""ticker"":""OKLO"",""price"":51.07,""signal"":""AKJ_ELITE_SHORT"",""sp"":50.52,""sl"":55.33,""tp"":45.71,""shares"":20,""risk_eur"":100,""wpr"":0,""stop_wall"":6.45,""tp_resistance"":9.93,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (10.7%)""}",2026-04-08T13:30:07Z,
+4411955374,"BATS:PODD, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 PODD
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 12 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:48
+TICKER: PODD
+AKTUELLER KURS: 208.01
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 78 Bars ago
+Vacuum Quality: High (TP 4.7%)
+Momentum (WPR): 12
+Kerzenregel: OK ✅
+Stopversicherung: 4.8%
+TP Widerstand: 4.7%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 205.92
+Limitpreis (LP): 205.51
+Anzahl (Stk): 10
+TP (Teilverkauf): 196.12
+Stopp-Loss (SL): 215.72
+Runner-Target: EMA 21: 218.3
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (4.6%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 3.71% | Min.Wall FEUER: 2.78% | Min.Wall GOLDEN: 5.56%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PODD"",""price"":208.01,""signal"":""AKJ_ELITE_SHORT"",""sp"":205.92,""sl"":215.72,""tp"":196.12,""shares"":10,""risk_eur"":100,""wpr"":12,""stop_wall"":4.76,""tp_resistance"":4.75,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (4.6%)""}",2026-04-08T13:30:45Z,
+4411955374,"BATS:WM, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 WM
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:05
+TICKER: WM
+AKTUELLER KURS: 229.66
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Industrial Services (XLI)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: Low (TP 26.3%)
+Momentum (WPR): 100
+Kerzenregel: 
+Stopversicherung: 73.7%
+TP Widerstand: 26.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 230.5
+Limitpreis (LP): 230.96
+Anzahl (Stk): 18
+TP (Teilverkauf): 235.81
+Stopp-Loss (SL): 225.19
+Runner-Target: EMA 21: 232.02
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 1.95% | Min.Wall FEUER: 1.46% | Min.Wall GOLDEN: 2.92%
+
+--- JSON PAYLOAD ---
+{""ticker"":""WM"",""price"":229.66,""signal"":""AKJ_ELITE_LONG"",""sp"":230.5,""sl"":225.19,""tp"":235.81,""shares"":18,""risk_eur"":100,""wpr"":100,""stop_wall"":73.72,""tp_resistance"":26.28,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3%)""}",2026-04-08T13:30:05Z,
+4411955374,"BATS:CTVA, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 CTVA
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 86.8 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:56
+TICKER: CTVA
+AKTUELLER KURS: 83.86
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Process Industries (XLP)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 32 Bars ago
+Vacuum Quality: High (TP 3%)
+Momentum (WPR): 86.8
+Kerzenregel: OK ✅
+Stopversicherung: 16.1%
+TP Widerstand: 3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 84.78
+Limitpreis (LP): 84.95
+Anzahl (Stk): 37
+TP (Teilverkauf): 87.45
+Stopp-Loss (SL): 82.11
+Runner-Target: EMA 21: 81.62
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.8%)
+RS-Veto: OK
+ATR%: 2.08% | Min.Wall FEUER: 1.56% | Min.Wall GOLDEN: 3.13%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CTVA"",""price"":83.86,""signal"":""AKJ_ELITE_LONG"",""sp"":84.78,""sl"":82.11,""tp"":87.45,""shares"":37,""risk_eur"":100,""wpr"":86.8,""stop_wall"":16.14,""tp_resistance"":2.98,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.8%)""}",2026-04-08T13:30:50Z,
+4411955374,"BATS:COST, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 COST
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 90 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:11
+TICKER: COST
+AKTUELLER KURS: 1001.37
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Retail Trade (XLY)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 36 Bars ago
+Vacuum Quality: Low (TP 16.2%)
+Momentum (WPR): 90
+Kerzenregel: 
+Stopversicherung: 49.8%
+TP Widerstand: 16.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 1008.22
+Limitpreis (LP): 1010.24
+Anzahl (Stk): 4
+TP (Teilverkauf): 1032.17
+Stopp-Loss (SL): 984.27
+Runner-Target: EMA 21: 995.4
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.9%)
+RS-Veto: OK
+ATR%: 1.71% | Min.Wall FEUER: 1.28% | Min.Wall GOLDEN: 2.56%
+
+--- JSON PAYLOAD ---
+{""ticker"":""COST"",""price"":1001.37,""signal"":""AKJ_ELITE_LONG"",""sp"":1008.22,""sl"":984.27,""tp"":1032.17,""shares"":4,""risk_eur"":100,""wpr"":90,""stop_wall"":49.75,""tp_resistance"":16.22,""rs_status"":""STARK"",""bb_squeeze"":""🗜️ SQUEEZE (2.9%)""}",2026-04-08T13:30:10Z,
+4411955374,"BATS:PAYX, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP SHORT 🌟 PAYX
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:04
+TICKER: PAYX
+AKTUELLER KURS: 93.06
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Technology Services (XLK)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: NEUTRAL
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 156 Bars ago
+Vacuum Quality: High (TP 5.9%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 10%
+TP Widerstand: 5.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 91.72
+Limitpreis (LP): 91.54
+Anzahl (Stk): 24
+TP (Teilverkauf): 87.69
+Stopp-Loss (SL): 95.75
+Runner-Target: EMA 21: 92.83
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (1.9%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.89% | Min.Wall FEUER: 2.17% | Min.Wall GOLDEN: 4.33%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PAYX"",""price"":93.06,""signal"":""GOLDEN_SHORT"",""sp"":91.72,""sl"":95.75,""tp"":87.69,""shares"":24,""risk_eur"":100,""wpr"":0,""stop_wall"":10.04,""tp_resistance"":5.93,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (1.9%)""}",2026-04-08T13:30:04Z,
+4411955374,"BATS:CB, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 CB
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 91.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:21
+TICKER: CB
+AKTUELLER KURS: 324.38
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: NEUTRAL
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 97 Bars ago
+Vacuum Quality: Low (TP 23.2%)
+Momentum (WPR): 91.2
+Kerzenregel: 
+Stopversicherung: 22.6%
+TP Widerstand: 23.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 328.1
+Limitpreis (LP): 328.75
+Anzahl (Stk): 10
+TP (Teilverkauf): 337.33
+Stopp-Loss (SL): 318.86
+Runner-Target: EMA 21: 326.36
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (1.6%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 1.7% | Min.Wall FEUER: 1.28% | Min.Wall GOLDEN: 2.55%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CB"",""price"":324.38,""signal"":""FEUER_LONG"",""sp"":328.1,""sl"":318.86,""tp"":337.33,""shares"":10,""risk_eur"":100,""wpr"":91.2,""stop_wall"":22.63,""tp_resistance"":23.16,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (1.6%)""}",2026-04-08T13:30:20Z,
+4411955374,"BATS:FE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 FE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:07
+TICKER: FE
+AKTUELLER KURS: 50.77
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 176 Bars ago
+Vacuum Quality: High (TP 2.1%)
+Momentum (WPR): 100
+Kerzenregel: 
+Stopversicherung: 8.2%
+TP Widerstand: 2.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 51.36
+Limitpreis (LP): 51.46
+Anzahl (Stk): 66
+TP (Teilverkauf): 52.86
+Stopp-Loss (SL): 49.86
+Runner-Target: EMA 21: 50.4
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.1%)
+RS-Veto: OK
+ATR%: 1.79% | Min.Wall FEUER: 1.34% | Min.Wall GOLDEN: 2.69%
+
+--- JSON PAYLOAD ---
+{""ticker"":""FE"",""price"":50.77,""signal"":""AKJ_ELITE_LONG"",""sp"":51.36,""sl"":49.86,""tp"":52.86,""shares"":66,""risk_eur"":100,""wpr"":100,""stop_wall"":8.19,""tp_resistance"":2.15,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.1%)""}",2026-04-08T13:30:07Z,
+4411955374,"BATS:EXC, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 EXC
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:06
+TICKER: EXC
+AKTUELLER KURS: 48.8
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: NEUTRAL
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 32 Bars ago
+Vacuum Quality: Low (TP 20.2%)
+Momentum (WPR): 100
+Kerzenregel: 
+Stopversicherung: 58.4%
+TP Widerstand: 20.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 49.42
+Limitpreis (LP): 49.52
+Anzahl (Stk): 67
+TP (Teilverkauf): 50.91
+Stopp-Loss (SL): 47.93
+Runner-Target: EMA 21: 48.6
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (1.9%)
+RS-Veto: OK
+ATR%: 1.78% | Min.Wall FEUER: 1.34% | Min.Wall GOLDEN: 2.67%
+
+--- JSON PAYLOAD ---
+{""ticker"":""EXC"",""price"":48.8,""signal"":""FEUER_LONG"",""sp"":49.42,""sl"":47.93,""tp"":50.91,""shares"":67,""risk_eur"":100,""wpr"":100,""stop_wall"":58.44,""tp_resistance"":20.19,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (1.9%)""}",2026-04-08T13:30:06Z,
+4411955374,"BATS:ABT, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 ABT
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:08
+TICKER: ABT
+AKTUELLER KURS: 103.56
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 107 Bars ago
+Vacuum Quality: High (TP 4.1%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 4%
+TP Widerstand: 4.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 103.13
+Limitpreis (LP): 102.92
+Anzahl (Stk): 38
+TP (Teilverkauf): 100.54
+Stopp-Loss (SL): 105.71
+Runner-Target: EMA 21: 105.43
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.08% | Min.Wall FEUER: 1.56% | Min.Wall GOLDEN: 3.12%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ABT"",""price"":103.56,""signal"":""AKJ_ELITE_SHORT"",""sp"":103.13,""sl"":105.71,""tp"":100.54,""shares"":38,""risk_eur"":100,""wpr"":0,""stop_wall"":3.96,""tp_resistance"":4.14,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (2%)""}",2026-04-08T13:30:07Z,
+4411955374,"BATS:HMC, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI SHORT 🟢 HMC
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0.7 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:18
+TICKER: HMC
+AKTUELLER KURS: 24.6
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Durables (XLY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 27 Bars ago
+Vacuum Quality: High (TP 12.4%)
+Momentum (WPR): 0.7
+Kerzenregel: OK ✅
+Stopversicherung: 18.3%
+TP Widerstand: 12.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 24.41
+Limitpreis (LP): 24.36
+Anzahl (Stk): 121
+TP (Teilverkauf): 23.59
+Stopp-Loss (SL): 25.23
+Runner-Target: EMA 21: 25.17
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.53% | Min.Wall FEUER: 1.9% | Min.Wall GOLDEN: 3.79%
+
+--- JSON PAYLOAD ---
+{""ticker"":""HMC"",""price"":24.6,""signal"":""FEUER_SHORT"",""sp"":24.41,""sl"":25.23,""tp"":23.59,""shares"":121,""risk_eur"":100,""wpr"":0.7,""stop_wall"":18.35,""tp_resistance"":12.4,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.3%)""}",2026-04-08T13:30:17Z,
+4411955374,"BATS:SNOW, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 SNOW
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:10
+TICKER: SNOW
+AKTUELLER KURS: 156.55
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Technology Services (XLK)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 51 Bars ago
+Vacuum Quality: High (TP 6.3%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 8.3%
+TP Widerstand: 6.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 155.34
+Limitpreis (LP): 155.03
+Anzahl (Stk): 10
+TP (Teilverkauf): 145.91
+Stopp-Loss (SL): 164.77
+Runner-Target: EMA 21: 161.4
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (5.5%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 5.25% | Min.Wall FEUER: 3.94% | Min.Wall GOLDEN: 7.88%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SNOW"",""price"":156.55,""signal"":""AKJ_ELITE_SHORT"",""sp"":155.34,""sl"":164.77,""tp"":145.91,""shares"":10,""risk_eur"":100,""wpr"":0,""stop_wall"":8.31,""tp_resistance"":6.29,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (5.5%)""}",2026-04-08T13:30:10Z,
+4411955374,"BATS:HMC, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 HMC
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:09
+TICKER: HMC
+AKTUELLER KURS: 24.55
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Durables (XLY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 27 Bars ago
+Vacuum Quality: High (TP 9.9%)
+Momentum (WPR): 0
+Kerzenregel: OK ✅
+Stopversicherung: 15.1%
+TP Widerstand: 9.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 24.41
+Limitpreis (LP): 24.36
+Anzahl (Stk): 131
+TP (Teilverkauf): 23.65
+Stopp-Loss (SL): 25.17
+Runner-Target: EMA 21: 25.17
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.52% | Min.Wall FEUER: 1.89% | Min.Wall GOLDEN: 3.77%
+
+--- JSON PAYLOAD ---
+{""ticker"":""HMC"",""price"":24.55,""signal"":""AKJ_ELITE_SHORT"",""sp"":24.41,""sl"":25.17,""tp"":23.65,""shares"":131,""risk_eur"":100,""wpr"":0,""stop_wall"":15.15,""tp_resistance"":9.86,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.3%)""}",2026-04-08T13:30:09Z,
+4411955374,"BATS:SO, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 SO
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:04
+TICKER: SO
+AKTUELLER KURS: 95.85
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 3 Bars ago
+Vacuum Quality: Low (TP 94.2%)
+Momentum (WPR): 100
+Kerzenregel: OK ✅
+Stopversicherung: 5.8%
+TP Widerstand: 94.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 96.72
+Limitpreis (LP): 96.91
+Anzahl (Stk): 41
+TP (Teilverkauf): 99.1
+Stopp-Loss (SL): 94.33
+Runner-Target: EMA 21: 96.09
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (1.8%)
+RS-Veto: OK
+ATR%: 1.58% | Min.Wall FEUER: 1.19% | Min.Wall GOLDEN: 2.37%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SO"",""price"":95.85,""signal"":""AKJ_ELITE_LONG"",""sp"":96.72,""sl"":94.33,""tp"":99.1,""shares"":41,""risk_eur"":100,""wpr"":100,""stop_wall"":5.76,""tp_resistance"":94.24,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (1.8%)""}",2026-04-08T13:30:04Z,
+4411955374,"BATS:GD, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 GD
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:04
+TICKER: GD
+AKTUELLER KURS: 345.18
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Rüstung & Aero (ITA)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 191 Bars ago
+Vacuum Quality: Low (TP 19.9%)
+Momentum (WPR): 100
+Kerzenregel: WAIT ⏳
+Stopversicherung: 17%
+TP Widerstand: 19.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 345.18
+Limitpreis (LP): 344.49
+Anzahl (Stk): 10
+TP (Teilverkauf): 335.96
+Stopp-Loss (SL): 354.4
+Runner-Target: EMA 21: 349.94
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.4%)
+RS-Veto: OK
+ATR%: 2.18% | Min.Wall FEUER: 1.64% | Min.Wall GOLDEN: 3.28%
+
+--- JSON PAYLOAD ---
+{""ticker"":""GD"",""price"":345.18,""signal"":""FEUER_LONG"",""sp"":345.18,""sl"":354.4,""tp"":335.96,""shares"":10,""risk_eur"":100,""wpr"":100,""stop_wall"":16.99,""tp_resistance"":19.92,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.4%)""}",2026-04-08T13:30:04Z,
+4411955374,"BATS:LMT, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 LMT
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:13
+TICKER: LMT
+AKTUELLER KURS: 610.27
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Rüstung & Aero (ITA)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 73 Bars ago
+Vacuum Quality: Low (TP 15.2%)
+Momentum (WPR): 100
+Kerzenregel: 
+Stopversicherung: 6.6%
+TP Widerstand: 15.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 617.5
+Limitpreis (LP): 618.74
+Anzahl (Stk): 4
+TP (Teilverkauf): 641.02
+Stopp-Loss (SL): 593.98
+Runner-Target: EMA 21: 626.72
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (3.6%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.67% | Min.Wall FEUER: 2% | Min.Wall GOLDEN: 4%
+
+--- JSON PAYLOAD ---
+{""ticker"":""LMT"",""price"":610.27,""signal"":""FEUER_LONG"",""sp"":617.5,""sl"":593.98,""tp"":641.02,""shares"":4,""risk_eur"":100,""wpr"":100,""stop_wall"":6.64,""tp_resistance"":15.22,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.6%)""}",2026-04-08T13:30:13Z,
+4411955374,"BATS:DTE, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 DTE
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:03
+TICKER: DTE
+AKTUELLER KURS: 146.95
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 32 Bars ago
+Vacuum Quality: Low (TP 16.8%)
+Momentum (WPR): 100
+Kerzenregel: 
+Stopversicherung: 42.6%
+TP Widerstand: 16.8%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 147.24
+Limitpreis (LP): 147.53
+Anzahl (Stk): 37
+TP (Teilverkauf): 149.91
+Stopp-Loss (SL): 144.57
+Runner-Target: EMA 21: 146.22
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.2%)
+RS-Veto: OK
+ATR%: 1.62% | Min.Wall FEUER: 1.22% | Min.Wall GOLDEN: 2.43%
+
+--- JSON PAYLOAD ---
+{""ticker"":""DTE"",""price"":146.95,""signal"":""AKJ_ELITE_LONG"",""sp"":147.24,""sl"":144.57,""tp"":149.91,""shares"":37,""risk_eur"":100,""wpr"":100,""stop_wall"":42.64,""tp_resistance"":16.84,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (2.2%)""}",2026-04-08T13:30:03Z,
+4411955374,"BATS:CEG, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 CEG
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:06
+TICKER: CEG
+AKTUELLER KURS: 285.16
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 46 Bars ago
+Vacuum Quality: High (TP 14%)
+Momentum (WPR): 0
+Kerzenregel: 
+Stopversicherung: 12.7%
+TP Widerstand: 14%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 285.16
+Limitpreis (LP): 285.73
+Anzahl (Stk): 6
+TP (Teilverkauf): 301.09
+Stopp-Loss (SL): 269.23
+Runner-Target: EMA 21: 292.01
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 💥 EXPANSION (8.1%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 4.83% | Min.Wall FEUER: 3.62% | Min.Wall GOLDEN: 7.24%
+
+--- JSON PAYLOAD ---
+{""ticker"":""CEG"",""price"":285.16,""signal"":""AKJ_ELITE_SHORT"",""sp"":285.16,""sl"":269.23,""tp"":301.09,""shares"":6,""risk_eur"":100,""wpr"":0,""stop_wall"":12.73,""tp_resistance"":14.02,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (8.1%)""}",2026-04-08T13:30:04Z,
+4411955374,"BATS:DUK, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 DUK
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 100 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:05
+TICKER: DUK
+AKTUELLER KURS: 130.1
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Utilities (XLU)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: NEUTRAL
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 36 Bars ago
+Vacuum Quality: Low (TP 28.2%)
+Momentum (WPR): 100
+Kerzenregel: OK ✅
+Stopversicherung: 43.1%
+TP Widerstand: 28.2%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 131.57
+Limitpreis (LP): 131.83
+Anzahl (Stk): 27
+TP (Teilverkauf): 135.18
+Stopp-Loss (SL): 127.96
+Runner-Target: EMA 21: 130.23
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 🗜️ SQUEEZE (1.8%)
+RS-Veto: OK
+ATR%: 1.65% | Min.Wall FEUER: 1.23% | Min.Wall GOLDEN: 2.47%
+
+--- JSON PAYLOAD ---
+{""ticker"":""DUK"",""price"":130.1,""signal"":""FEUER_LONG"",""sp"":131.57,""sl"":127.96,""tp"":135.18,""shares"":27,""risk_eur"":100,""wpr"":100,""stop_wall"":43.08,""tp_resistance"":28.21,""rs_status"":""MITTEL"",""bb_squeeze"":""🗜️ SQUEEZE (1.8%)""}",2026-04-08T13:30:05Z,
+4411955374,"BATS:BSX, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL SHORT 💎 BSX
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 2.5 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:05
+TICKER: BSX
+AKTUELLER KURS: 63.24
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 88 Bars ago
+Vacuum Quality: High (TP 7.4%)
+Momentum (WPR): 2.5
+Kerzenregel: OK ✅
+Stopversicherung: 4%
+TP Widerstand: 7.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 62.84
+Limitpreis (LP): 62.71
+Anzahl (Stk): 39
+TP (Teilverkauf): 60.31
+Stopp-Loss (SL): 65.37
+Runner-Target: EMA 21: 67.11
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: 💥 EXPANSION (10.2%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 3.37% | Min.Wall FEUER: 2.53% | Min.Wall GOLDEN: 5.05%
+
+--- JSON PAYLOAD ---
+{""ticker"":""BSX"",""price"":63.24,""signal"":""AKJ_ELITE_SHORT"",""sp"":62.84,""sl"":65.37,""tp"":60.31,""shares"":39,""risk_eur"":100,""wpr"":2.5,""stop_wall"":3.98,""tp_resistance"":7.38,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (10.2%)""}",2026-04-08T13:30:05Z,
+4411955374,"BATS:PGR, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 PGR
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 0.8 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:30:02
+TICKER: PGR
+AKTUELLER KURS: 198.27
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 142 Bars ago
+Vacuum Quality: High (TP 7%)
+Momentum (WPR): 0.8
+Kerzenregel: OK ✅
+Stopversicherung: 1.8%
+TP Widerstand: 7%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 197.12
+Limitpreis (LP): 196.73
+Anzahl (Stk): 18
+TP (Teilverkauf): 191.6
+Stopp-Loss (SL): 202.64
+Runner-Target: EMA 21: 201
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (3%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.21% | Min.Wall FEUER: 1.65% | Min.Wall GOLDEN: 3.31%
+
+--- JSON PAYLOAD ---
+{""ticker"":""PGR"",""price"":198.27,""signal"":""AKJ_ELITE_SHORT"",""sp"":197.12,""sl"":202.64,""tp"":191.6,""shares"":18,""risk_eur"":100,""wpr"":0.8,""stop_wall"":1.81,""tp_resistance"":7,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3%)""}",2026-04-08T13:30:02Z,
+4411955374,"EURONEXT_DLY:SAN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL LONG 💎 SAN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 82.8 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 13:18:07
+TICKER: SAN
+AKTUELLER KURS: 80.89
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Health Technology (XLV)
+Rel. Stärke: STARK
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BULLISCH ⬆️ (Sticky)
+Tagestrend: LONG (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 1 Bars ago
+Vacuum Quality: High (TP 0%)
+Momentum (WPR): 82.8
+Kerzenregel: OK ✅
+Stopversicherung: 100%
+TP Widerstand: 0%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 82.6
+Limitpreis (LP): 82.77
+Anzahl (Stk): 26
+TP (Teilverkauf): 86.39
+Stopp-Loss (SL): 78.81
+Runner-Target: EMA 21: 80.02
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: NORMAL (3.6%)
+RS-Veto: OK
+ATR%: 2.22% | Min.Wall FEUER: 1.66% | Min.Wall GOLDEN: 3.33%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SAN"",""price"":80.89,""signal"":""AKJ_ELITE_LONG"",""sp"":82.6,""sl"":78.81,""tp"":86.39,""shares"":26,""risk_eur"":100,""wpr"":82.8,""stop_wall"":100,""tp_resistance"":0,""rs_status"":""STARK"",""bb_squeeze"":""NORMAL (3.6%)""}",2026-04-08T13:18:07Z,
+4411955374,"XETR_DLY:HEN3, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 HEN3
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 16.7 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 12:51:58
+TICKER: HEN3
+AKTUELLER KURS: 66.96
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Process Industries (XLP)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 11 Bars ago
+Vacuum Quality: Low (TP 21.3%)
+Momentum (WPR): 16.7
+Kerzenregel: OK ✅
+Stopversicherung: 49.3%
+TP Widerstand: 21.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 66.16
+Limitpreis (LP): 66.03
+Anzahl (Stk): 38
+TP (Teilverkauf): 63.56
+Stopp-Loss (SL): 68.76
+Runner-Target: EMA 21: 68.64
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: NORMAL (3.2%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.57% | Min.Wall FEUER: 1.93% | Min.Wall GOLDEN: 3.86%
+
+--- JSON PAYLOAD ---
+{""ticker"":""HEN3"",""price"":66.96,""signal"":""AKJ_ELITE_SHORT"",""sp"":66.16,""sl"":68.76,""tp"":63.56,""shares"":38,""risk_eur"":100,""wpr"":16.7,""stop_wall"":49.33,""tp_resistance"":21.35,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (3.2%)""}",2026-04-08T12:51:58Z,
+4411955374,"EURONEXT_DLY:ATO, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 ATO
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 13.6 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 12:13:56
+TICKER: ATO
+AKTUELLER KURS: 35.36
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Technology Services (XLK)
+Rel. Stärke: MITTEL
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 11 Bars ago
+Vacuum Quality: Low (TP 38.3%)
+Momentum (WPR): 13.6
+Kerzenregel: OK ✅
+Stopversicherung: 23.1%
+TP Widerstand: 38.3%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 34.32
+Limitpreis (LP): 34.25
+Anzahl (Stk): 24
+TP (Teilverkauf): 30.31
+Stopp-Loss (SL): 38.33
+Runner-Target: EMA 21: 36.79
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 💥 EXPANSION (8.8%)
+RS-Veto: OK
+ATR%: 7.14% | Min.Wall FEUER: 5.36% | Min.Wall GOLDEN: 10.71%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ATO"",""price"":35.36,""signal"":""AKJ_ELITE_SHORT"",""sp"":34.32,""sl"":38.33,""tp"":30.31,""shares"":24,""risk_eur"":100,""wpr"":13.6,""stop_wall"":23.07,""tp_resistance"":38.26,""rs_status"":""MITTEL"",""bb_squeeze"":""💥 EXPANSION (8.8%)""}",2026-04-08T12:13:56Z,
+4411955374,"SIX_DLY:SPSN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🟢 FEUER FREI LONG 🟢 SPSN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 82.2 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 12:10:59
+TICKER: SPSN
+AKTUELLER KURS: 136.2
+🟢 FEUER FREI
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Radar)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 105 Bars ago
+Vacuum Quality: High (TP 8.4%)
+Momentum (WPR): 82.2
+Kerzenregel: 
+Stopversicherung: 5.6%
+TP Widerstand: 8.4%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 139.9
+Limitpreis (LP): 140.18
+Anzahl (Stk): 15
+TP (Teilverkauf): 146.26
+Stopp-Loss (SL): 133.54
+Runner-Target: EMA 21: 137.18
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: NEUTRAL
+BB Squeeze: 🗜️ SQUEEZE (2.6%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 1.95% | Min.Wall FEUER: 1.46% | Min.Wall GOLDEN: 2.93%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SPSN"",""price"":136.2,""signal"":""FEUER_LONG"",""sp"":139.9,""sl"":133.54,""tp"":146.26,""shares"":15,""risk_eur"":100,""wpr"":82.2,""stop_wall"":5.62,""tp_resistance"":8.44,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (2.6%)""}",2026-04-08T12:10:59Z,
+4411955374,"SIX_DLY:SPSN, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🌟 GOLDEN SETUP LONG 🌟 SPSN
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 2 (Aufwärtstrend) ist und der Williams %R (4) mit 80 einen statistisch günstigen Rücksetzer (Dip) signalisiert.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 12:10:26
+TICKER: SPSN
+AKTUELLER KURS: 136.3
+🌟 GOLDEN
+
+--- MARKT-KONTEXT ---
+Sektor: Finance (XLF)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 2 OK Long ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: NEUTRAL ↔️
+Tagestrend: LONG (Radar)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 105 Bars ago
+Vacuum Quality: High (TP 7.9%)
+Momentum (WPR): 80
+Kerzenregel: 
+Stopversicherung: 5.4%
+TP Widerstand: 7.9%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 139.9
+Limitpreis (LP): 140.18
+Anzahl (Stk): 15
+TP (Teilverkauf): 146.26
+Stopp-Loss (SL): 133.54
+Runner-Target: EMA 21: 137.19
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 🗜️ SQUEEZE (2.6%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 1.95% | Min.Wall FEUER: 1.46% | Min.Wall GOLDEN: 2.92%
+
+--- JSON PAYLOAD ---
+{""ticker"":""SPSN"",""price"":136.3,""signal"":""GOLDEN_LONG"",""sp"":139.9,""sl"":133.54,""tp"":146.26,""shares"":15,""risk_eur"":100,""wpr"":80,""stop_wall"":5.44,""tp_resistance"":7.92,""rs_status"":""SCHWACH"",""bb_squeeze"":""🗜️ SQUEEZE (2.6%)""}",2026-04-08T12:10:26Z,
+4411955374,"LSE_DLY:BKG, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","🔥 [STAR-TICKER] 💎 AKJ ELITE SIGNAL SHORT 💎 BKG
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 2.1 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 12:09:12
+TICKER: BKG
+AKTUELLER KURS: 3440
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Durables (XLY)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 11 Bars ago
+Vacuum Quality: High (TP 11.8%)
+Momentum (WPR): 2.1
+Kerzenregel: OK ✅
+Stopversicherung: 30.1%
+TP Widerstand: 11.8%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 3334.77
+Limitpreis (LP): 3328.1
+Anzahl (Stk): 0 [HINWEIS] Risiko für 1 Stück aktuell > Budget. Manueller Check nötig.
+TP (Teilverkauf): 3067.23
+Stopp-Loss (SL): 3602.31
+Runner-Target: EMA 21: 3537.91
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: SHORT ZONE
+BB Squeeze: 💥 EXPANSION (8.1%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 4.31% | Min.Wall FEUER: 3.23% | Min.Wall GOLDEN: 6.47%
+
+--- JSON PAYLOAD ---
+{""ticker"":""BKG"",""price"":3440,""signal"":""AKJ_ELITE_SHORT"",""sp"":3334.77,""sl"":3602.31,""tp"":3067.23,""shares"":0,""risk_eur"":100,""wpr"":2.1,""stop_wall"":30.07,""tp_resistance"":11.78,""rs_status"":""SCHWACH"",""bb_squeeze"":""💥 EXPANSION (8.1%)""}",2026-04-08T12:09:12Z,
+4411955374,"LSE_DLY:ULVR, 1T","AKJ 2.0 Sniper-Commander v20.7 (100, 0,2, 1, 10, 1, 4, 14, 240, 0,75, 1,5, 15, 8, SPY, Normal): Jeder alert()-Funktionsaufruf","💎 AKJ ELITE SIGNAL SHORT 💎 ULVR
+GRUND: Dieser Alarm bimmelt, weil die Aktie in Weinstein Stage 4 (Abwärtstrend) ist und der Williams %R (4) mit 16.4 eine kurzfristige Erholung (Rebound) für den Einstieg anzeigt.
+--- COCKPIT DATEN ---
+ZEITPUNKT: 2026-04-08 12:08:52
+TICKER: ULVR
+AKTUELLER KURS: 4279
+💎 AKJ ELITE
+
+--- MARKT-KONTEXT ---
+Sektor: Consumer Non-Durables (XLP)
+Rel. Stärke: SCHWACH
+Weinstein Stage: STAGE 4 OK Short ✅
+
+--- TREND-ANALYSE (v20.5) ---
+Wochentrend: BÄRISCH ⬇️ (Sticky)
+Tagestrend: SHORT (Scharf)
+
+--- SNIPER METRIKEN ---
+Risk-O-Meter (1R): 100 €
+Risk-Mode (Adaptiv): ALPHA (Full)
+Anchor-Info: 16 Bars ago
+Vacuum Quality: High (TP 11.1%)
+Momentum (WPR): 16.4
+Kerzenregel: OK ✅
+Stopversicherung: 5.3%
+TP Widerstand: 11.1%
+
+--- ORDER-MATRIX ---
+Stoppreis (SP): 4233
+Limitpreis (LP): 4224.53
+Anzahl (Stk): 0 [HINWEIS] Risiko für 1 Stück aktuell > Budget. Manueller Check nötig.
+TP (Teilverkauf): 4019.67
+Stopp-Loss (SL): 4446.33
+Runner-Target: EMA 21: 4546.93
+
+--- ZUSATZ-INFO ---
+Bollinger Zone: LONG ZONE
+BB Squeeze: NORMAL (7.1%)
+RS-Veto: AKTIV (RS SCHWACH)
+ATR%: 2.94% | Min.Wall FEUER: 2.21% | Min.Wall GOLDEN: 4.41%
+
+--- JSON PAYLOAD ---
+{""ticker"":""ULVR"",""price"":4279,""signal"":""AKJ_ELITE_SHORT"",""sp"":4233,""sl"":4446.33,""tp"":4019.67,""shares"":0,""risk_eur"":100,""wpr"":16.4,""stop_wall"":5.31,""tp_resistance"":11.09,""rs_status"":""SCHWACH"",""bb_squeeze"":""NORMAL (7.1%)""}",2026-04-08T12:08:52Z,
+4087617761,"TVC:VIX, 1T",,"VIX, 1T Kreuzend Horizontale Linie",2026-04-08T07:15:01Z,
+4087616448,"TVC:VIX, 1T",,"VIX, 1T Kreuzend Horizontale Linie",2026-04-01T07:15:01Z,
+4087627176,"INDEX:MMFI, 1T",,"MMFI, 1T Kreuzend Horizontale Linie",2026-03-31T21:01:31Z,
+4087621554,"CBOE_DLY:VXN, 1T",,"VXN, 1T Kreuzend Horizontale Linie",2026-03-31T14:15:02Z,
+4092840906,"BATS:PM, 1T",,"−80,00 Abwärts kreuzend Williams Percent Range (14, close) auf PM, 1T",2026-03-31T14:14:04Z,
+4087625364,"USI:PCC, 1T",,"PCC, 1T Kreuzend Horizontale Linie",2026-03-31T13:45:52Z,
+4163223512,"SIX_DLY:RO, 10m",,"−80,00 Abwärts kreuzend Williams Percent Range (14, close) auf RO, 10",2026-03-31T10:49:43Z,
